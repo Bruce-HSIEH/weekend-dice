@@ -610,23 +610,25 @@ function ui(n,s=20,c=INK){
   return `<svg class="ic" width="${s}" height="${s}" viewBox="0 0 24 24">${P[n]||""}</svg>`;
 }
 
-/* ===== 實心手繪骰子（斜投影：正面＋上面＋右側面，全部不透明） ===== */
+/* ===== 實心手繪骰子（圓角正面＋往右上擠出的厚度，全部不透明） ===== */
 const PIPS={1:[[50,50]],2:[[28,28],[72,72]],3:[[26,26],[50,50],[74,74]],4:[[28,28],[72,28],[28,72],[72,72]],
   5:[[27,27],[73,27],[50,50],[27,73],[73,73]],6:[[29,24],[29,50],[29,76],[71,24],[71,50],[71,76]]};
 const pipSet=(n,r)=>PIPS[n].map(([x,y])=>`<circle cx="${x}" cy="${y}" r="${n===1?r*1.45:r}" fill="${n===1?"#F2735A":INK}"/>`).join("");
-// 跟 n 相鄰的兩面（對面相加 = 7，所以不能用 n 和 7-n）
-function sideFaces(n){ const adj=[1,2,3,4,5,6].filter(x=>x!==n&&x!==7-n); const top=adj[(n*2)%4]; const right=adj.filter(x=>x!==top&&x!==7-top)[0]; return [top,right]; }
-function dieSvg(n,face=true){
-  const [t,r]=sideFaces(n);
-  return `<g stroke-linejoin="round">
-    <path d="M14 34 L34 12 L112 12 L92 34 Z" fill="#E8F1FB" stroke="${INK}" stroke-width="5"/>
-    <g transform="matrix(.78,0,.2,-.22,14,34)">${pipSet(t,8)}</g>
-    <path d="M92 34 L112 12 L112 90 L92 112 Z" fill="#C9D8EA" stroke="${INK}" stroke-width="5"/>
-    <g transform="matrix(.2,-.22,0,.78,92,34)">${pipSet(r,8)}</g>
-    <rect x="12" y="32" width="82" height="82" rx="16" fill="#fff" stroke="${INK}" stroke-width="5"/>
-    <path d="M24 40 h40" stroke="#E8F1FB" stroke-width="5" stroke-linecap="round"/>
-    <g transform="translate(14 34) scale(.78)">${pipSet(n,8.5)}</g>
-  </g>`;
+// 圓角方塊往右上「擠出」厚度：同一個圓角形狀疊 10 層，所有邊角一樣圓
+let dieUid=0;
+function dieSvg(n){
+  const id="dg"+(++dieUid);   // SVG 漸層 id 要唯一，避免多顆骰子互相蓋掉
+  const X=12,Y=30,S=84,R=24,DX=13,DY=-13,K=10;
+  const layers=[]; for(let i=K;i>=1;i--) layers.push([DX*i/K,DY*i/K]);
+  const rect=(dx,dy,extra)=>`<rect x="${X+dx}" y="${Y+dy}" width="${S}" height="${S}" rx="${R}" ${extra}/>`;
+  const pip=(x,y,r,c)=>`<circle cx="${x}" cy="${y}" r="${r}" fill="${c}"/><circle cx="${x-r*.32}" cy="${y-r*.34}" r="${r*.3}" fill="#fff" opacity=".5"/>`;
+  const pips=PIPS[n].map(([x,y])=>{ const px=X+8+x*.68, py=Y+8+y*.68; return n===1?pip(px,py,13,"#F2735A"):pip(px,py,7.6,INK); }).join("");
+  return `<defs><linearGradient id="${id}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#EEF4FB"/><stop offset="1" stop-color="#B9CCE3"/></linearGradient></defs>
+    ${layers.map(([dx,dy])=>rect(dx,dy,`fill="${INK}" stroke="${INK}" stroke-width="10"`)).join("")}
+    ${layers.map(([dx,dy])=>rect(dx,dy,`fill="url(#${id})"`)).join("")}
+    ${rect(0,0,`fill="#fff" stroke="${INK}" stroke-width="5"`)}
+    <path d="M${X+14} ${Y+R*.9} Q${X+14} ${Y+12} ${X+R+10} ${Y+11}" fill="none" stroke="#E3ECF7" stroke-width="5" stroke-linecap="round"/>
+    ${pips}`;
 }
 function faceMini(n,s=18,bg="#fff"){
   return `<svg class="ic" width="${s}" height="${s}" viewBox="0 0 100 100"><rect x="5" y="5" width="90" height="90" rx="20" fill="${bg}" stroke="${INK}" stroke-width="8"/>${pipSet(n,9)}</svg>`;

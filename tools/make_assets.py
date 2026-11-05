@@ -12,15 +12,15 @@ icon=f'''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="
 <rect x="-20" y="780" width="1064" height="260" fill="#5B6170" stroke="{INK}" stroke-width="16"/>
 <g fill="#FFD54A">{"".join(f'<rect x="{x}" y="890" width="110" height="22" rx="11"/>' for x in range(-40,1024,200))}</g>
 <ellipse cx="520" cy="842" rx="270" ry="34" fill="rgba(0,0,0,.25)"/>
-<g transform="translate(250 270) scale(4.6)" stroke-linejoin="round">
- <path d="M14 34 L34 12 L112 12 L92 34 Z" fill="#E8F1FB" stroke="{INK}" stroke-width="5"/>
- <path d="M92 34 L112 12 L112 90 L92 112 Z" fill="#C9D8EA" stroke="{INK}" stroke-width="5"/>
- <circle cx="62" cy="23" r="5" fill="{INK}"/><circle cx="102" cy="62" r="4.5" fill="{INK}"/>
- <rect x="12" y="32" width="82" height="82" rx="16" fill="#fff" stroke="{INK}" stroke-width="5"/>
- <circle cx="30" cy="52" r="7" fill="#F2735A"/><circle cx="76" cy="96" r="7" fill="{INK}"/>
- <path d="M38 70 q5 -6 10 0 M58 70 q5 -6 10 0" stroke="{INK}" stroke-width="4.5" fill="none" stroke-linecap="round"/>
- <path d="M44 80 q9 11 18 0 Z" fill="#F2735A" stroke="{INK}" stroke-width="4" />
- <ellipse cx="32" cy="80" rx="6" ry="3.5" fill="#FFB7A6"/><ellipse cx="74" cy="80" rx="6" ry="3.5" fill="#FFB7A6"/>
+<g transform="translate(240 250) scale(4.7)">
+ {"".join(f'<rect x="{12+13*i/10}" y="{30-13*i/10}" width="84" height="84" rx="24" fill="{INK}" stroke="{INK}" stroke-width="10"/>' for i in range(10,0,-1))}
+ {"".join(f'<rect x="{12+13*i/10}" y="{30-13*i/10}" width="84" height="84" rx="24" fill="#C9D8EA"/>' for i in range(10,0,-1))}
+ <rect x="12" y="30" width="84" height="84" rx="24" fill="#fff" stroke="{INK}" stroke-width="5"/>
+ <path d="M26 52 Q26 42 46 41" fill="none" stroke="#E3ECF7" stroke-width="5" stroke-linecap="round"/>
+ <circle cx="34" cy="54" r="6.5" fill="#F2735A"/><circle cx="76" cy="94" r="6.5" fill="{INK}"/>
+ <path d="M38 72 q5 -6 10 0 M60 72 q5 -6 10 0" stroke="{INK}" stroke-width="4.5" fill="none" stroke-linecap="round"/>
+ <path d="M46 81 q8 10 16 0 Z" fill="#F2735A" stroke="{INK}" stroke-width="4" stroke-linejoin="round"/>
+ <ellipse cx="32" cy="82" rx="6" ry="3.5" fill="#FFB7A6"/><ellipse cx="76" cy="82" rx="6" ry="3.5" fill="#FFB7A6"/>
 </g>
 </svg>'''
 with sync_playwright() as p:
