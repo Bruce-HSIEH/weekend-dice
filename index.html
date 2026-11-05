@@ -1,0 +1,1210 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="假日骰骰">
+<meta name="theme-color" content="#8FD0F5">
+<meta name="color-scheme" content="light">
+<link rel="apple-touch-icon" sizes="180x180" href="icons/v1-apple-touch-icon.png">
+<link rel="icon" type="image/png" href="icons/v1-icon-192.png">
+<link rel="apple-touch-startup-image" media="(device-width: 440px) and (device-height: 956px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="splash/v1-1320x2868.png">
+<link rel="apple-touch-startup-image" media="(device-width: 402px) and (device-height: 874px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="splash/v1-1206x2622.png">
+<link rel="apple-touch-startup-image" media="(device-width: 430px) and (device-height: 932px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="splash/v1-1290x2796.png">
+<link rel="apple-touch-startup-image" media="(device-width: 393px) and (device-height: 852px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="splash/v1-1179x2556.png">
+<link rel="apple-touch-startup-image" media="(device-width: 420px) and (device-height: 912px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="splash/v1-1260x2736.png">
+<link rel="apple-touch-startup-image" media="(device-width: 428px) and (device-height: 926px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="splash/v1-1284x2778.png">
+<link rel="apple-touch-startup-image" media="(device-width: 390px) and (device-height: 844px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="splash/v1-1170x2532.png">
+<link rel="apple-touch-startup-image" media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="splash/v1-1125x2436.png">
+<link rel="apple-touch-startup-image" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="splash/v1-1242x2688.png">
+<link rel="apple-touch-startup-image" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" href="splash/v1-828x1792.png">
+<link rel="apple-touch-startup-image" media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" href="splash/v1-750x1334.png">
+<link rel="apple-touch-startup-image" media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" href="splash/v1-640x1136.png">
+<title>假日骰骰</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Huninn&display=swap" rel="stylesheet">
+<style>
+/* ===== 公路旅行明信片風 ===== */
+:root{
+  --ink:#2B3A55; --ink2:#6B7A93; --line:#D6E3F0;
+  --sky1:#8FD0F5; --sky2:#C4E9FC; --sky3:#EAF7FF;
+  --grass:#8FCF6B; --grass-d:#5FAF4A; --road:#5B6170; --lane:#FFD54A;
+  --sun:#FFD54A; --coral:#FF7A59; --paper:#FFFBF1; --kraft:#E8D6B3;
+  --t1:#3DAA6E; --t2:#3B8EDB; --t3:#F29A3A; --t4:#8A6BD1;
+  --nav-h:64px;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;color:var(--ink);background:#F2F8FD;
+  font-family:"Huninn","jf-openhuninn","PingFang TC","Heiti TC","Noto Sans TC",system-ui,sans-serif;}
+html.lock,html.lock body{overflow:hidden;touch-action:none}
+body{overflow-x:hidden;padding-bottom:calc(env(safe-area-inset-bottom) + var(--nav-h) + 28px);
+  background-image:linear-gradient(rgba(59,142,219,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(59,142,219,.06) 1px,transparent 1px);background-size:26px 26px}
+button{font-family:inherit;color:inherit;cursor:pointer;touch-action:manipulation}
+input,textarea{font-family:inherit;color:var(--ink)}
+svg.ic{display:inline-block;vertical-align:middle;flex:none}
+[hidden]{display:none!important}
+.app{max-width:520px;margin:0 auto}
+.pad{padding:0 16px}
+
+/* ---------- 風景（首頁上方） ---------- */
+.scene{position:relative;height:calc(env(safe-area-inset-top) + 318px);overflow:hidden;
+  background:linear-gradient(180deg,var(--sky1) 0%,var(--sky2) 55%,var(--sky3) 100%);border-radius:0 0 34px 34px}
+.scene .sun{position:absolute;left:18px;top:calc(env(safe-area-inset-top) + 64px);width:58px;height:58px}
+.scene .sun svg{animation:spinSlow 24s linear infinite;display:block}
+@keyframes spinSlow{to{transform:rotate(360deg)}}
+.cloud{position:absolute;opacity:.95}
+.cloud.c1{top:calc(env(safe-area-inset-top) + 92px);left:-20%;animation:drift 38s linear infinite}
+.cloud.c2{top:calc(env(safe-area-inset-top) + 140px);left:-20%;animation:drift 52s linear -20s infinite;opacity:.8}
+.cloud.c3{top:calc(env(safe-area-inset-top) + 58px);left:-20%;animation:drift 64s linear -40s infinite;opacity:.7}
+@keyframes drift{from{transform:translateX(0)}to{transform:translateX(140vw)}}
+.hills{position:absolute;left:0;right:0;bottom:70px;height:120px}
+.hills svg{width:100%;height:100%;display:block}
+.road{position:absolute;left:0;right:0;bottom:0;height:78px;background:var(--road);border-top:5px solid #454A57}
+.road::before{content:"";position:absolute;left:0;right:0;top:34px;height:5px;background:repeating-linear-gradient(90deg,var(--lane) 0 28px,transparent 28px 52px)}
+.road::after{content:"";position:absolute;left:0;right:0;bottom:0;height:12px;background:var(--grass-d)}
+.topbar{position:absolute;left:0;right:0;top:calc(env(safe-area-inset-top) + 12px);display:flex;align-items:flex-start;padding:0 16px;gap:8px;z-index:3}
+.ttl{flex:1;min-width:0;text-align:center;padding-left:84px}
+h1{margin:0;font-size:30px;font-weight:400;letter-spacing:.06em;line-height:1.2;white-space:nowrap;color:var(--ink);
+  text-shadow:2px 2px 0 #fff,-2px 2px 0 #fff,2px -2px 0 #fff,-2px -2px 0 #fff,0 3px 0 #fff,0 5px 0 rgba(43,58,85,.15)}
+#h1t{display:inline-block;line-height:1.2}
+.sub{font-size:13px;color:var(--ink);margin-top:2px;white-space:nowrap;opacity:.8}
+.ver{display:inline-block;vertical-align:middle;margin-left:4px;border:2px solid var(--ink);background:var(--sun);border-radius:999px;font-size:11px;padding:0 7px;line-height:18px;text-shadow:none;letter-spacing:0}
+.snd{display:flex;gap:6px}
+.snd button{width:38px;height:38px;border-radius:50%;border:2.5px solid var(--ink);background:#fff;display:grid;place-items:center;padding:0;box-shadow:0 3px 0 var(--ink);transition:.15s}
+.snd button.off{background:#E3EAF2;opacity:.75}
+.snd button.off svg{opacity:.45}
+.snd button:active{transform:translateY(3px);box-shadow:none}
+
+.dieWrap{position:absolute;left:50%;bottom:44px;width:120px;height:120px;margin-left:-60px;z-index:2}
+.dieIdle{width:120px;height:120px;animation:dieIdle 3s ease-in-out infinite}
+@keyframes dieIdle{50%{transform:translateY(-6px) rotate(-3deg)}}
+.dieWrap svg{display:block;width:120px;height:120px;overflow:visible}
+.dieShadow{position:absolute;left:50%;bottom:30px;width:96px;height:14px;margin-left:-52px;border-radius:50%;background:rgba(0,0,0,.22);z-index:1}
+.carBtn{position:absolute;right:14px;bottom:40px;width:96px;height:66px;border:0;background:none;padding:0;z-index:2}
+.carBtn svg{width:96px;height:66px;display:block;overflow:visible}
+.car{animation:carIdle .5s ease-in-out infinite alternate}
+@keyframes carIdle{to{transform:translateY(-1.5px)}}
+.carBtn.honk .car{animation:honk .5s cubic-bezier(.3,1.8,.5,1)}
+@keyframes honk{0%{transform:scale(1.12,.86)}45%{transform:scale(.94,1.08) translateY(-6px)}100%{transform:none}}
+.carBtn.hot .car{animation:hot .1s linear infinite}
+@keyframes hot{50%{transform:translateX(2px) rotate(1.5deg)}}
+.carBtn.leave{animation:leave 2.6s cubic-bezier(.5,0,.4,1) both}
+@keyframes leave{0%{transform:none}40%{transform:translateX(160px)}41%{transform:translateX(-520px)}100%{transform:none}}
+.bubble{position:absolute;right:20px;bottom:116px;z-index:5;background:#fff;border:2.5px solid var(--ink);border-radius:16px;padding:4px 11px;font-size:14px;white-space:nowrap;
+  opacity:0;transform:scale(.4) translateY(8px);transform-origin:80% 100%;transition:opacity .15s,transform .25s cubic-bezier(.2,1.6,.4,1);pointer-events:none}
+.bubble::before{content:"";position:absolute;right:30px;bottom:-11px;border:7px solid transparent;border-top-color:var(--ink);border-bottom:0}
+.bubble::after{content:"";position:absolute;right:31.5px;bottom:-7px;border:5.5px solid transparent;border-top-color:#fff;border-bottom:0}
+.bubble.show{opacity:1;transform:none}
+
+/* ---------- 路標 ---------- */
+.signs{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:-6px 0 0;padding:0 14px;position:relative;z-index:3}
+.sign{position:relative;border:0;background:none;padding:0 0 20px;transition:transform .25s cubic-bezier(.2,1.6,.4,1),opacity .2s}
+.sign::before,.sign::after{content:"";position:absolute;bottom:0;width:6px;height:24px;background:#8E98A8;border:2px solid var(--ink);border-top:0;border-radius:0 0 3px 3px;z-index:-1}
+.sign::before{left:28%} .sign::after{right:28%}
+.sign .pl{display:block;border-radius:12px;border:2.5px solid var(--ink);padding:3px;box-shadow:0 4px 0 var(--ink)}
+.sign .in{display:block;border:2px solid rgba(255,255,255,.9);border-radius:8px;color:#fff;padding:5px 2px 4px;text-align:center}
+.sign .ex{display:inline-block;font-size:10px;background:#fff;color:var(--ink);border-radius:5px;padding:0 4px;line-height:15px}
+.sign b{display:block;font-weight:400;font-size:15px;white-space:nowrap;margin-top:2px;letter-spacing:.04em}
+.sign small{display:block;font-size:10.5px;white-space:nowrap;opacity:.95}
+.sign .pin{position:absolute;top:-10px;left:50%;transform:translateX(-50%) rotate(-6deg);background:var(--sun);border:2px solid var(--ink);border-radius:7px;font-size:11px;padding:0 6px;line-height:17px;white-space:nowrap}
+.signs.locked .sign:not(.on){opacity:.4}
+.sign.hit{animation:signHit .9s cubic-bezier(.2,1.6,.4,1)}
+@keyframes signHit{0%{transform:none}25%{transform:rotate(-7deg) scale(1.12)}50%{transform:rotate(5deg) scale(1.1)}75%{transform:rotate(-2deg) scale(1.06)}100%{transform:scale(1.04)}}
+.sign.won .pl{box-shadow:0 4px 0 var(--ink),0 0 0 4px var(--sun)}
+.signTip{text-align:center;font-size:12px;color:var(--ink2);margin:6px 0 0}
+
+.rollRow{display:flex;flex-direction:column;align-items:center;margin:14px 0 4px}
+.rollBtn{width:132px;height:132px;border-radius:50%;border:3px solid var(--ink);background:radial-gradient(circle at 35% 30%,#FFF1A8 0,var(--sun) 45%,#F5B82E 100%);
+  box-shadow:0 7px 0 var(--ink),inset 0 -6px 0 rgba(0,0,0,.08);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;transition:transform .1s,box-shadow .1s}
+.rollBtn:active{transform:translateY(6px);box-shadow:0 1px 0 var(--ink)}
+.rollBtn:disabled{filter:saturate(.6);opacity:.85}
+.rollBtn big{font-size:38px;line-height:1;letter-spacing:.05em}
+.rollBtn span{font-size:16px}
+.pool{text-align:center;font-size:13px;color:var(--ink2);margin-top:12px}
+.pool b{color:var(--ink);font-weight:400;background:#fff;border:2px solid var(--line);border-radius:8px;padding:0 6px}
+
+/* ---------- 行前檢查（條件） ---------- */
+.board{position:relative;background:var(--paper);border:2.5px solid var(--ink);border-radius:20px;padding:26px 16px 16px;margin:24px 16px 0;box-shadow:5px 6px 0 rgba(43,58,85,.18)}
+.board .clip{position:absolute;top:-16px;left:50%;transform:translateX(-50%);width:96px;height:30px}
+.board h3{margin:0 0 4px;font-weight:400;font-size:18px;display:flex;align-items:center;gap:6px}
+.board .note2{font-size:12px;color:var(--ink2);margin-bottom:12px}
+.tags{display:flex;flex-wrap:wrap;gap:10px 8px}
+.ltag{position:relative;border:2.5px solid var(--ink);background:#fff;border-radius:6px 14px 14px 6px;padding:6px 12px 6px 22px;font-size:14px;display:inline-flex;align-items:center;gap:5px;white-space:nowrap;transition:.15s}
+.ltag::before{content:"";position:absolute;left:7px;top:50%;width:7px;height:7px;margin-top:-3.5px;border-radius:50%;border:2px solid var(--ink);background:#F2F8FD}
+.ltag.on{background:var(--grass);transform:rotate(-2deg)}
+.ltag.on:nth-child(2n){transform:rotate(2deg)}
+.modeLine{display:flex;align-items:center;gap:6px;margin-top:14px;padding-top:12px;border-top:2px dashed var(--kraft);font-size:13px}
+.modeLine button{margin-left:auto;border:2px solid var(--ink);background:#fff;border-radius:999px;font-size:12px;padding:3px 10px}
+
+/* ---------- 名單（票根） ---------- */
+.pageHead{padding:calc(env(safe-area-inset-top) + 16px) 16px 10px;background:linear-gradient(180deg,var(--sky2),rgba(234,247,255,0));}
+.pageHead h2{margin:0;font-weight:400;font-size:26px;display:flex;align-items:center;gap:8px;white-space:nowrap}
+.pageHead h2 small{font-size:13px;color:var(--ink2);margin-left:auto}
+.search{display:flex;align-items:center;gap:6px;background:#fff;border:2.5px solid var(--ink);border-radius:999px;padding:0 14px;margin-top:12px}
+.search input{flex:1;border:0;outline:0;font-size:16px;padding:10px 0;background:none;min-width:0}
+.tierTabs{display:flex;gap:6px;overflow-x:auto;padding:12px 16px 6px;scrollbar-width:none}
+.tierTabs::-webkit-scrollbar{display:none}
+.tierTabs button{flex:none;border:2.5px solid var(--ink);background:#fff;border-radius:9px;padding:4px 10px;font-size:13px;white-space:nowrap}
+.tierTabs button.on{color:#fff}
+.grpH{display:flex;align-items:center;gap:8px;font-size:16px;margin:16px 16px 8px}
+.grpH i{display:inline-block;border-radius:6px;border:2px solid var(--ink);color:#fff;font-style:normal;font-size:12px;padding:0 7px;line-height:20px}
+.grpH small{color:var(--ink2);font-size:12px}
+.tk{display:flex;width:calc(100% - 32px);margin:0 16px 10px;padding:0;border:2.5px solid var(--ink);border-radius:14px;background:var(--paper);text-align:left;position:relative;box-shadow:0 3px 0 rgba(43,58,85,.2)}
+.tk:active{transform:scale(.98)}
+.tk .stub{flex:none;width:62px;color:#fff;border-radius:11px 0 0 11px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:22px;line-height:1;border-right:2.5px dashed rgba(255,255,255,.95)}
+.tk .stub small{font-size:10px;margin-top:2px}
+.tk::before,.tk::after{content:"";position:absolute;left:53px;width:14px;height:14px;border-radius:50%;background:#F2F8FD;border:2.5px solid var(--ink)}
+.tk::before{top:-9px;clip-path:inset(50% 0 0 0)} .tk::after{bottom:-9px;clip-path:inset(0 0 50% 0)}
+.tk .tx{flex:1;min-width:0;padding:9px 10px 9px 14px}
+.tk .nm{font-size:16px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tk .ar{font-size:12px;color:var(--ink2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:1px}
+.tk .tg{display:flex;gap:2px;align-items:center;padding-right:10px;flex:none}
+.tk.off{opacity:.5}
+.badge{display:inline-block;font-size:10px;border-radius:6px;padding:0 5px;margin-left:5px;vertical-align:2px;background:var(--sun);border:1.5px solid var(--ink);line-height:15px}
+.badge.gray{background:#E3EAF2}
+.empty{text-align:center;color:var(--ink2);padding:30px 16px;line-height:1.7}
+.fab{position:fixed;right:calc(50% - min(50vw,260px) + 18px);bottom:calc(env(safe-area-inset-bottom) + var(--nav-h) + 26px);z-index:40;width:60px;height:60px;border-radius:50%;
+  border:3px solid var(--ink);background:var(--sun);box-shadow:0 5px 0 var(--ink);display:grid;place-items:center;padding:0}
+.fab:active{transform:translateY(4px);box-shadow:0 1px 0 var(--ink)}
+
+/* ---------- 足跡 ---------- */
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:6px 16px 0}
+.stat{background:#fff;border:2.5px solid var(--ink);border-radius:18px;padding:10px 12px;box-shadow:0 4px 0 rgba(43,58,85,.2)}
+.stat b{display:block;font-weight:400;font-size:30px;line-height:1.1}
+.stat small{font-size:12px;color:var(--ink2)}
+.trail{position:relative;margin:18px 16px 0;padding-left:26px}
+.trail::before{content:"";position:absolute;left:9px;top:6px;bottom:6px;width:4px;background:repeating-linear-gradient(180deg,var(--ink2) 0 8px,transparent 8px 14px);border-radius:2px}
+.stop{position:relative;background:#fff;border:2.5px solid var(--ink);border-radius:14px;padding:8px 12px;margin-bottom:10px}
+.stop::before{content:"";position:absolute;left:-25px;top:12px;width:14px;height:14px;border-radius:50%;border:2.5px solid var(--ink);background:var(--c,#fff)}
+.stop .d{font-size:12px;color:var(--ink2)}
+.stop .n{font-size:16px}
+.settings{margin:22px 16px 0;background:var(--paper);border:2.5px solid var(--ink);border-radius:18px;overflow:hidden}
+.set{display:flex;align-items:center;gap:8px;padding:12px 14px;border-bottom:2px dashed var(--kraft);font-size:15px;width:100%;background:none;border-left:0;border-right:0;border-top:0;text-align:left}
+.set:last-child{border-bottom:0}
+.set .r{margin-left:auto;color:var(--ink2);font-size:13px}
+.set.danger{color:#C2563B}
+footer{text-align:center;font-size:12px;color:var(--ink2);margin-top:22px;line-height:1.7}
+
+/* ---------- 底部導覽列 ---------- */
+.nav{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(env(safe-area-inset-bottom) + 10px);width:calc(100% - 24px);max-width:496px;height:var(--nav-h);z-index:50;
+  background:var(--ink);border-radius:24px;display:flex;padding:7px;gap:6px;box-shadow:0 6px 18px rgba(43,58,85,.28)}
+.nav button{flex:1;border:0;background:none;border-radius:17px;color:#C9D6EA;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;font-size:12px;padding:0;transition:.2s}
+.nav button.on{background:var(--sun);color:var(--ink)}
+.nav button svg{transition:transform .25s cubic-bezier(.2,1.6,.4,1)}
+.nav button.on svg{transform:translateY(-1px) scale(1.08)}
+
+/* ---------- 彈出視窗 ---------- */
+#overlay{position:fixed;inset:0;z-index:100;background:rgba(43,58,85,.42);display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity .2s}
+#overlay.show{opacity:1;pointer-events:auto}
+.sheet{position:relative;width:100%;max-width:420px;max-height:66vh;max-height:66dvh;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;
+  background:var(--paper);border:3px solid var(--ink);border-radius:18px;box-shadow:6px 8px 0 rgba(43,58,85,.35);transform:translateY(30px) rotate(-2deg);transition:transform .32s cubic-bezier(.2,1.4,.4,1)}
+#overlay.show .sheet{transform:none}
+.xWrap{position:sticky;top:0;height:0;z-index:5}
+.xBtn{position:absolute;top:10px;right:10px;width:36px;height:36px;border-radius:50%;border:2.5px solid var(--ink);background:#fff;display:grid;place-items:center;padding:0;z-index:5;box-shadow:0 3px 0 var(--ink)}
+.sheetBody{padding:16px 18px 18px}
+.form,.log{padding-top:20px}
+.form h2,.log h3{padding-right:44px}
+
+/* 明信片 */
+.pc .view{height:132px;border-bottom:3px solid var(--ink);position:relative;overflow:hidden}
+.pc .view svg{width:100%;height:100%;display:block}
+.pc .stamp{position:absolute;right:58px;top:14px;width:66px;height:86px;background:#fff;padding:5px;transform:rotate(4deg);border:2px solid var(--ink);border-radius:3px;
+  box-shadow:0 0 0 4px #fff,0 0 0 6px var(--ink),3px 5px 0 6px rgba(43,58,85,.25)}
+.pc .stamp .si{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font-size:11px;color:#fff;border-radius:2px}
+.pc .pm{position:absolute;right:92px;top:46px;width:76px;height:76px;transform:rotate(-14deg);opacity:.8;pointer-events:none}
+.pc .to{font-size:13px;color:var(--ink2);letter-spacing:.2em}
+.pc h2{margin:2px 0 6px;font-weight:400;font-size:27px;line-height:1.25;padding-right:4px}
+.pc .addr{font-size:15px;border-bottom:2px dotted var(--kraft);padding:4px 0;display:flex;align-items:center;gap:6px}
+.pc .stk{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 10px}
+.stkr{display:inline-flex;align-items:center;gap:4px;background:#fff;border:2px solid var(--ink);border-radius:10px;padding:3px 9px 3px 5px;font-size:13px;transform:rotate(-2deg);box-shadow:0 2px 0 rgba(43,58,85,.25)}
+.stkr:nth-child(2n){transform:rotate(2.5deg)}
+.pc .msg{font-size:16px;line-height:30px;background:repeating-linear-gradient(180deg,transparent 0 28px,#E4D3B2 28px 30px);padding:0 2px;min-height:30px}
+.pc .last{font-size:12px;color:var(--ink2);margin-top:8px}
+.acts{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}
+.acts .wide{grid-column:1/-1}
+.btn{border:2.5px solid var(--ink);border-radius:14px;font-size:16px;padding:10px 12px;display:inline-flex;align-items:center;justify-content:center;gap:6px;box-shadow:0 4px 0 var(--ink);transition:transform .1s,box-shadow .1s;background:#fff;text-decoration:none;color:var(--ink)}
+.btn:active{transform:translateY(3px);box-shadow:0 1px 0 var(--ink)}
+.btn.navy{background:var(--ink);color:#fff;box-shadow:0 4px 0 #17213A}
+.btn.yellow{background:var(--sun)}
+.btn.green{background:var(--grass)}
+.btn.danger{color:#C2563B;border-color:#C2563B;box-shadow:0 4px 0 #C2563B}
+.btn.danger.armed{background:#FFE1D9}
+.linkBtn{display:block;margin:14px auto 0;border:0;background:none;color:var(--ink2);font-size:13px;text-decoration:underline}
+.est{font-size:11px;color:var(--ink2);text-align:center;margin-top:8px}
+
+.form h2{margin:0 0 6px;font-weight:400;font-size:22px}
+.form label{display:block;font-size:13px;margin:12px 0 6px;color:var(--ink2)}
+.form input[type=text],.form textarea{width:100%;border:0;border-bottom:2.5px solid var(--ink);border-radius:0;padding:6px 2px;font-size:17px;outline:0;background:transparent}
+.form textarea{min-height:60px;resize:vertical;line-height:30px;background:repeating-linear-gradient(180deg,transparent 0 28px,#E4D3B2 28px 30px);border-bottom:0}
+.minRow{display:flex;align-items:center;gap:8px}
+.minRow button{width:42px;height:42px;border-radius:50%;border:2.5px solid var(--ink);background:#fff;font-size:20px;padding:0;box-shadow:0 3px 0 var(--ink)}
+.minRow output{min-width:74px;text-align:center;font-size:22px}
+.minRow .tl{margin-left:auto;border:2px solid var(--ink);border-radius:8px;padding:2px 10px;font-size:13px;color:#fff;white-space:nowrap}
+.sw{display:flex;align-items:center;justify-content:space-between;margin-top:16px;font-size:14px;gap:6px}
+.sw .t{display:flex;align-items:center;gap:6px}
+.sw button{flex:none;width:52px;height:30px;border-radius:999px;border:2.5px solid var(--ink);background:#E3EAF2;position:relative;padding:0;transition:.2s}
+.sw button::after{content:"";position:absolute;top:2px;left:2px;width:21px;height:21px;border-radius:50%;background:#fff;border:2px solid var(--ink);transition:transform .2s}
+.sw button.on{background:var(--coral)}
+.sw button.on::after{transform:translateX(21px)}
+.formActs{display:flex;gap:10px;margin-top:18px}
+.formActs .btn{flex:1}
+
+.log h3{margin:0 0 10px;font-weight:400;font-size:21px;display:flex;align-items:center;gap:6px}
+.log .new{margin-bottom:10px}
+.log .v{border-top:2px dashed var(--kraft);padding:10px 0 4px}
+.log .vh{display:flex;align-items:center;gap:8px}
+.log .vh i{font-style:normal;background:var(--sun);border:2px solid var(--ink);border-radius:8px;padding:0 6px;font-size:12px}
+.log .vh small{margin-left:auto;color:var(--ink2);font-size:12px}
+.log ul{margin:6px 0 0;padding-left:20px;font-size:14px;line-height:1.7}
+.log .closeBtn{width:100%;margin-top:14px}
+
+#toast{position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom) + var(--nav-h) + 26px);z-index:300;background:#fff;color:var(--ink);border:2.5px solid var(--ink);font-size:14px;padding:8px 16px;border-radius:999px;
+  transform:translate(-50%,16px);opacity:0;transition:.25s;pointer-events:none;white-space:nowrap;max-width:92vw;overflow:hidden;text-overflow:ellipsis;box-shadow:0 4px 0 var(--ink)}
+#toast.show{transform:translate(-50%,0);opacity:1}
+#confetti{position:fixed;inset:0;pointer-events:none;z-index:250;overflow:hidden}
+#confetti svg{position:absolute;left:var(--x);top:-30px;animation:fall var(--d) cubic-bezier(.25,.6,.4,1) var(--dl) both}
+@keyframes fall{0%{transform:translate(0,0) rotate(0)}100%{transform:translate(var(--dx),110vh) rotate(var(--r))}}
+
+/* ---------- 開機畫面：天空 → 小路畫出來 → 骰子掉到路上彈跳 → 字跳出 → 飛到首頁 ---------- */
+#splash{position:fixed;inset:0;z-index:200;overflow:hidden;pointer-events:none}
+#splash .sp-bg{position:absolute;inset:0;background:linear-gradient(180deg,#8FD0F5 0%,#C4E9FC 55%,#EAF7FF 100%);transition:opacity .5s ease}
+#splash .sp-road{position:absolute;left:0;right:0;top:calc(36% + 112px);height:64px;background:var(--road);border-top:5px solid #454A57;transform:scaleX(0);transform-origin:0 50%}
+#splash .sp-road::before{content:"";position:absolute;left:0;right:0;top:27px;height:5px;background:repeating-linear-gradient(90deg,var(--lane) 0 28px,transparent 28px 52px)}
+#splash.sp-live .sp-road{animation:spRoad .55s cubic-bezier(.5,0,.2,1) .05s both}
+@keyframes spRoad{to{transform:none}}
+#splash .sp-cloud{position:absolute;opacity:0}
+#splash .sp-cloud.a{left:8%;top:18%} #splash .sp-cloud.b{right:6%;top:26%}
+#splash.sp-live .sp-cloud{animation:spCloud .8s ease-out both}
+#splash.sp-live .sp-cloud.b{animation-delay:.12s}
+@keyframes spCloud{0%{opacity:0;transform:translateX(-30px)}100%{opacity:.95;transform:none}}
+#splash .sp-die{position:absolute;left:50%;top:36%;width:120px;height:120px;margin-left:-60px;transform-origin:0 0}
+#splash .sp-drop{width:120px;height:120px;opacity:0}
+#splash.sp-live .sp-drop{animation:spDrop 1.2s cubic-bezier(.3,.6,.4,1) .35s both}
+@keyframes spDrop{0%{opacity:0;transform:translateY(-260px) rotate(-200deg)}10%{opacity:1}42%{transform:translateY(8px) rotate(8deg) scale(1.08,.9)}58%{transform:translateY(-34px) rotate(-6deg)}76%{transform:translateY(2px) rotate(2deg) scale(1.03,.97)}88%,100%{opacity:1;transform:none}}
+#splash .sp-die svg{width:120px;height:120px;display:block;overflow:visible}
+#splash .sp-title{position:absolute;left:0;top:calc(36% + 200px);font-size:40px;letter-spacing:.06em;line-height:1.2;color:var(--ink);white-space:nowrap;transform-origin:0 0;display:inline-block;
+  text-shadow:2px 2px 0 #fff,-2px 2px 0 #fff,2px -2px 0 #fff,-2px -2px 0 #fff,0 3px 0 #fff,0 5px 0 rgba(43,58,85,.15)}
+#splash .sp-title span{display:inline-block;opacity:0}
+#splash.sp-live .sp-title span{animation:spLetter .5s cubic-bezier(.2,1.6,.4,1) both;animation-delay:calc(.95s + var(--i) * 110ms)}
+@keyframes spLetter{0%{opacity:0;transform:translateY(18px) rotate(-10deg) scale(.4)}100%{opacity:1;transform:none}}
+#splash .sp-tag{position:absolute;left:0;right:0;top:calc(36% + 256px);text-align:center;font-size:16px;color:var(--ink2);opacity:0}
+#splash.sp-live .sp-tag{animation:spTag .6s ease 1.55s both}
+@keyframes spTag{0%{opacity:0;transform:translateY(8px)}100%{opacity:1;transform:none}}
+#splash.sp-exit .sp-bg,#splash.sp-exit .sp-tag,#splash.sp-exit .sp-road,#splash.sp-exit .sp-cloud{opacity:0!important;transition:opacity .45s ease;animation:none}
+#splash.sp-exit .sp-road{transform:none}
+#splash.sp-fade{opacity:0;transition:opacity .5s ease}
+@media (max-height:700px){#splash .sp-die{top:28%}#splash .sp-road{top:calc(28% + 112px)}#splash .sp-title{top:calc(28% + 200px)}#splash .sp-tag{top:calc(28% + 256px)}}
+body.booting .app,body.booting .nav{opacity:0}
+body.sp-flying #h1t,body.sp-flying #dieWrap{visibility:hidden}
+body.enter .signs .sign,body.enter .rollRow,body.enter .board,body.enter .snd,body.enter .carBtn,body.enter .sub,body.enter .ver,body.enter .pool,body.enter .signTip{animation:rise .55s cubic-bezier(.2,1.3,.4,1) both}
+body.enter .nav{animation:navUp .55s cubic-bezier(.2,1.3,.4,1) .3s both}
+body.enter .sign:nth-child(1){animation-delay:.05s} body.enter .sign:nth-child(2){animation-delay:.1s} body.enter .sign:nth-child(3){animation-delay:.15s} body.enter .sign:nth-child(4){animation-delay:.2s}
+body.enter .rollRow{animation-delay:.22s} body.enter .board{animation-delay:.34s} body.enter .carBtn{animation:carIn .8s cubic-bezier(.2,1.1,.4,1) .1s both}
+@keyframes rise{0%{opacity:0;transform:translateY(24px)}100%{opacity:1;transform:none}}
+@keyframes navUp{0%{opacity:0;transform:translate(-50%,40px)}100%{opacity:1;transform:translate(-50%,0)}}
+@keyframes carIn{0%{transform:translateX(160px)}100%{transform:none}}
+@media (prefers-reduced-motion:reduce){#splash *{animation:none!important;opacity:1!important;transform:none!important}}
+</style>
+</head>
+<body class="booting">
+<div id="splash" aria-hidden="true">
+  <div class="sp-bg"></div>
+  <div class="sp-cloud a" id="spC1"></div><div class="sp-cloud b" id="spC2"></div>
+  <div class="sp-road"></div>
+  <div class="sp-die" id="spDie"><div class="sp-drop" id="spDrop"></div></div>
+  <div class="sp-title" id="spTitle"></div>
+  <div class="sp-tag">骰一下，全家出發！</div>
+</div>
+
+<div class="app">
+  <!-- ===== 骰子頁 ===== -->
+  <section id="tabRoll">
+    <div class="scene">
+      <div class="sun" id="sun"></div>
+      <div class="cloud c1" id="cl1"></div><div class="cloud c2" id="cl2"></div><div class="cloud c3" id="cl3"></div>
+      <div class="hills" id="hills"></div>
+      <div class="road"></div>
+      <div class="topbar">
+        <div class="ttl"><h1><span id="h1t">假日骰骰</span><button class="ver" id="verBtn"></button></h1><div class="sub" id="greet"></div></div>
+        <div class="snd"><button id="bgmBtn" aria-label="背景音樂"></button><button id="sfxBtn" aria-label="音效"></button></div>
+      </div>
+      <div class="dieShadow" id="dieShadow"></div>
+      <div class="dieWrap" id="dieWrap"><div class="dieIdle" id="dieIdle"><svg id="die" viewBox="0 0 120 120"></svg></div></div>
+      <button class="carBtn" id="carBtn" aria-label="叭叭車"><svg viewBox="0 0 96 66"><g class="car" id="car"></g></svg></button>
+      <div class="bubble" id="bubble"></div>
+    </div>
+
+    <div class="signs" id="signs"></div>
+    <div class="signTip" id="signTip"></div>
+
+    <div class="rollRow">
+      <button class="rollBtn" id="rollBtn"><big>骰</big><span>一下！</span></button>
+      <div class="pool" id="poolInfo"></div>
+    </div>
+
+    <div class="board">
+      <svg class="clip" viewBox="0 0 96 30"><rect x="18" y="4" width="60" height="22" rx="8" fill="#B9C4D3" stroke="#2B3A55" stroke-width="2.5"/><rect x="38" y="0" width="20" height="10" rx="4" fill="#fff" stroke="#2B3A55" stroke-width="2.5"/></svg>
+      <h3 id="hCond"></h3>
+      <div class="note2">想要的條件貼上去，可以多選</div>
+      <div class="tags" id="chips"></div>
+      <div class="modeLine" id="modeLine"></div>
+    </div>
+    <footer class="pad">車程是從新豐出發、假日一般路況的估計<br>Copyright © 2026 大樹 · <span class="footVer"></span></footer>
+  </section>
+
+  <!-- ===== 名單頁 ===== -->
+  <section id="tabList" hidden>
+    <div class="pageHead">
+      <h2 id="listTitle"></h2>
+      <label class="search"><span id="searchIc"></span><input id="q" type="search" placeholder="找地點、地區…" autocomplete="off"></label>
+    </div>
+    <div class="tierTabs" id="tierTabs"></div>
+    <div id="list"></div>
+    <button class="fab" id="addBtn" aria-label="新增地點"></button>
+  </section>
+
+  <!-- ===== 足跡頁 ===== -->
+  <section id="tabTrail" hidden>
+    <div class="pageHead"><h2 id="trailTitle"></h2></div>
+    <div class="stats" id="stats"></div>
+    <div class="trail" id="trail"></div>
+    <div class="settings" id="settings"></div>
+    <footer class="pad">Copyright © 2026 大樹 · <span class="footVer"></span><br><span id="footCount"></span></footer>
+  </section>
+</div>
+
+<nav class="nav" id="nav">
+  <button data-tab="roll" class="on"></button>
+  <button data-tab="list"></button>
+  <button data-tab="trail"></button>
+</nav>
+
+<div id="overlay"><div class="sheet" id="sheet" role="dialog"></div></div>
+<div id="confetti"></div>
+<div id="toast"></div>
+<script>
+/* ===== 內建口袋名單 =====
+   格式：[名稱, 地區, 車程分鐘(從新豐出發的估計), 標記, 一句話]
+   標記：雨＝雨天/室內可去　走＝推車、長輩好走　免＝免門票　吃＝附近好吃飯
+   車程分級：≤30 近郊／30–60 小旅行／60–90 遠一點／90+ 出遠門（依分鐘自動分級） */
+const BASE_RAW = [
+  // ---- 近郊 ≤30 分 ----
+  ["新豐紅樹林","新竹縣新豐",10,"走免","木棧道穿過紅樹林，看招潮蟹、彈塗魚，傍晚有夕陽"],
+  ["坡頭漁港","新竹縣新豐",12,"走免吃","小漁港散步看海，順便買海鮮"],
+  ["竹北水圳森林公園","竹北",15,"走免","湖畔木棧道，繞一圈約半小時"],
+  ["新瓦屋客家文化保存區","竹北",15,"走免吃","大草皮可以跑，客家老屋拍照"],
+  ["湖口老街","湖口",15,"免吃","紅磚拱廊老街，邊走邊吃"],
+  ["東興圳生態公園","竹北",18,"走免","水圳旁的平坦步道，散步很舒服"],
+  ["竹北新月沙灣","竹北",18,"免","海邊沙灘、看風車，玩沙記得帶小鏟子"],
+  ["竹北蓮華寺","竹北",18,"雨走免","百年觀音寺，安靜好走"],
+  ["湖口好客文創園區","湖口",18,"走免","老營區改建，大草地和老房子"],
+  ["新竹縣文化局","竹北",20,"雨走免","圖書館兒童區、展覽，下雨天好去處"],
+  ["遠百竹北","竹北",20,"雨走免吃","百貨逛街吃飯，推車好推"],
+  ["IKEA 新竹店","新竹",22,"雨走吃","逛家具、吃瑞典肉丸，有兒童區"],
+  ["新埔義民廟","新埔",25,"免吃","大廟走走，周邊客家小吃"],
+  ["新竹科學園區靜心湖","新竹市",25,"走免","園區湖畔，假日人少很清幽"],
+  ["巨城購物中心","新竹市",25,"雨走免吃","大型商場，吃喝逛一次滿足"],
+  ["南寮漁港＋17 公里海岸","新竹市",25,"走免吃","溜滑梯城堡、沙坑、波光市集，海邊散步"],
+  ["埔心牧場","楊梅",25,"走吃","餵動物、大草地，小孩放電"],
+  ["新埔老街","新埔",27,"免吃","客家老街，粄條、柿餅"],
+  ["大魯閣湳雅廣場","新竹市",28,"雨走免吃","室內商場，有遊樂設施"],
+  ["新埔柿餅（秋冬限定）","新埔",28,"免吃","大約 10–1 月曬柿餅，一片橘色很好拍"],
+  ["新竹市立動物園","新竹市",30,"走吃","65 歲以上、未滿 6 歲免票；週一休園"],
+  ["新竹公園＋玻璃工藝博物館","新竹市",30,"走免","湖畔散步，順便看玻璃藝術"],
+  ["新竹之心（東門城）","新竹市",30,"走免吃","市中心散步，附近好多小吃"],
+  ["新竹城隍廟商圈","新竹市",30,"免吃","米粉、貢丸、肉圓吃一輪"],
+  ["新屋綠色走廊","桃園新屋",30,"走免","綠蔭自行車道，平坦好推車"],
+  ["永安漁港","桃園新屋",30,"走免吃","彩虹橋看海，吃海鮮"],
+
+  // ---- 小旅行 30–60 分 ----
+  ["新竹十八尖山","新竹市",32,"免","林蔭步道，坡比較陡，適合腳力好的"],
+  ["Xpark 水族館","桃園青埔",35,"雨走吃","企鵝、水母很療癒；4 歲以下免費"],
+  ["華泰名品城","桃園青埔",35,"雨走免吃","Outlet 逛街吃飯，旁邊就是 Xpark"],
+  ["桃園市兒童美術館","桃園青埔",35,"雨走","給小朋友的美術館，展覽常換"],
+  ["香山親子館","新竹市",35,"雨免","0–12 歲兒童免費室內遊戲區"],
+  ["新竹青青草原","新竹市",35,"免","超長溜滑梯、大草原放風箏"],
+  ["香山濕地賞蟹步道","新竹市",38,"走免","退潮看螃蟹，步道平坦"],
+  ["關西老街＋東安古橋","關西",38,"免吃","老街吃仙草，古橋拍照"],
+  ["六福村","關西",40,"吃","主題樂園＋野生動物園，玩一整天"],
+  ["小人國主題樂園","龍潭",40,"走吃","迷你建築、遊樂設施，推車好走"],
+  ["龍潭大池","龍潭",40,"走免吃","環湖步道、吊橋，附近吃客家菜"],
+  ["桃園機場觀景台","大園",40,"雨走免吃","看飛機起降，小朋友超興奮"],
+  ["觀音蓮花園（夏季）","桃園觀音",40,"免吃","大約 6–9 月蓮花季，吃蓮子料理"],
+  ["草漯沙丘","桃園觀音",40,"免","北台灣大沙丘，沙地不好推車"],
+  ["寶山水庫","寶山",40,"免","環湖走走看山景"],
+  ["金勇番茄農場（冬春）","關西",40,"吃","大約冬天到春天可以採番茄"],
+  ["頭份尚順育樂世界","頭份",40,"雨走吃","室內樂園＋商場＋電影院"],
+  ["竹東動漫園區","竹東",42,"雨走免","動漫展覽，室內好逛"],
+  ["蕭如松藝術園區","竹東",42,"走","日式宿舍群，安靜好拍"],
+  ["竹東中央市場","竹東",42,"免吃","在地小吃一條街"],
+  ["石門水庫","大溪",45,"吃","吃活魚、看水庫，有些坡"],
+  ["北埔老街","北埔",45,"免吃","擂茶、柿餅、客家小吃"],
+  ["軟橋彩繪村","竹東",45,"走免","牆上彩繪很好拍，路平好走"],
+  ["竹南崎頂子母隧道","竹南",45,"免","老鐵道隧道步道，可以看海"],
+  ["龍鳳漁港","竹南",45,"走免吃","漁港吃海鮮，看海"],
+  ["許厝港濕地","大園",45,"走免","賞鳥、看海，步道平坦"],
+  ["八德埤塘自然生態公園","八德",45,"走免","埤塘環湖步道"],
+  ["桃園市立圖書館總館","桃園",45,"雨走免","超大新圖書館，兒童區很棒"],
+  ["橫山書法藝術公園","大園",45,"走免","大草坪、水池，可以野餐"],
+  ["IKEA 桃園店","桃園",45,"雨走吃","逛家具吃肉丸"],
+  ["合興車站","橫山",50,"免","愛情火車站，小站散步拍照"],
+  ["峨眉湖","峨眉",50,"免","環湖步道、吊橋，有些坡"],
+  ["綠世界生態農場","北埔",50,"吃","羊駝、鳥類表演，坡比較多"],
+  ["大溪老街","大溪",50,"免吃","巴洛克老街、豆干"],
+  ["造橋香格里拉樂園","造橋",50,"吃","老牌遊樂園，小小孩也能玩"],
+  ["苗栗火車頭園區","苗栗市",50,"雨走","火車頭展館，門票百元左右"],
+  ["功維敘隧道","苗栗市",50,"走免","七彩燈光老隧道，步道平坦"],
+  ["永和山水庫","頭份",50,"免","環湖步道看湖景"],
+  ["貓裏山公園","苗栗市",52,"免","山上公園看市景"],
+  ["內灣老街","橫山",55,"免吃","老街、吊橋、野薑花粽"],
+  ["馬武督探索森林","關西",55,"吃","柳杉林步道，空氣超好"],
+  ["慈湖","大溪",55,"走免","湖畔步道、衛兵交接"],
+  ["臺灣客家文化館","銅鑼",55,"雨走免","免門票，有大型親子遊戲區"],
+  ["後龍好望角","後龍",55,"免","海邊大風車步道，風很大記得帶外套"],
+  ["後龍過港隧道","後龍",55,"走免","黃金燈光鐵道隧道，騎車散步都好"],
+  ["明德水庫（日新島）","頭屋",55,"走免吃","湖心小島散步，喝咖啡"],
+  ["鶯歌老街＋陶瓷博物館","鶯歌",55,"雨吃","捏陶 DIY、逛陶瓷"],
+  ["林口三井 Outlet","林口",55,"雨走免吃","逛街吃飯，推車好推"],
+  ["公館棗莊古藝庭園","公館",58,"吃","庭園餐廳吃客家菜"],
+
+  // ---- 遠一點 60–90 分 ----
+  ["三峽老街＋祖師廟","三峽",60,"免吃","紅磚老街、金牛角"],
+  ["新北大都會公園","新北三重",60,"走免","超大草皮、共融遊戲場"],
+  ["板橋林家花園","新北板橋",60,"免","古典園林，有一些階梯"],
+  ["飛牛牧場","通霄",65,"吃","餵小牛、大草原，坡比較多"],
+  ["通霄精鹽廠","通霄",65,"雨免吃","鹽的觀光工廠，吃鹹冰棒"],
+  ["三義木雕街＋木雕博物館","三義",65,"雨吃","看木雕，博物館室內好逛"],
+  ["南庄老街","南庄",65,"免吃","桂花巷、老街小吃，有坡"],
+  ["八里左岸＋十三行博物館","新北八里",65,"雨走吃","河岸騎車散步，博物館室內"],
+  ["大稻埕碼頭＋迪化街","台北大同",65,"免吃","看夕陽、逛南北貨"],
+  ["白沙屯拱天宮","通霄",68,"免吃","海線大廟，附近小吃"],
+  ["華山 1914 文創園區","台北中正",68,"雨走免吃","展覽、市集、文創小店"],
+  ["勝興車站","三義",70,"免吃","舊山線老車站，有坡"],
+  ["舊山線鐵道自行車","三義",70,"吃","騎鐵道車過山洞，要先預約"],
+  ["大湖草莓園（冬春）","大湖",70,"吃","大約 12–4 月採草莓"],
+  ["大湖酒莊","大湖",70,"雨免吃","草莓酒、草莓冰淇淋"],
+  ["苑裡藺草文化館","苑裡",70,"雨免","藺草編織 DIY"],
+  ["台北兒童新樂園","台北士林",70,"走吃","小小孩的遊樂園，推車友善"],
+  ["國立臺灣科學教育館","台北士林",70,"雨走吃","互動科學展，室內玩一整天"],
+  ["台北市立天文館","台北士林",70,"雨走","宇宙展覽、立體劇場"],
+  ["台北 101＋信義商圈","台北信義",70,"雨走吃","逛百貨、上觀景台"],
+  ["松山文創園區","台北信義",70,"雨走免吃","老菸廠展覽、誠品"],
+  ["麗寶 Outlet＋天空之夢摩天輪","台中后里",70,"雨走吃","逛街、坐摩天輪"],
+  ["大甲鎮瀾宮","台中大甲",70,"免吃","媽祖大廟、芋頭酥"],
+  ["后里中社觀光花市","台中后里",72,"吃","花海季節限定，拍照很美"],
+  ["台北市立動物園","台北木柵",75,"雨吃","企鵝館、無尾熊館是室內；園區大有坡"],
+  ["淡水漁人碼頭","新北淡水",75,"走免吃","情人橋看夕陽"],
+  ["淡水老街","新北淡水",75,"免吃","阿給、魚丸、河岸散步"],
+  ["北投地熱谷＋圖書館","台北北投",75,"免吃","看溫泉煙、綠建築圖書館"],
+  ["高美濕地","台中清水",75,"走免","木棧道看夕陽、風車"],
+  ["梧棲漁港","台中梧棲",75,"走免吃","大漁港吃海鮮"],
+  ["泰安溫泉","泰安",75,"吃","泡湯，山路比較彎"],
+  ["貓空纜車","台北木柵",78,"吃","坐纜車、喝茶"],
+  ["國立自然科學博物館","台中北區",80,"雨走吃","恐龍廳、植物園，推車好逛"],
+  ["秋紅谷＋草悟道","台中西屯",80,"走免吃","市中心公園散步"],
+  ["台中國家歌劇院","台中西屯",80,"雨走免","特殊建築，空中花園"],
+  ["東海大學路思義教堂","台中西屯",80,"走免","大草地、校園散步，吃東海乳品"],
+  ["深坑老街","新北深坑",80,"吃","豆腐料理吃到飽"],
+  ["國立臺灣美術館","台中西區",85,"雨走免","兒童藝術館很好玩"],
+  ["審計新村","台中西區",85,"免吃","文創小店、市集"],
+
+  // ---- 出遠門 90 分以上 ----
+  ["礁溪溫泉公園","宜蘭礁溪",90,"免吃","免費泡腳，吃溫泉美食"],
+  ["蘭陽博物館","宜蘭頭城",95,"雨走","單面山造型建築，展覽好逛"],
+  ["幾米廣場＋宜蘭酒廠","宜蘭市",95,"雨走免吃","繪本場景拍照、逛酒廠"],
+  ["基隆正濱漁港","基隆",95,"免吃","彩色屋拍照、吃海鮮"],
+  ["國立傳統藝術中心","宜蘭五結",100,"雨走吃","老街、表演、DIY"],
+  ["冬山河親水公園","宜蘭五結",100,"走免","河岸大草地，夏天玩水"],
+  ["羅東運動公園","宜蘭羅東",100,"走免","超大公園，平坦好推車"],
+  ["羅東林業文化園區","宜蘭羅東",100,"走免","老火車、貯木池散步"],
+  ["金車噶瑪蘭威士忌酒廠","宜蘭員山",100,"雨免吃","參觀酒廠、吃冰淇淋"],
+  ["張美阿嬤農場","宜蘭員山",100,"吃","餵動物，要先預約"],
+  ["野柳地質公園","新北萬里",100,"吃","女王頭，步道有些高低"],
+  ["金山老街","新北金山",100,"免吃","鴨肉、地瓜"],
+  ["國立海洋科技博物館","基隆",100,"雨走","海洋展、兒童廳"],
+  ["彰化扇形車庫","彰化市",100,"免","看火車轉向，鐵道迷必去"],
+  ["十分老街","新北平溪",100,"吃","放天燈、看瀑布"],
+  ["梅花湖","宜蘭冬山",105,"走免","環湖步道很平"],
+  ["鹿港老街","彰化鹿港",110,"免吃","老街、天后宮、蚵仔煎"],
+  ["台灣玻璃館","彰化鹿港",110,"雨免","玻璃觀光工廠，玻璃廟很好拍"],
+  ["埔里紙教堂","南投埔里",120,"免吃","紙做的教堂，生態池散步"],
+  ["台一生態教育休閒農場","南投埔里",120,"吃","花園、蝴蝶館"],
+  ["福隆海水浴場","新北貢寮",120,"吃","沙灘、吃福隆便當"],
+  ["集集小鎮","南投集集",130,"免吃","騎車、老車站"],
+  ["日月潭","南投魚池",140,"走吃","環湖步道、坐船、纜車"],
+  ["溪頭自然教育園區","南投鹿谷",150,"吃","大學池、森林步道"],
+  ["妖怪村","南投鹿谷",150,"吃","妖怪主題街，就在溪頭旁"],
+  ["清境農場","南投仁愛",180,"吃","青青草原綿羊秀，山路很彎"],
+];
+
+
+/* ===== 小工具 ===== */
+const $ = s=>document.querySelector(s);
+const $$ = s=>document.querySelectorAll(s);
+const store = {
+  get(k,d){ try{ const v=localStorage.getItem(k); return v===null?d:JSON.parse(v); }catch(e){ return d; } },
+  set(k,v){ try{ localStorage.setItem(k,JSON.stringify(v)); }catch(e){} },
+};
+const esc = s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+let toastT=0;
+function toast(msg){ const t=$("#toast"); t.textContent=msg; t.classList.add("show"); clearTimeout(toastT); toastT=setTimeout(()=>t.classList.remove("show"),1900); }
+
+/* ===== 狀態（開機就會用到，全部宣告在最前面，避免 TDZ：還沒初始化就被讀取） ===== */
+let rolling=false, updating=false, lastId=null, curTab="roll", listTier=0, faceNow=1;
+let mode = store.get("wd_mode",0);                 // 0=骰子決定車程，1~4=指定級距
+let flt  = Object.assign({rain:false,easy:false,free:false,food:false,avoid:false}, store.get("wd_flt",{}));
+let data = Object.assign({edits:{},added:[],deleted:[]}, store.get("wd_data",{}));
+let hist = store.get("wd_hist",[]);                // [{id,t,name,min}]
+let splashDoneR; const splashDone=new Promise(r=>{ splashDoneR=r; });
+
+/* ===== 車程分級（像高速公路的出口牌） ===== */
+const TIERS=[
+  null,
+  {k:1,name:"近郊",  range:"≤30 分",   faces:[1,2], c:"#3DAA6E", l:"#CDEFD9"},
+  {k:2,name:"小旅行",range:"30–60 分", faces:[3,4], c:"#3B8EDB", l:"#CFE5FA"},
+  {k:3,name:"遠一點",range:"60–90 分", faces:[5],   c:"#F29A3A", l:"#FDE3C4"},
+  {k:4,name:"出遠門",range:"90 分以上",faces:[6],   c:"#8A6BD1", l:"#E4DAF7"},
+];
+const tierOf = m=> m<=30?1 : m<=60?2 : m<=90?3 : 4;
+const faceTier = f=> f<=2?1 : f<=4?2 : f===5?3 : 4;
+const TAGS=[
+  {ch:"雨",key:"rain",label:"雨天可去",ic:"umbrella"},
+  {ch:"走",key:"easy",label:"推車長輩好走",ic:"stroller"},
+  {ch:"免",key:"free",label:"免門票",ic:"ticket"},
+  {ch:"吃",key:"food",label:"附近有得吃",ic:"bowl"},
+];
+
+/* ===== 自畫 SVG 圖示 ===== */
+const INK="#2B3A55";
+function ui(n,s=20,c=INK){
+  const L=`fill="none" stroke="${c}" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"`;
+  const P={
+    dice:`<rect x="3.5" y="3.5" width="17" height="17" rx="4.5" fill="#fff" stroke="${c}" stroke-width="2.2"/><circle cx="8.5" cy="8.5" r="1.7" fill="#F2735A"/><circle cx="12" cy="12" r="1.7" fill="${c}"/><circle cx="15.5" cy="15.5" r="1.7" fill="${c}"/>`,
+    ticketL:`<path d="M3.5 6.5h17v3.5a2 2 0 0 0 0 4v3.5h-17V14a2 2 0 0 0 0-4z" fill="#FFD54A" stroke="${c}" stroke-width="2.1" stroke-linejoin="round"/><path d="M9 7v10" stroke="${c}" stroke-width="1.8" stroke-dasharray="2 2"/>`,
+    foot:`<ellipse cx="9" cy="14" rx="3.6" ry="5" fill="#8FCF6B" stroke="${c}" stroke-width="2"/><ellipse cx="16" cy="9" rx="3" ry="4.2" fill="#8FCF6B" stroke="${c}" stroke-width="2"/><circle cx="7.5" cy="6.5" r="1.3" fill="${c}"/><circle cx="13.5" cy="3.5" r="1.1" fill="${c}"/>`,
+    umbrella:`<path d="M3.5 12a8.5 8.5 0 0 1 17 0z" fill="#9AD3F7" stroke="${c}" stroke-width="2.1" stroke-linejoin="round"/><path d="M12 12v6.5a2 2 0 0 1-4 0M12 3.5v-1" ${L} stroke-width="2.1"/>`,
+    stroller:`<path d="M5 6h3l2 7h8a5 5 0 0 0-5-5h-1" ${L} stroke-width="2"/><path d="M10 13a3 3 0 0 0 3 3h2a3 3 0 0 0 3-3z" fill="#FFB7A6" stroke="${c}" stroke-width="2" stroke-linejoin="round"/><circle cx="10" cy="19" r="1.9" fill="#fff" stroke="${c}" stroke-width="1.8"/><circle cx="17" cy="19" r="1.9" fill="#fff" stroke="${c}" stroke-width="1.8"/>`,
+    ticket:`<path d="M3.5 7.5h17v3a2 2 0 0 0 0 3v3h-17v-3a2 2 0 0 0 0-3z" fill="#B8E39C" stroke="${c}" stroke-width="2" stroke-linejoin="round"/><path d="M9 10.5l2 2 4-3.5" ${L} stroke-width="2"/>`,
+    bowl:`<path d="M3.5 11.5h17a8.5 7 0 0 1-17 0z" fill="#FFD54A" stroke="${c}" stroke-width="2" stroke-linejoin="round"/><path d="M9 8c0-1.5 1.2-1.8 1.2-3.3M13.5 8c0-1.5 1.2-1.8 1.2-3.3M8 20.5h8" ${L} stroke-width="1.8"/>`,
+    clock:`<circle cx="12" cy="12" r="8.5" fill="#E4DAF7" stroke="${c}" stroke-width="2"/><path d="M12 7.5V12l3 2" ${L} stroke-width="2"/>`,
+    car:`<path d="M3.5 15.5v-3.5l2.5-5h12l2.5 5v3.5z" fill="#FF7A59" stroke="${c}" stroke-width="2" stroke-linejoin="round"/><circle cx="8" cy="16.5" r="2.2" fill="#fff" stroke="${c}" stroke-width="1.8"/><circle cx="16" cy="16.5" r="2.2" fill="#fff" stroke="${c}" stroke-width="1.8"/>`,
+    pin:`<path d="M12 21s-6.5-6.2-6.5-11a6.5 6.5 0 0 1 13 0c0 4.8-6.5 11-6.5 11z" fill="#FF7A59" stroke="${c}" stroke-width="2" stroke-linejoin="round"/><circle cx="12" cy="10" r="2.4" fill="#fff" stroke="${c}" stroke-width="1.8"/>`,
+    nav:`<path d="M4 11.5L20 4l-7.5 16-2-6.5z" fill="#FFD54A" stroke="${c}" stroke-width="2" stroke-linejoin="round"/>`,
+    flag:`<path d="M6 21V4" ${L} stroke-width="2.2"/><path d="M6 4.5h11l-2.5 3.8L17 12H6z" fill="#FF7A59" stroke="${c}" stroke-width="2" stroke-linejoin="round"/>`,
+    again:`<path d="M19 12a7 7 0 1 1-2.1-5" ${L}/><path d="M17.5 3.5v4h-4" ${L}/>`,
+    plus:`<path d="M12 5v14M5 12h14" ${L} stroke-width="3"/>`,
+    close:`<path d="M6.5 6.5l11 11M17.5 6.5l-11 11" ${L} stroke-width="2.8"/>`,
+    search:`<circle cx="10.5" cy="10.5" r="6" fill="#EAF7FF" stroke="${c}" stroke-width="2.2"/><path d="M15 15l5 5" ${L} stroke-width="2.6"/>`,
+    spark:`<path d="M12 3l2.2 6.3L20.5 12l-6.3 2.2L12 21l-2.2-6.8L3.5 12l6.3-2.7z" fill="#FFD54A" stroke="${c}" stroke-width="2" stroke-linejoin="round"/>`,
+    note:`<path d="M9 18V6l10-2v12" ${L} stroke-width="2.2"/><circle cx="6.5" cy="18" r="2.6" fill="#9AD3F7" stroke="${c}" stroke-width="2"/><circle cx="16.5" cy="16" r="2.6" fill="#9AD3F7" stroke="${c}" stroke-width="2"/>`,
+    speaker:`<path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z" fill="#FFD54A" stroke="${c}" stroke-width="2" stroke-linejoin="round"/><path d="M15.5 9a4 4 0 0 1 0 6M18 6.5a7.5 7.5 0 0 1 0 11" ${L} stroke-width="2"/>`,
+    eyeoff:`<path d="M3 12s3.5-6 9-6 9 6 9 6-3.5 6-9 6-9-6-9-6z" fill="#E3EAF2" stroke="${c}" stroke-width="2" stroke-linejoin="round"/><path d="M4.5 19.5l15-15" ${L} stroke-width="2.2"/>`,
+    check:`<rect x="3.5" y="3.5" width="17" height="17" rx="4" fill="#B8E39C" stroke="${c}" stroke-width="2"/><path d="M8 12.5l3 3 5.5-6" ${L} stroke-width="2.4"/>`,
+    reset:`<path d="M5 12a7 7 0 1 0 2.1-5" ${L}/><path d="M6.5 3.5v4h4" ${L}/>`,
+    trash:`<path d="M5 7h14l-1.2 13H6.2z" fill="#FFE1D9" stroke="${c}" stroke-width="2" stroke-linejoin="round"/><path d="M9 7V4.5h6V7M3.5 7h17" ${L} stroke-width="2"/>`,
+  };
+  return `<svg class="ic" width="${s}" height="${s}" viewBox="0 0 24 24">${P[n]||""}</svg>`;
+}
+
+/* ===== 實心手繪骰子（斜投影：正面＋上面＋右側面，全部不透明） ===== */
+const PIPS={1:[[50,50]],2:[[28,28],[72,72]],3:[[26,26],[50,50],[74,74]],4:[[28,28],[72,28],[28,72],[72,72]],
+  5:[[27,27],[73,27],[50,50],[27,73],[73,73]],6:[[29,24],[29,50],[29,76],[71,24],[71,50],[71,76]]};
+const pipSet=(n,r)=>PIPS[n].map(([x,y])=>`<circle cx="${x}" cy="${y}" r="${n===1?r*1.45:r}" fill="${n===1?"#F2735A":INK}"/>`).join("");
+// 跟 n 相鄰的兩面（對面相加 = 7，所以不能用 n 和 7-n）
+function sideFaces(n){ const adj=[1,2,3,4,5,6].filter(x=>x!==n&&x!==7-n); const top=adj[(n*2)%4]; const right=adj.filter(x=>x!==top&&x!==7-top)[0]; return [top,right]; }
+function dieSvg(n,face=true){
+  const [t,r]=sideFaces(n);
+  return `<g stroke-linejoin="round">
+    <path d="M14 34 L34 12 L112 12 L92 34 Z" fill="#E8F1FB" stroke="${INK}" stroke-width="5"/>
+    <g transform="matrix(.78,0,.2,-.22,14,34)">${pipSet(t,8)}</g>
+    <path d="M92 34 L112 12 L112 90 L92 112 Z" fill="#C9D8EA" stroke="${INK}" stroke-width="5"/>
+    <g transform="matrix(.2,-.22,0,.78,92,34)">${pipSet(r,8)}</g>
+    <rect x="12" y="32" width="82" height="82" rx="16" fill="#fff" stroke="${INK}" stroke-width="5"/>
+    <path d="M24 40 h40" stroke="#E8F1FB" stroke-width="5" stroke-linecap="round"/>
+    <g transform="translate(14 34) scale(.78)">${pipSet(n,8.5)}</g>
+  </g>`;
+}
+function faceMini(n,s=18,bg="#fff"){
+  return `<svg class="ic" width="${s}" height="${s}" viewBox="0 0 100 100"><rect x="5" y="5" width="90" height="90" rx="20" fill="${bg}" stroke="${INK}" stroke-width="8"/>${pipSet(n,9)}</svg>`;
+}
+
+/* ===== 風景素材 ===== */
+const cloudSvg=(w=110)=>`<svg width="${w}" height="${w*.5}" viewBox="0 0 110 55"><path d="M20 48a14 14 0 0 1 2-28 18 18 0 0 1 33-8 15 15 0 0 1 27 6 13 13 0 0 1 8 30z" fill="#fff" stroke="${INK}" stroke-width="3" stroke-linejoin="round"/></svg>`;
+const sunSvg=`<svg width="58" height="58" viewBox="0 0 58 58">${Array.from({length:8},(_,i)=>`<rect x="27" y="2" width="4" height="9" rx="2" fill="#FFB52E" transform="rotate(${i*45} 29 29)"/>`).join("")}<circle cx="29" cy="29" r="15" fill="#FFD54A" stroke="${INK}" stroke-width="3"/><path d="M23 30q3 3 6 0M29 30q3 3 6 0" fill="none" stroke="${INK}" stroke-width="2.2" stroke-linecap="round"/></svg>`;
+const hillsSvg=`<svg viewBox="0 0 400 120" preserveAspectRatio="none"><path d="M0 70 Q60 20 130 62 T260 50 T400 58 V120 H0Z" fill="#B8E39C" stroke="${INK}" stroke-width="3"/><path d="M0 96 Q90 52 190 90 T400 80 V120 H0Z" fill="#8FCF6B" stroke="${INK}" stroke-width="3"/>
+  <g stroke="${INK}" stroke-width="2.5"><circle cx="60" cy="74" r="10" fill="#5FAF4A"/><path d="M60 84v8"/><circle cx="330" cy="70" r="12" fill="#5FAF4A"/><path d="M330 82v8"/><circle cx="350" cy="76" r="8" fill="#5FAF4A"/><path d="M350 84v6"/></g></svg>`;
+
+/* ===== 地點資料：內建名單＋使用者改的（像 FW 的 default table + NVM 覆寫） ===== */
+const BASE = BASE_RAW.map(([name,area,min,tg,note])=>({id:"b:"+name,name,area,min,tags:[...tg],note,off:false}));
+function spots(){
+  const del=new Set(data.deleted);
+  return BASE.filter(s=>!del.has(s.id)).map(s=>data.edits[s.id]?Object.assign({},s,data.edits[s.id]):s).concat(data.added);
+}
+const saveData=()=>store.set("wd_data",data);
+const visitedRecently = id=>hist.some(h=>h.id===id && Date.now()-h.t < 30*864e5);
+const lastVisit = id=>hist.filter(h=>h.id===id).reduce((a,h)=>Math.max(a,h.t),0);
+function passes(s){
+  if(s.off) return false;
+  for(const t of TAGS) if(flt[t.key] && !s.tags.includes(t.ch)) return false;
+  if(flt.avoid && visitedRecently(s.id)) return false;
+  return true;
+}
+const poolOf = tier=>spots().filter(s=>tierOf(s.min)===tier && passes(s));
+</script>
+<script>
+/* ===== 音效 & 背景音樂 ===== */
+const Snd = (()=>{
+  let ctx=null, sfxBus=null;
+  let sfxOn = store.get("wd_sfx",true), bgmOn = store.get("wd_bgm",false);
+  const N=m=>440*Math.pow(2,(m-69)/12);
+  function init(){
+    if(ctx) { if(ctx.state==="suspended") ctx.resume().catch(()=>{}); return true; }
+    try{
+      const AC=window.AudioContext||window.webkitAudioContext; if(!AC) return false;
+      ctx=new AC({latencyHint:"playback"});
+      sfxBus=ctx.createGain(); sfxBus.gain.value=sfxOn?1:0; sfxBus.connect(ctx.destination);
+    }catch(e){ return false; }
+    if(bgmOn) startBgm();
+    return true;
+  }
+  function tone(f,d,o={}){
+    const t=ctx.currentTime+(o.at||0), os=ctx.createOscillator(), g=ctx.createGain();
+    os.type=o.type||"sine"; os.frequency.setValueAtTime(f,t); if(o.to) os.frequency.exponentialRampToValueAtTime(o.to,t+d);
+    g.gain.setValueAtTime(0,t); g.gain.linearRampToValueAtTime(o.vol||.15,t+.008); g.gain.exponentialRampToValueAtTime(.0001,t+d);
+    os.connect(g); g.connect(sfxBus); os.start(t); os.stop(t+d+.05);
+  }
+  let nbuf=null;
+  function noise(d,o={}){
+    if(!nbuf){ nbuf=ctx.createBuffer(1,ctx.sampleRate*.5,ctx.sampleRate); const a=nbuf.getChannelData(0); for(let i=0;i<a.length;i++) a[i]=Math.random()*2-1; }
+    const t=ctx.currentTime+(o.at||0), s=ctx.createBufferSource(), f=ctx.createBiquadFilter(), g=ctx.createGain();
+    s.buffer=nbuf; f.type=o.type||"bandpass"; f.frequency.value=o.freq||1800; f.Q.value=o.Q||1.2;
+    g.gain.setValueAtTime(o.vol||.2,t); g.gain.exponentialRampToValueAtTime(.0001,t+d);
+    s.connect(f); f.connect(g); g.connect(sfxBus); s.start(t); s.stop(t+d+.02);
+  }
+  const sfx={
+    pop(){ tone(520,.12,{to:900,vol:.16}); },
+    toggle(on){ tone(on?660:440,.09,{vol:.12}); tone(on?990:330,.12,{vol:.1,at:.07}); },
+    // 骰子在桌上咔啦咔啦：一串越來越慢的木頭碰撞聲
+    rattle(){ let t=0; for(let i=0;i<11;i++){ t+=.05+i*.012; noise(.05,{at:t,freq:1400+Math.random()*1600,Q:3,vol:.22-i*.012}); tone(300+Math.random()*200,.04,{at:t,vol:.05,type:"triangle"}); } },
+    land(){ noise(.12,{freq:420,Q:.8,vol:.35,type:"lowpass"}); tone(150,.18,{to:70,vol:.25}); },
+    tada(){ [72,76,79,84].forEach((m,i)=>tone(N(m),.32,{at:i*.09,vol:.12,type:"triangle"})); tone(N(88),.6,{at:.36,vol:.1}); },
+    cheer(){ for(let i=0;i<14;i++) noise(.08,{at:i*.035,freq:3000+Math.random()*3000,Q:4,vol:.07}); [79,84,88].forEach((m,i)=>tone(N(m),.25,{at:.05+i*.07,vol:.09})); },
+    // 叭叭！兩聲方波喇叭
+    honk(){ [0,.2].forEach(a=>{ tone(392,.14,{at:a,vol:.07,type:"square"}); tone(494,.14,{at:a,vol:.06,type:"square"}); }); },
+    steam(){ noise(.9,{freq:5000,Q:.5,vol:.12,type:"highpass"}); for(let i=0;i<4;i++) tone(140,.08,{at:i*.12,vol:.12,type:"sawtooth",to:110}); },
+    vroom(){ tone(90,1.1,{to:260,vol:.12,type:"sawtooth"}); noise(1,{freq:300,Q:.6,vol:.08,type:"lowpass"}); },
+    oops(){ tone(330,.14,{vol:.12,type:"triangle"}); tone(262,.22,{at:.12,vol:.12,type:"triangle"}); },
+  };
+
+  /* 背景音樂：輕快的出遊小曲，8 小節循環。
+     載入時用 OfflineAudioContext 先「錄」成 WAV 交給 <audio loop>，像 FW 用 DMA 循環 buffer 播音，CPU 忙也不會斷 */
+  const BPM=120, S16=60/BPM/4, LOOP=S16*16*8;
+  const MEL=[
+    67,0,71,74, 0,71,69,67,
+    69,0,71,72, 71,69,67,0,
+    72,0,76,74, 72,71,69,0,
+    71,74,72,69, 67,0,0,0,
+    67,71,74,79, 0,78,76,74,
+    72,0,74,76, 74,72,71,0,
+    69,72,71,69, 67,66,64,66,
+    67,0,62,0,  67,0,0,0 ];
+  const CH=[[43,59,62,67],[45,57,60,64],[48,60,64,67],[50,57,62,66],[43,59,62,67],[48,60,64,67],[45,57,60,64],[50,57,62,66]];
+  const BGM_SR=32000, BGM_VOL=.4;
+  let bgmEl=null, bgmReady=false, bgmWant=false, bgmPlaying=false;
+  function encodeWav(f32,sr){
+    const n=f32.length, buf=new ArrayBuffer(44+n*2), v=new DataView(buf);
+    const w=(o,str)=>{for(let i=0;i<str.length;i++) v.setUint8(o+i,str.charCodeAt(i));};
+    w(0,"RIFF"); v.setUint32(4,36+n*2,true); w(8,"WAVE"); w(12,"fmt "); v.setUint32(16,16,true); v.setUint16(20,1,true); v.setUint16(22,1,true);
+    v.setUint32(24,sr,true); v.setUint32(28,sr*2,true); v.setUint16(32,2,true); v.setUint16(34,16,true); w(36,"data"); v.setUint32(40,n*2,true);
+    for(let i=0;i<n;i++){ const x=Math.max(-1,Math.min(1,f32[i])); v.setInt16(44+i*2, x<0?x*0x8000:x*0x7FFF, true); }
+    return new Blob([buf],{type:"audio/wav"});
+  }
+  function prepareBgm(){
+    try{
+      const sr=BGM_SR, TAIL=1.2;
+      const OAC=window.OfflineAudioContext||window.webkitOfflineAudioContext; if(!OAC) return;
+      const oc=new OAC(1,Math.ceil((LOOP+TAIL)*sr),sr);
+      const out=oc.createGain(); out.gain.value=BGM_VOL; out.connect(oc.destination);
+      const nb=oc.createBuffer(1,Math.floor(sr*.2),sr); const nd=nb.getChannelData(0); for(let i=0;i<nd.length;i++) nd[i]=Math.random()*2-1;
+      const env=(g,t,v,a,d)=>{g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(v,t+a);g.gain.exponentialRampToValueAtTime(.0001,t+d);};
+      // 口哨：正弦波＋一點顫音
+      const whistle=(f,t,v,d)=>{const o=oc.createOscillator(),lfo=oc.createOscillator(),lg=oc.createGain(),g=oc.createGain();
+        o.frequency.value=f*2;lfo.frequency.value=5.5;lg.gain.value=f*.012;lfo.connect(lg);lg.connect(o.frequency);
+        g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(v,t+.03);g.gain.setValueAtTime(v,t+d*.6);g.gain.exponentialRampToValueAtTime(.0001,t+d);
+        o.connect(g);g.connect(out);o.start(t);lfo.start(t);o.stop(t+d+.05);lfo.stop(t+d+.05);};
+      // 烏克麗麗：三角波短音，刷弦時每根弦錯開一點點
+      const uke=(f,t,v)=>{const o=oc.createOscillator(),g=oc.createGain();o.type="triangle";o.frequency.value=f;env(g,t,v,.004,.35);o.connect(g);g.connect(out);o.start(t);o.stop(t+.4);};
+      const strum=(ch,t,v,down)=>{ (down?ch:[...ch].reverse()).forEach((m,i)=>uke(N(m+12),t+i*.012,v)); };
+      const knock=(t,v)=>{const s2=oc.createBufferSource(),f=oc.createBiquadFilter(),g=oc.createGain();s2.buffer=nb;f.type="bandpass";f.frequency.value=1800;f.Q.value=2;
+        g.gain.setValueAtTime(v,t);g.gain.exponentialRampToValueAtTime(.0001,t+.04);s2.connect(f);f.connect(g);g.connect(out);s2.start(t);s2.stop(t+.05);};
+      const PAT=[1,0,0,0, 1,0,1,0, 0,0,1,0, 1,0,1,0];   // 刷弦節奏：下 下上 上 下上
+      for(let st=0;st<128;st++){
+        const t=st*S16, bar=Math.floor(st/16), x=st%16, ch=CH[bar];
+        if(x%2===0){const n=MEL[bar*8+x/2]; if(n){ let d=S16*2; let k=bar*8+x/2+1; while(k<(bar+1)*8 && !MEL[k]){ d+=S16*2; k++; } whistle(N(n),t,.07,Math.min(d,.9)); }}
+        if(PAT[x]) strum(ch,t,.045,x%4===0);
+        if(x===0||x===8) uke(N(ch[0]),t,.12);
+        if(x===4||x===12) knock(t,.06);
+      }
+      oc.startRendering().then(buf=>{
+        const d=buf.getChannelData(0), L=Math.floor(LOOP*sr);
+        const loop=new Float32Array(L*2);                 // 尾音疊回開頭 → 無縫循環
+        for(let i=0;i<L;i++){ const v=d[i]+(i+L<d.length?d[i+L]:0); loop[i]=v; loop[i+L]=v; }
+        bgmEl=new Audio(); bgmEl.loop=true; bgmEl.preload="auto"; bgmEl.setAttribute("playsinline","");
+        bgmEl.src=URL.createObjectURL(encodeWav(loop,sr));
+        bgmReady=true;
+        if(bgmWant) startBgm();
+      }).catch(()=>{});
+    }catch(e){}
+  }
+  prepareBgm();
+  // 同時開好幾個（桌面 App＋瀏覽器分頁）時，只讓最後開始播的那個播
+  const myId=Math.random().toString(36).slice(2);
+  let bc=null; try{ bc=new BroadcastChannel("wd-bgm"); bc.onmessage=e=>{ if(e.data&&e.data.claim&&e.data.id!==myId) stopBgm(); }; }catch(e){}
+  window.addEventListener("storage",e=>{ if(e.key==="wd_bgm_owner" && e.newValue && !e.newValue.startsWith(myId)) stopBgm(); });
+  function claim(){ try{bc&&bc.postMessage({claim:1,id:myId});}catch(e){} try{localStorage.setItem("wd_bgm_owner",myId+":"+Date.now());}catch(e){} }
+  function startBgm(){
+    if(!bgmOn||document.hidden||updating) return;
+    bgmWant=true;
+    if(!bgmReady||bgmPlaying) return;
+    const pr=bgmEl.play(); bgmPlaying=true; claim();
+    if(pr&&pr.catch) pr.catch(()=>{ bgmPlaying=false; });
+  }
+  function stopBgm(){ bgmWant=false; bgmPlaying=false; if(bgmEl){ try{bgmEl.pause();}catch(e){} } }
+  document.addEventListener("visibilitychange",()=>{
+    if(document.hidden){ stopBgm(); if(ctx&&ctx.suspend) ctx.suspend(); }
+    else { if(ctx&&ctx.resume) ctx.resume().catch(()=>{}); if(bgmOn) startBgm(); }
+  });
+  window.addEventListener("pagehide",()=>{ stopBgm(); });
+  return {
+    init,
+    play(name,...a){ if(!sfxOn) return; if(!init()) return; try{ sfx[name]&&sfx[name](...a); }catch(e){} },
+    get sfxOn(){return sfxOn}, get bgmOn(){return bgmOn},
+    _state(){ return {ctx: ctx?ctx.state:"none", playing: bgmPlaying && !!bgmEl && !bgmEl.paused, ready: bgmReady}; },
+    setSfx(v){ sfxOn=v; store.set("wd_sfx",v); if(sfxBus){ sfxBus.gain.cancelScheduledValues(ctx.currentTime); sfxBus.gain.setValueAtTime(v?1:0,ctx.currentTime); } },
+    setBgm(v){ bgmOn=v; store.set("wd_bgm",v); v?startBgm():stopBgm(); init(); },
+  };
+})();
+
+// iPhone 規定：使用者點一下之後才能出聲（用 touchend/click，不用 touchstart）
+["touchend","click","keydown"].forEach(ev=>document.addEventListener(ev,()=>Snd.init(),{passive:true,capture:true}));
+function paintSndBtns(){
+  $("#bgmBtn").innerHTML=ui("note",20); $("#sfxBtn").innerHTML=ui("speaker",20);
+  $("#bgmBtn").classList.toggle("off",!Snd.bgmOn); $("#sfxBtn").classList.toggle("off",!Snd.sfxOn);
+}
+function setBgm(v){ Snd.setBgm(v); Snd.play("toggle",v); paintSndBtns(); toast(v?"背景音樂 開":"背景音樂 關"); if(curTab==="trail") renderTrail(); }
+function setSfx(v){ if(!v) Snd.play("toggle",false); Snd.setSfx(v); if(v) Snd.play("toggle",true); paintSndBtns(); toast(v?"音效 開":"音效 關"); if(curTab==="trail") renderTrail(); }
+$("#bgmBtn").onclick=()=>setBgm(!Snd.bgmOn);
+$("#sfxBtn").onclick=()=>setSfx(!Snd.sfxOn);
+
+/* ===== 吉祥物「叭叭車」：戳一下會叭叭叫、講話；連戳會引擎過熱冒煙 =====
+   小狀態機：IDLE → HONK → IDLE；2.5 秒內戳 5 下 → HOT（冷卻 2 秒） */
+const Car=(()=>{
+  const btn=$("#carBtn"), g=$("#car"), bub=$("#bubble");
+  function draw(face="normal"){
+    const eyes = face==="happy" ? `<path d="M15 35q3-4 6 0M26 35q3-4 6 0" fill="none" stroke="${INK}" stroke-width="2.4" stroke-linecap="round"/>`
+      : face==="hot" ? `<path d="M14 33l6 4M20 33l-6 4M25 33l6 4M31 33l-6 4" stroke="${INK}" stroke-width="2.2" stroke-linecap="round"/>`
+      : `<circle cx="18" cy="35" r="3" fill="${INK}"/><circle cx="29" cy="35" r="3" fill="${INK}"/><circle cx="19" cy="34" r="1" fill="#fff"/><circle cx="30" cy="34" r="1" fill="#fff"/>`;
+    const mouth = face==="hot" ? `<path d="M19 43q4-3 8 0" fill="none" stroke="${INK}" stroke-width="2.2" stroke-linecap="round"/>` : `<path d="M19 41q4.5 5 9 0" fill="${face==="happy"?"#F2735A":"none"}" stroke="${INK}" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>`;
+    const smoke = face==="hot" ? `<g fill="#fff" stroke="${INK}" stroke-width="2"><circle cx="40" cy="6" r="5"/><circle cx="50" cy="2" r="6.5"/><circle cx="60" cy="6" r="4.5"/></g>` : "";
+    g.innerHTML=`${smoke}
+      <rect x="46" y="4" width="22" height="9" rx="2.5" fill="#E8D6B3" stroke="${INK}" stroke-width="2.4"/><path d="M57 4v9" stroke="${INK}" stroke-width="2"/>
+      <path d="M22 26 L30 13 H70 L80 26 Z" fill="#FF7A59" stroke="${INK}" stroke-width="3" stroke-linejoin="round"/>
+      <path d="M33 24 L37 16 H50 V24 Z M54 24 V16 H67 L73 24 Z" fill="#BDE6FB" stroke="${INK}" stroke-width="2.4" stroke-linejoin="round"/>
+      <rect x="6" y="24" width="86" height="28" rx="12" fill="#FF7A59" stroke="${INK}" stroke-width="3"/>
+      <rect x="8" y="38" width="7" height="6" rx="2" fill="#FFD54A" stroke="${INK}" stroke-width="2"/>
+      <ellipse cx="14" cy="45" rx="4" ry="2.4" fill="#FFB7A6"/><ellipse cx="34" cy="45" rx="4" ry="2.4" fill="#FFB7A6"/>
+      ${eyes}${mouth}
+      <path d="M52 30v18" stroke="${INK}" stroke-width="2" opacity=".5"/>
+      <g fill="${INK}"><circle cx="26" cy="54" r="9"/><circle cx="74" cy="54" r="9"/></g><g fill="#C9D8EA"><circle cx="26" cy="54" r="3.5"/><circle cx="74" cy="54" r="3.5"/></g>`;
+  }
+  const LINES=["叭叭！要去哪裡？","油加滿了，出發吧！","骰一下嘛～","帶阿公阿嬤一起去！","下雨也有地方去喔","記得帶水壺～","後車廂塞好了！","近的遠的我都可以"];
+  let taps=[], bubT=0, busy=false;
+  function say(t,ms=1600){ bub.textContent=t; bub.classList.add("show"); clearTimeout(bubT); bubT=setTimeout(()=>bub.classList.remove("show"),ms); }
+  function poke(){
+    if(busy) return;
+    const now=Date.now(); taps=taps.filter(x=>now-x<2500); taps.push(now);
+    if(taps.length>=5){
+      busy=true; taps=[]; draw("hot"); btn.classList.remove("honk"); btn.classList.add("hot"); Snd.play("steam"); say("引擎過熱了啦～",1900);
+      setTimeout(()=>{ btn.classList.remove("hot"); draw(); busy=false; },2000); return;
+    }
+    btn.classList.remove("honk"); void btn.offsetWidth; btn.classList.add("honk");
+    Snd.play("honk"); draw("happy"); say(LINES[Math.floor(Math.random()*LINES.length)]);
+    setTimeout(()=>{ if(!busy) draw(); },900);
+  }
+  function leave(){ btn.classList.remove("leave"); void btn.offsetWidth; btn.classList.add("leave"); Snd.play("vroom"); setTimeout(()=>btn.classList.remove("leave"),2700); }
+  draw();
+  btn.onclick=poke;
+  return {say, leave};
+})();
+
+/* ===== 首頁 ===== */
+function renderSigns(hit){
+  $("#signs").classList.toggle("locked",!!mode);
+  $("#signs").innerHTML=[1,2,3,4].map(k=>{
+    const t=TIERS[k];
+    return `<button class="sign ${mode===k?"on":""} ${hit===k?"won":""}" data-k="${k}">
+      ${mode===k?`<span class="pin">指定</span>`:""}
+      <span class="pl" style="background:${t.c}"><span class="in"><span class="ex">${t.faces.join("・")} 點</span><b>${t.name}</b><small>${t.range}</small></span></span></button>`;
+  }).join("");
+  $$("#signs .sign").forEach(b=>b.onclick=()=>{ if(rolling) return; const k=+b.dataset.k; mode = mode===k?0:k; store.set("wd_mode",mode); Snd.play("toggle",!!mode); renderHome(); });
+  $("#signTip").textContent = mode ? "再點一次路牌，就交回給骰子決定" : "骰到幾點就去哪一區・點路牌可以直接指定";
+}
+function renderChips(){
+  const list=TAGS.map(t=>[t.key,t.ic,t.label]).concat([["avoid","clock","避開 30 天內去過"]]);
+  $("#chips").innerHTML=list.map(([k,ic,l])=>`<button class="ltag ${flt[k]?"on":""}" data-k="${k}">${ui(ic,19)}${l}</button>`).join("");
+  $$("#chips .ltag").forEach(b=>b.onclick=()=>{ const k=b.dataset.k; flt[k]=!flt[k]; store.set("wd_flt",flt); Snd.play("toggle",flt[k]); renderHome(); });
+  $("#modeLine").innerHTML = mode
+    ? `${ui("pin",18)}車程：指定「${TIERS[mode].name}」<button id="modeReset">交給骰子</button>`
+    : `${ui("dice",18)}車程：交給骰子決定`;
+  if(mode) $("#modeReset").onclick=()=>{ mode=0; store.set("wd_mode",0); Snd.play("toggle",false); renderHome(); };
+}
+function renderPool(){
+  const n = mode ? poolOf(mode).length : [1,2,3,4].reduce((a,k)=>a+poolOf(k).length,0);
+  $("#poolInfo").innerHTML = `${mode?TIERS[mode].name+"裡":"目前"}有 <b>${n}</b> 個地點可以骰`;
+}
+function renderHome(hit){ renderSigns(hit); renderChips(); renderPool(); }
+function renderAll(){ renderHome(); if(curTab==="list") renderList(); if(curTab==="trail") renderTrail(); }
+function setDie(n){ faceNow=n; $("#die").innerHTML=dieSvg(n); }
+
+/* ===== 骰！ ===== */
+function roll(){
+  if(rolling) return;
+  const tiers = mode? [mode] : [1,2,3,4];
+  const okT = tiers.filter(k=>poolOf(k).length>0);
+  if(!okT.length){ Snd.play("oops"); toast(mode?"這一區沒有符合條件的地點，拿掉一些條件試試":"沒有符合條件的地點，拿掉一些條件試試"); shake(); return; }
+  const faces = okT.flatMap(k=>TIERS[k].faces);
+  const face = faces[Math.floor(Math.random()*faces.length)];
+  const tier = faceTier(face);
+  let pool = poolOf(tier); if(pool.length>1) pool=pool.filter(s=>s.id!==lastId);
+  const spot = pool[Math.floor(Math.random()*pool.length)];
+  lastId = spot.id;
+
+  rolling=true; $("#rollBtn").disabled=true; renderSigns();
+  const wrap=$("#dieWrap"), sh=$("#dieShadow");
+  $("#dieIdle").style.animation="none";
+  // 骰子往上拋、翻滾、在路上彈兩下（只用 transform，桌面 App 也順）
+  const A=wrap.animate([
+    {transform:"translate(0,0) rotate(0)"},
+    {transform:"translate(-40px,-150px) rotate(-260deg)",offset:.28},
+    {transform:"translate(-10px,0) rotate(-520deg) scale(1.08,.9)",offset:.5},
+    {transform:"translate(10px,-46px) rotate(-640deg)",offset:.66},
+    {transform:"translate(4px,0) rotate(-710deg) scale(1.04,.96)",offset:.82},
+    {transform:"translate(0,-8px) rotate(-724deg)",offset:.91},
+    {transform:"translate(0,0) rotate(-720deg)"}],{duration:1400,easing:"cubic-bezier(.3,.5,.4,1)"});
+  sh.animate([{transform:"scale(1)",opacity:1},{transform:"scale(.4)",opacity:.4,offset:.28},{transform:"scale(1.1)",opacity:1,offset:.5},{transform:"scale(.7)",offset:.66},{transform:"scale(1)"}],{duration:1400});
+  // 翻滾中每 70ms 換一面，像真的在轉
+  const spin=setInterval(()=>setDie(1+Math.floor(Math.random()*6)),70);
+  Snd.play("rattle");
+  setTimeout(()=>Snd.play("land"),700);
+  setTimeout(()=>{ clearInterval(spin); setDie(face); },1050);
+  A.onfinish=()=>{
+    $("#dieIdle").style.animation="";
+    renderSigns(tier);
+    const s=$(`#signs .sign[data-k="${tier}"]`); if(s){ s.classList.add("hit"); }
+    Snd.play("tada"); Car.say(`骰到 ${face} 點，${TIERS[tier].name}！`,1500);
+    setTimeout(()=>{ rolling=false; $("#rollBtn").disabled=false; if(sheetOpen()) toast(`骰到：${spot.name}`); else showResult(spot,face); },650);
+  };
+}
+function shake(){ $("#rollBtn").animate([{transform:"translateX(0)"},{transform:"translateX(-9px)"},{transform:"translateX(9px)"},{transform:"translateX(-5px)"},{transform:"none"}],{duration:340}); }
+$("#rollBtn").onclick=roll;
+$("#dieWrap").onclick=roll;
+
+/* ===== 彈出視窗 ===== */
+function openSheet(html){
+  $("#sheet").innerHTML=`<div class="xWrap"><button class="xBtn" id="xBtn" aria-label="關閉">${ui("close",18)}</button></div>`+html;
+  $("#sheet").scrollTop=0;
+  $("#overlay").classList.add("show"); document.documentElement.classList.add("lock");
+  $("#xBtn").onclick=closeSheet;
+}
+function closeSheet(){ $("#overlay").classList.remove("show"); document.documentElement.classList.remove("lock"); }
+const sheetOpen=()=>$("#overlay").classList.contains("show");
+$("#overlay").addEventListener("click",e=>{ if(e.target.id==="overlay") closeSheet(); });
+
+const mapUrl = s=>"https://www.google.com/maps/search/?api=1&query="+encodeURIComponent(s.name.replace(/（.*?）/g,"").replace(/＋/g," ")+" "+s.area);
+const WD="日一二三四五六";
+const fmtDate = t=>{ const d=new Date(t); return `${d.getMonth()+1}/${d.getDate()}（${WD[d.getDay()]}）`; };
+function stickers(s){ return TAGS.filter(t=>s.tags.includes(t.ch)).map(t=>`<span class="stkr">${ui(t.ic,18)}${t.label}</span>`).join(""); }
+
+/* 明信片上的小風景（依車程級距換顏色） */
+function viewSvg(t){
+  return `<svg viewBox="0 0 400 132" preserveAspectRatio="xMidYMid slice">
+    <rect width="400" height="132" fill="${t.l}"/>
+    <circle cx="60" cy="40" r="18" fill="#FFD54A" stroke="${INK}" stroke-width="3"/>
+    <g transform="translate(110 22) scale(.6)">${cloudSvg(110).replace(/<\/?svg[^>]*>/g,"")}</g>
+    <path d="M0 92 Q70 50 150 86 T300 70 T400 80 V132 H0Z" fill="${t.c}" opacity=".55" stroke="${INK}" stroke-width="3"/>
+    <path d="M0 112 Q120 84 230 108 T400 100 V132 H0Z" fill="#8FCF6B" stroke="${INK}" stroke-width="3"/>
+    <path d="M150 132 Q200 104 250 132" fill="#5B6170" stroke="${INK}" stroke-width="3"/>
+  </svg>`;
+}
+function postmark(){
+  const d=new Date(), ds=`${d.getFullYear()}.${d.getMonth()+1}.${d.getDate()}`;
+  return `<svg class="pm" viewBox="0 0 84 84"><circle cx="42" cy="42" r="36" fill="none" stroke="${INK}" stroke-width="2.5"/><circle cx="42" cy="42" r="28" fill="none" stroke="${INK}" stroke-width="1.5"/>
+    <text x="42" y="36" text-anchor="middle" font-size="10" fill="${INK}" font-family="inherit">新豐出發</text><text x="42" y="52" text-anchor="middle" font-size="9.5" fill="${INK}" font-family="inherit">${ds}</text>
+    <path d="M-30 30 q8-5 16 0 t16 0M-30 42 q8-5 16 0 t16 0M-30 54 q8-5 16 0 t16 0" fill="none" stroke="${INK}" stroke-width="2" transform="translate(-6 0)"/></svg>`;
+}
+function showResult(s,face){
+  const k=tierOf(s.min), t=TIERS[k], lv=lastVisit(s.id);
+  face = face || t.faces[0];
+  openSheet(`<div class="pc">
+    <div class="view">${viewSvg(t)}
+      <div class="stamp"><div class="si" style="background:${t.c}">${faceMini(face,28)}<span>${t.name}</span></div></div>
+      ${postmark()}
+    </div>
+    <div class="sheetBody">
+      <div class="to">TO：</div>
+      <h2>${esc(s.name)}</h2>
+      <div class="addr">${ui("pin",18)}${esc(s.area||"—")}</div>
+      <div class="addr">${ui("car",18)}從家裡開車約 ${s.min} 分鐘</div>
+      <div class="stk">${stickers(s)||`<span class="stkr">${ui("spark",18)}出發就對了</span>`}</div>
+      ${s.note?`<div class="msg">${esc(s.note)}</div>`:""}
+      ${lv?`<div class="last">${ui("clock",14)} 上次去：${fmtDate(lv)}</div>`:""}
+      <div class="acts">
+        <a class="btn navy wide" href="${mapUrl(s)}" target="_blank" rel="noopener">${ui("nav",22)}Google 地圖導航</a>
+        <button class="btn yellow" id="goBtn">${ui("flag",20)}就去這！</button>
+        <button class="btn" id="againBtn">${ui("again",20)}再骰一次</button>
+      </div>
+      <button class="linkBtn" id="editFromRes">編輯這個地點</button>
+      <div class="est">車程是估計值，出發前看一下導航喔</div>
+    </div></div>`);
+  $("#goBtn").onclick=()=>{
+    hist.push({id:s.id,t:Date.now(),name:s.name,min:s.min}); if(hist.length>500) hist=hist.slice(-500); store.set("wd_hist",hist);
+    Snd.play("cheer"); confetti(); toast("出發囉！足跡記下來了");
+    setTimeout(()=>{ closeSheet(); renderAll(); setTimeout(()=>Car.leave(),250); },700);
+  };
+  $("#againBtn").onclick=()=>{ closeSheet(); setTimeout(roll,250); };
+  $("#editFromRes").onclick=()=>{ Snd.play("pop"); editSpot(s.id); };
+}
+
+/* 紙花：小星星、小骰子、小旗子 */
+function confetti(){
+  const box=$("#confetti"), cols=["#FFD54A","#FF7A59","#8FCF6B","#9AD3F7","#8A6BD1","#fff"];
+  const shapes=[c=>`<path d="M12 2l2.5 7H22l-6 4.5 2.3 7.5L12 16.5 5.7 21 8 13.5 2 9h7.5z" fill="${c}" stroke="${INK}" stroke-width="1.6" stroke-linejoin="round"/>`,
+    c=>`<rect x="4" y="4" width="16" height="16" rx="4" fill="${c}" stroke="${INK}" stroke-width="1.6"/><circle cx="9" cy="9" r="1.6" fill="${INK}"/><circle cx="15" cy="15" r="1.6" fill="${INK}"/>`,
+    c=>`<path d="M5 21V3" stroke="${INK}" stroke-width="1.8"/><path d="M5 3.5h12l-3 4 3 4H5z" fill="${c}" stroke="${INK}" stroke-width="1.6" stroke-linejoin="round"/>`];
+  let h="";
+  for(let i=0;i<28;i++){
+    const c=cols[i%cols.length], s=14+Math.random()*12;
+    h+=`<svg width="${s}" height="${s}" viewBox="0 0 24 24" style="--x:${Math.random()*100}vw;--dx:${(Math.random()-.5)*120}px;--r:${(Math.random()-.5)*720}deg;--d:${1.3+Math.random()*.9}s;--dl:${Math.random()*.3}s">${shapes[i%3](c)}</svg>`;
+  }
+  box.innerHTML=h; setTimeout(()=>{ box.innerHTML=""; },2600);
+}
+
+/* ===== 名單頁（票根） ===== */
+function renderTierTabs(){
+  const all=spots();
+  const opts=[[0,"全部",all.length]].concat([1,2,3,4].map(k=>[k,TIERS[k].name,all.filter(s=>tierOf(s.min)===k).length]));
+  $("#tierTabs").innerHTML=opts.map(([k,n,c])=>`<button data-k="${k}" class="${listTier===k?"on":""}" style="${listTier===k?`background:${k?TIERS[k].c:INK}`:""}">${n} ${c}</button>`).join("");
+  $$("#tierTabs button").forEach(b=>b.onclick=()=>{ listTier=+b.dataset.k; Snd.play("pop"); renderList(); });
+}
+function renderList(){
+  $("#listTitle").innerHTML=`${ui("ticketL",28)}口袋名單<small>${spots().length} 個地點</small>`;
+  renderTierTabs();
+  const q=$("#q").value.trim().toLowerCase();
+  const all=spots().filter(s=>!q || (s.name+s.area+(s.note||"")).toLowerCase().includes(q));
+  let h="";
+  for(const k of [1,2,3,4]){
+    if(listTier && listTier!==k) continue;
+    const arr=all.filter(s=>tierOf(s.min)===k).sort((a,b)=>a.min-b.min||a.name.localeCompare(b.name,"zh-Hant"));
+    if(!arr.length) continue;
+    const t=TIERS[k];
+    h+=`<div class="grpH"><i style="background:${t.c}">${t.faces.join("・")} 點</i>${t.name}<small>${t.range}・${arr.length} 個</small></div>`+
+      arr.map(s=>`<button class="tk ${s.off?"off":""}" data-id="${esc(s.id)}">
+        <span class="stub" style="background:${t.c}">${s.min}<small>分鐘</small></span>
+        <span class="tx"><div class="nm">${esc(s.name)}${s.off?`<span class="badge gray">不骰</span>`:""}${visitedRecently(s.id)?`<span class="badge">最近去過</span>`:""}</div><div class="ar">${esc(s.area)}${s.note?"・"+esc(s.note):""}</div></span>
+        <span class="tg">${TAGS.filter(x=>s.tags.includes(x.ch)).map(x=>ui(x.ic,17)).join("")}</span></button>`).join("");
+  }
+  $("#list").innerHTML = h || `<div class="empty">找不到地點<br>按右下角的 ＋ 加一個吧！</div>`;
+  $$("#list .tk").forEach(r=>r.onclick=()=>{ Snd.play("pop"); editSpot(r.dataset.id); });
+}
+$("#q").addEventListener("input",()=>renderList());
+
+/* ===== 足跡頁 ===== */
+function armBtn(el,label,fn){ let armed=false,t=0; el.onclick=()=>{ if(!armed){ armed=true; Snd.play("oops"); el.querySelector(".r").textContent=label; clearTimeout(t); t=setTimeout(()=>{ armed=false; renderTrail(); },3500); return; } fn(); }; }
+function renderTrail(){
+  $("#trailTitle").innerHTML=`${ui("foot",28)}出遊足跡`;
+  const ids=new Set(hist.map(h=>h.id)), yr=new Date().getFullYear();
+  const thisYear=hist.filter(h=>new Date(h.t).getFullYear()===yr).length;
+  $("#stats").innerHTML=`<div class="stat"><b>${thisYear}</b><small>${yr} 年出門次數</small></div><div class="stat"><b>${ids.size}</b><small>去過的地方</small></div>`;
+  const all=spots(), byId=Object.fromEntries(all.map(s=>[s.id,s]));
+  const recent=[...hist].sort((a,b)=>b.t-a.t).slice(0,40);
+  $("#trail").innerHTML = recent.length ? recent.map(h=>{
+    const s=byId[h.id], name=s?s.name:(h.name||"（已刪除的地點）"), min=s?s.min:(h.min||0), t=TIERS[tierOf(min||1)];
+    return `<div class="stop" style="--c:${t.c}"><div class="d">${fmtDate(h.t)}・${t.name}</div><div class="n">${esc(name)}</div></div>`;
+  }).join("") : `<div class="empty" style="margin-left:-26px">${ui("car",40)}<br>還沒有足跡<br>骰到喜歡的地點，按「就去這！」就會記在這裡</div>`;
+  $("#settings").innerHTML=`
+    <button class="set" id="sBgm">${ui("note",20)}背景音樂<span class="r">${Snd.bgmOn?"開":"關"}</span></button>
+    <button class="set" id="sSfx">${ui("speaker",20)}音效<span class="r">${Snd.sfxOn?"開":"關"}</span></button>
+    <button class="set" id="sLog">${ui("spark",20)}改版紀錄<span class="r">v${APP_VERSION}</span></button>
+    <button class="set" id="sReset">${ui("reset",20)}還原內建名單<span class="r">自己新增的會保留</span></button>
+    <button class="set danger" id="sClear">${ui("trash",20)}清除足跡<span class="r">${hist.length} 筆</span></button>`;
+  $("#sBgm").onclick=()=>setBgm(!Snd.bgmOn);
+  $("#sSfx").onclick=()=>setSfx(!Snd.sfxOn);
+  $("#sLog").onclick=()=>{ Snd.play("pop"); showLog(); };
+  armBtn($("#sReset"),"再按一次確認還原",()=>{ data.edits={}; data.deleted=[]; saveData(); toast("內建名單已還原"); Snd.play("tada"); renderAll(); });
+  armBtn($("#sClear"),"再按一次確認清除",()=>{ hist=[]; store.set("wd_hist",hist); toast("足跡清掉了"); renderAll(); });
+  $("#footCount").textContent=`口袋名單 ${all.length} 個地點`;
+}
+
+/* ===== 新增／編輯地點 ===== */
+function editSpot(id){
+  const s = id ? spots().find(x=>x.id===id) : {id:null,name:"",area:"",min:30,tags:[],note:"",off:false};
+  if(!s) return;
+  const f={...s,tags:[...s.tags]};
+  const isBase = !!f.id && f.id.startsWith("b:");
+  openSheet(`<div class="sheetBody form">
+    <h2>${id?"編輯地點":"新增地點"}</h2>
+    <label>名稱</label><input type="text" id="fName" maxlength="40" value="${esc(f.name)}" placeholder="例如：南寮漁港">
+    <label>地區</label><input type="text" id="fArea" maxlength="20" value="${esc(f.area)}" placeholder="例如：新竹市">
+    <label>從家裡開車大約幾分鐘</label>
+    <div class="minRow"><button id="mMinus">−</button><output id="fMin"></output><button id="mPlus">＋</button><span class="tl" id="fTier"></span></div>
+    <label>貼上標籤</label><div class="tags" id="fTags"></div>
+    <label>一句話備註</label><textarea id="fNote" maxlength="80" placeholder="例如：有大草皮、記得帶防曬">${esc(f.note||"")}</textarea>
+    <div class="sw"><span class="t">${ui("eyeoff",20)}先不要骰到這裡</span><button id="fOff" class="${f.off?"on":""}" aria-label="不要骰到"></button></div>
+    <div class="formActs">
+      ${id?`<button class="btn danger" id="fDel">刪除</button>`:""}
+      <button class="btn green" id="fSave">${ui("check",20)}儲存</button>
+    </div>
+  </div>`);
+  const paintMin=()=>{ const t=TIERS[tierOf(f.min)]; $("#fMin").textContent=f.min+" 分"; $("#fTier").textContent=t.name; $("#fTier").style.background=t.c; };
+  const paintTags=()=>{ $("#fTags").innerHTML=TAGS.map(t=>`<button class="ltag ${f.tags.includes(t.ch)?"on":""}" data-ch="${t.ch}">${ui(t.ic,19)}${t.label}</button>`).join("");
+    $$("#fTags .ltag").forEach(b=>b.onclick=()=>{ const c=b.dataset.ch; f.tags=f.tags.includes(c)?f.tags.filter(x=>x!==c):f.tags.concat(c); Snd.play("toggle",f.tags.includes(c)); paintTags(); }); };
+  paintMin(); paintTags();
+  const step=d=>{ f.min=Math.max(5,Math.min(300,f.min+d)); Snd.play("pop"); paintMin(); };
+  $("#mMinus").onclick=()=>step(-5); $("#mPlus").onclick=()=>step(5);
+  $("#fOff").onclick=e=>{ f.off=!f.off; e.currentTarget.classList.toggle("on",f.off); Snd.play("toggle",!f.off); };
+  $("#fSave").onclick=()=>{
+    f.name=$("#fName").value.trim(); f.area=$("#fArea").value.trim(); f.note=$("#fNote").value.trim();
+    if(!f.name){ toast("名稱要填喔"); $("#fName").focus(); return; }
+    const out={name:f.name,area:f.area,min:f.min,tags:f.tags,note:f.note,off:f.off};
+    if(!id){ data.added.push(Object.assign({id:"u:"+Date.now().toString(36)+Math.random().toString(36).slice(2,6)},out)); toast("新增好了！"); }
+    else if(isBase){ data.edits[id]=out; toast("改好了！"); }
+    else { const i=data.added.findIndex(x=>x.id===id); if(i>=0) data.added[i]=Object.assign({id},out); toast("改好了！"); }
+    saveData(); Snd.play("tada"); closeSheet(); renderAll();
+  };
+  if(id){
+    let armed=false;
+    $("#fDel").onclick=e=>{
+      if(!armed){ armed=true; e.currentTarget.classList.add("armed"); e.currentTarget.textContent="再按一次刪除"; Snd.play("oops"); return; }
+      if(isBase){ data.deleted.push(id); delete data.edits[id]; } else data.added=data.added.filter(x=>x.id!==id);
+      saveData(); toast("刪掉了"); closeSheet(); renderAll();
+    };
+  }
+}
+$("#addBtn").onclick=()=>{ Snd.play("pop"); editSpot(null); };
+
+/* ===== 底部導覽列 ===== */
+function setTab(t){
+  curTab=t;
+  $$("#nav button").forEach(b=>b.classList.toggle("on",b.dataset.tab===t));
+  $("#tabRoll").hidden=t!=="roll"; $("#tabList").hidden=t!=="list"; $("#tabTrail").hidden=t!=="trail";
+  if(t==="list") renderList(); if(t==="trail") renderTrail();
+  window.scrollTo(0,0);
+}
+$$("#nav button").forEach(b=>b.onclick=()=>{ if(curTab===b.dataset.tab) return; Snd.play("pop"); setTab(b.dataset.tab); });
+
+/* ===== 版本 & 改版紀錄 ===== */
+const APP_VERSION="1.0.0";
+const CHANGELOG=[
+  ["1.0.0","11/05","假日骰骰上線！",["骰到幾點就去哪一區：1・2 點近郊、3・4 點小旅行、5 點遠一點、6 點出遠門","點路牌可以直接指定車程，再貼上雨天、好走、免門票、有得吃等條件","內建 140 個從新豐出發的地點，可以自己新增、編輯、刪除","結果是一張明信片，一鍵 Google 地圖導航；按「就去這！」會記到出遊足跡"]],
+];
+const verNum=v=>v.split(".").reduce((a,x,i)=>a+(+x)*Math.pow(1000,2-i),0);
+function showLog(onlyNew){
+  const list = onlyNew ? CHANGELOG.filter(([v])=>verNum(v)>verNum(onlyNew)) : CHANGELOG;
+  openSheet(`<div class="sheetBody log">
+    <h3>${ui("spark",22)}${onlyNew?"更新囉！":"改版紀錄"}</h3>
+    ${onlyNew?`<div class="new">假日骰骰更新到 v${APP_VERSION}，這次多了：</div>`:""}
+    ${list.map(([v,d,t,items])=>`<div class="v"><div class="vh"><i>v${v}</i>${t}<small>${d}</small></div><ul>${items.map(x=>`<li>${x}</li>`).join("")}</ul></div>`).join("")}
+    <button class="btn yellow closeBtn" id="logClose">${onlyNew?"好，來骰一下！":"關閉"}</button></div>`);
+  $("#logClose").onclick=closeSheet;
+}
+$("#verBtn").textContent="v"+APP_VERSION; $$(".footVer").forEach(e=>e.textContent="v"+APP_VERSION);
+$("#verBtn").onclick=()=>{ Snd.play("pop"); showLog(); };
+(function(){
+  const seen=store.get("wd_seen_ver",null);
+  if(seen && verNum(seen)<verNum(APP_VERSION)) splashDone.then(()=>setTimeout(()=>{ if(!updating) showLog(seen); },300));
+  if(!seen || verNum(APP_VERSION)>verNum(seen)) store.set("wd_seen_ver",APP_VERSION);   // 只往前記：舊快取頁不會把紀錄倒回去
+})();
+
+/* ===== 自動檢查更新（像 FW 的 OTA：問伺服器 version.json，比手上新就重新載入） ===== */
+async function checkUpdate(){
+  if(updating || !/github\.io$/.test(location.hostname)) return;
+  try{
+    const r=await fetch("version.json?t="+Date.now(),{cache:"no-store"});
+    const j=await r.json();
+    if(verNum(j.version)>verNum(APP_VERSION)){
+      updating=true;
+      const go=()=>location.replace(location.pathname+"?v="+j.version);
+      if(document.body.classList.contains("booting")) go();
+      else if(!rolling && !sheetOpen()){ toast("有新版本 v"+j.version+"，更新中…"); setTimeout(go,900); }
+      else { toast("有新版本 v"+j.version+"，關掉視窗後自動更新"); const t=setInterval(()=>{ if(!rolling && !sheetOpen()){ clearInterval(t); go(); } },1000); }
+    }
+  }catch(e){}
+}
+if(location.search.includes("v=")) try{ history.replaceState(null,"",location.pathname); }catch(e){}
+checkUpdate();
+document.addEventListener("visibilitychange",()=>{ if(document.visibilityState==="visible"){ checkUpdate(); try{ document.getAnimations().forEach(a=>{ if(a.playState!=="finished"){ a.pause(); a.play(); } }); }catch(e){} } });
+window.addEventListener("pageshow",e=>{ if(e.persisted) checkUpdate(); });
+
+/* ===== 首次繪製 ===== */
+(function(){
+  const d=new Date(), wd=d.getDay(), h=d.getHours();
+  $("#greet").textContent = (wd===0||wd===6) ? (h<12?"週末早安！今天去哪玩？":"週末午後，出門走走吧") : (h<17?"先骰好，假日直接出發":"下班了～骰一個近的走走");
+})();
+$("#sun").innerHTML=sunSvg; $("#cl1").innerHTML=cloudSvg(96); $("#cl2").innerHTML=cloudSvg(70); $("#cl3").innerHTML=cloudSvg(56);
+$("#hills").innerHTML=hillsSvg;
+$("#hCond").innerHTML=ui("check",22)+"行前檢查";
+$("#searchIc").innerHTML=ui("search",20);
+$("#addBtn").innerHTML=ui("plus",28);
+const NAV=[["roll","dice","骰子"],["list","ticketL","名單"],["trail","foot","足跡"]];
+$$("#nav button").forEach((b,i)=>b.innerHTML=ui(NAV[i][1],24)+NAV[i][2]);
+setDie(1); paintSndBtns(); renderHome();
+$("#footCount").textContent=`口袋名單 ${spots().length} 個地點`;
+
+/* ===== 開機畫面：天空 → 小路畫出來 → 骰子掉下來彈跳 → 字一個個跳出 → 骰子和標題飛到首頁位置（FLIP） ===== */
+(function(){
+  const sp=$("#splash"); if(!sp){ splashDoneR(); return; }
+  $("#spC1").innerHTML=cloudSvg(100); $("#spC2").innerHTML=cloudSvg(76);
+  $("#spDrop").innerHTML=`<svg viewBox="0 0 120 120">${dieSvg(1)}</svg>`;
+  const tt=$("#spTitle");
+  tt.innerHTML=[..."假日骰骰"].map((c,i)=>`<span style="--i:${i}">${c}</span>`).join("");
+  const centerTitle=()=>{ tt.style.left=Math.round((window.innerWidth-tt.getBoundingClientRect().width)/2)+"px"; };
+  centerTitle();
+  setTimeout(()=>sp.classList.add("sp-live"),150);   // 前 0.15 秒跟 iPhone 啟動圖一樣：只有天空底色
+  let out=false;
+  function exit(){
+    if(out) return; out=true;
+    const reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const finish=()=>{ sp.remove(); document.body.classList.remove("sp-flying"); setTimeout(()=>document.body.classList.remove("enter"),1000); splashDoneR(); };
+    document.body.classList.remove("booting");
+    if(reduce){ document.body.classList.add("enter"); sp.classList.add("sp-fade"); setTimeout(finish,520); return; }
+    window.scrollTo(0,0);
+    document.body.classList.add("sp-flying","enter");
+    // FLIP：先量起點（開機畫面）和終點（首頁），再用 transform 補間過去
+    const fly=(el,target,scale)=>{
+      const a=el.getBoundingClientRect(), b=target.getBoundingClientRect();
+      const sc=scale?b.width/a.width:1;
+      el.style.transition="transform .75s cubic-bezier(.6,0,.15,1)";
+      el.style.transform=`translate(${b.left-a.left}px,${b.top-a.top}px) scale(${sc})`;
+    };
+    centerTitle();
+    tt.querySelectorAll("span").forEach(s=>{ s.style.animation="none"; s.style.opacity="1"; });
+    $("#spDrop").style.animation="none"; $("#spDrop").style.opacity="1";
+    requestAnimationFrame(()=>{
+      fly($("#spDie"),$("#dieWrap"),false);
+      fly(tt,$("#h1t"),true);
+      sp.classList.add("sp-exit");
+      setTimeout(finish,800);
+    });
+  }
+  const t0=performance.now();
+  const fontsOk=Promise.race([document.fonts?document.fonts.ready:Promise.resolve(), new Promise(r=>setTimeout(r,1200))]);
+  fontsOk.then(()=>{ centerTitle(); const wait=Math.max(0,2400-(performance.now()-t0)); setTimeout(exit,wait); });
+  setTimeout(exit,4000);   // 保險：最多 4 秒
+})();
+</script>
+</body>
+</html>
