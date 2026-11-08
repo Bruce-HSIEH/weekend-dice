@@ -6,7 +6,8 @@
 - 版本：v1.1.0（點骰子本體、小露營車照點數前進、資料匯出／匯入、搬到 Firebase）
 - 正在從 GitHub Pages 搬到 Firebase Hosting
   - 舊網址：https://bruce-hsieh.github.io/weekend-dice/ （GitHub Pages，main 分支 / root）
-  - 新網址：https://weekend-dice.web.app/ （Firebase Hosting）
+    - repo 名稱要維持全小寫 `weekend-dice`，改成 `Weekend-dice` 時舊的小寫網址會 404
+  - 新網址：https://weekend-dice.web.app/ （Firebase Hosting，已上線）
 - repo 之後會改成私人（由擁有者自己改）
 
 ## 架構
@@ -23,6 +24,11 @@
 - `firebase.json`：上傳 repo 根目錄，但排除 `tools/`、`README.md`、`HANDOFF.md`、隱藏檔；`index.html`、`version.json` 不快取，圖片長快取
 - 方案：Firebase 免費 Spark，不綁信用卡；一個 App 一個 Firebase 專案
 - 手動重新部署：GitHub → Actions → Deploy to Firebase Hosting → Run workflow
+- 服務帳號 `firebase-adminsdk-fbsvc@weekend-dice.iam.gserviceaccount.com` 除了預設角色，還要在 Google Cloud IAM 加這三個，不然部署會 403（`serviceusage.services.get` permission denied）：
+  - Firebase 託管管理員（Firebase Hosting Admin）
+  - 服務使用情形消費者（Service Usage Consumer）
+  - API 金鑰檢視者（API Keys Viewer）
+  - 設定位置：https://console.cloud.google.com/iam-admin/iam?project=weekend-dice → 該帳號的鉛筆 → 新增其他角色
 
 ## 使用者資料（localStorage，依網址分開存）
 | key | 內容 | 匯出 |
@@ -40,9 +46,9 @@
 - iPhone 主畫面 App 與 Safari 的 localStorage 不互通，搬資料要用代碼
 
 ## 搬家流程與狀態
-1. [ ] Firebase 專案建好、Hosting 開始使用、服務帳號金鑰放進 GitHub Secrets
+1. [x] Firebase 專案建好、Hosting 開始使用、服務帳號金鑰放進 GitHub Secrets
 2. [x] 專案 ID：`weekend-dice`（已填進 `.firebaserc` 和 workflow）
-3. [ ] push 到 main，Actions 部署成功（綠勾勾）
+3. [x] push 到 main，Actions 部署成功（2026-11-08，v1.1.0）
 4. [ ] 新網址驗收（見下方）
 5. [x] `moved-page` 分支的搬家頁已填好新網址 https://weekend-dice.web.app/（push 後才在 GitHub 上）
 6. [ ] GitHub → Settings → Pages → Branch 從 `main` 改成 `moved-page` → Save（舊網址變成搬家頁；已安裝的舊 App 會因為 version.json 9.0.0 自動換成搬家頁）
