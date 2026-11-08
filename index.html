@@ -79,25 +79,31 @@ h1{margin:0;font-size:30px;font-weight:400;letter-spacing:.06em;line-height:1.2;
 .snd button.off svg{opacity:.45}
 .snd button:active{transform:translateY(3px);box-shadow:none}
 
-.dieWrap{position:absolute;left:50%;bottom:44px;width:120px;height:120px;margin-left:-60px;z-index:2}
-.dieIdle{width:120px;height:120px;animation:dieIdle 3s ease-in-out infinite}
-@keyframes dieIdle{50%{transform:translateY(-6px) rotate(-3deg)}}
-.dieWrap svg{display:block;width:120px;height:120px;overflow:visible}
-.dieShadow{position:absolute;left:50%;bottom:30px;width:96px;height:14px;margin-left:-52px;border-radius:50%;background:rgba(0,0,0,.22);z-index:1}
-.carBtn{position:absolute;right:14px;bottom:40px;width:96px;height:66px;border:0;background:none;padding:0;z-index:2}
-.carBtn svg{width:96px;height:66px;display:block;overflow:visible}
-.car{animation:carIdle .5s ease-in-out infinite alternate}
-@keyframes carIdle{to{transform:translateY(-1.5px)}}
-.carBtn.honk .car{animation:honk .5s cubic-bezier(.3,1.8,.5,1)}
-@keyframes honk{0%{transform:scale(1.12,.86)}45%{transform:scale(.94,1.08) translateY(-6px)}100%{transform:none}}
-.carBtn.hot .car{animation:hot .1s linear infinite}
+/* 小路上的里程牌（1～6）和家 */
+.track{position:absolute;left:0;right:0;bottom:0;height:160px;z-index:2;pointer-events:none}
+.mile{position:absolute;bottom:76px;width:28px;margin-left:-14px;text-align:center;transform-origin:50% 100%}
+.mile b{display:block;width:28px;height:25px;border-radius:8px;border:2.5px solid var(--ink);color:#fff;font-weight:400;font-size:15px;line-height:20px;transition:box-shadow .2s}
+.mile i{display:block;width:4px;height:10px;background:var(--ink);margin:0 auto;border-radius:0 0 2px 2px}
+.mile.pass{animation:milePop .45s cubic-bezier(.2,1.6,.4,1)}
+.mile.here b{box-shadow:0 0 0 3px #fff,0 0 0 6px var(--sun)}
+@keyframes milePop{45%{transform:translateY(-10px) scale(1.3)}100%{transform:none}}
+.home{position:absolute;bottom:74px;width:38px;margin-left:-19px}
+.home svg{display:block;width:38px;height:36px}
+.carBox{position:absolute;left:0;bottom:12px;width:100px;height:73px;z-index:3;pointer-events:auto;border:0;background:none;padding:0;transform:translateX(-120px)}
+.carBox svg{width:100px;height:73px;display:block;overflow:visible}
+.carBody{animation:carIdle .45s ease-in-out infinite alternate;transform-origin:50% 100%}
+@keyframes carIdle{to{transform:translateY(-1.2px)}}
+.carBox .wh{transform-box:view-box}
+.carBox.moving .wh{animation:wheel .32s linear infinite}
+@keyframes wheel{to{transform:rotate(360deg)}}
+.carBox.honk .carBody{animation:honk .5s cubic-bezier(.3,1.8,.5,1)}
+@keyframes honk{0%{transform:scale(1.1,.86)}45%{transform:scale(.95,1.08) translateY(-6px)}100%{transform:none}}
+.carBox.hot .carBody{animation:hot .1s linear infinite}
 @keyframes hot{50%{transform:translateX(2px) rotate(1.5deg)}}
-.carBtn.leave{animation:leave 2.6s cubic-bezier(.5,0,.4,1) both}
-@keyframes leave{0%{transform:none}40%{transform:translateX(160px)}41%{transform:translateX(-520px)}100%{transform:none}}
-.bubble{position:absolute;right:20px;bottom:116px;z-index:5;background:#fff;border:2.5px solid var(--ink);border-radius:16px;padding:4px 11px;font-size:14px;white-space:nowrap;
-  opacity:0;transform:scale(.4) translateY(8px);transform-origin:80% 100%;transition:opacity .15s,transform .25s cubic-bezier(.2,1.6,.4,1);pointer-events:none}
-.bubble::before{content:"";position:absolute;right:30px;bottom:-11px;border:7px solid transparent;border-top-color:var(--ink);border-bottom:0}
-.bubble::after{content:"";position:absolute;right:31.5px;bottom:-7px;border:5.5px solid transparent;border-top-color:#fff;border-bottom:0}
+.bubble{position:absolute;left:0;bottom:90px;z-index:5;background:#fff;border:2.5px solid var(--ink);border-radius:16px;padding:4px 11px;font-size:14px;white-space:nowrap;
+  opacity:0;transform:scale(.4) translateY(8px);transform-origin:var(--tx,50%) 100%;transition:opacity .15s,transform .25s cubic-bezier(.2,1.6,.4,1);pointer-events:none}
+.bubble::before{content:"";position:absolute;left:var(--tx,50%);margin-left:-7px;bottom:-11px;border:7px solid transparent;border-top-color:var(--ink);border-bottom:0}
+.bubble::after{content:"";position:absolute;left:var(--tx,50%);margin-left:-5.5px;bottom:-7px;border:5.5px solid transparent;border-top-color:#fff;border-bottom:0}
 .bubble.show{opacity:1;transform:none}
 
 /* ---------- 路標 ---------- */
@@ -117,14 +123,19 @@ h1{margin:0;font-size:30px;font-weight:400;letter-spacing:.06em;line-height:1.2;
 .sign.won .pl{box-shadow:0 4px 0 var(--ink),0 0 0 4px var(--sun)}
 .signTip{text-align:center;font-size:12px;color:var(--ink2);margin:6px 0 0}
 
-.rollRow{display:flex;flex-direction:column;align-items:center;margin:14px 0 4px}
-.rollBtn{width:132px;height:132px;border-radius:50%;border:3px solid var(--ink);background:radial-gradient(circle at 35% 30%,#FFF1A8 0,var(--sun) 45%,#F5B82E 100%);
-  box-shadow:0 7px 0 var(--ink),inset 0 -6px 0 rgba(0,0,0,.08);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;transition:transform .1s,box-shadow .1s}
-.rollBtn:active{transform:translateY(6px);box-shadow:0 1px 0 var(--ink)}
-.rollBtn:disabled{filter:saturate(.6);opacity:.85}
-.rollBtn big{font-size:38px;line-height:1;letter-spacing:.05em}
-.rollBtn span{font-size:16px}
-.pool{text-align:center;font-size:13px;color:var(--ink2);margin-top:12px}
+/* 骰子本體就是按鈕 */
+.dieStage{position:relative;height:196px;margin-top:4px}
+.dieWrap{position:absolute;left:50%;top:14px;width:136px;height:136px;margin-left:-68px;border:0;background:none;padding:0;z-index:4}
+.dieIdle{width:136px;height:136px;animation:dieIdle 2.6s ease-in-out infinite}
+@keyframes dieIdle{0%,100%{transform:none}50%{transform:translateY(-8px) rotate(-4deg)}}
+.dieWrap svg{display:block;width:136px;height:136px;overflow:visible}
+.dieWrap:active svg{transform:scale(.94)}
+.dieShadow{position:absolute;left:50%;top:150px;width:104px;height:14px;margin-left:-58px;border-radius:50%;background:rgba(43,58,85,.18)}
+.tapHint{position:absolute;left:0;right:0;top:170px;text-align:center;font-size:14px;color:var(--ink)}
+.tapHint span{display:inline-flex;align-items:center;gap:5px;background:#fff;border:2px solid var(--ink);border-radius:999px;padding:2px 12px;animation:hint 1.6s ease-in-out infinite}
+@keyframes hint{50%{transform:translateY(-3px)}}
+.tapHint.off span{opacity:0;transition:opacity .2s}
+.pool{text-align:center;font-size:13px;color:var(--ink2);margin-top:6px}
 .pool b{color:var(--ink);font-weight:400;background:#fff;border:2px solid var(--line);border-radius:8px;padding:0 6px}
 
 /* ---------- 行前檢查（條件） ---------- */
@@ -300,13 +311,13 @@ footer{text-align:center;font-size:12px;color:var(--ink2);margin-top:22px;line-h
 @media (max-height:700px){#splash .sp-die{top:28%}#splash .sp-road{top:calc(28% + 112px)}#splash .sp-title{top:calc(28% + 200px)}#splash .sp-tag{top:calc(28% + 256px)}}
 body.booting .app,body.booting .nav{opacity:0}
 body.sp-flying #h1t,body.sp-flying #dieWrap{visibility:hidden}
-body.enter .signs .sign,body.enter .rollRow,body.enter .board,body.enter .snd,body.enter .carBtn,body.enter .sub,body.enter .ver,body.enter .pool,body.enter .signTip{animation:rise .55s cubic-bezier(.2,1.3,.4,1) both}
+body.enter .signs .sign,body.enter .dieStage .tapHint,body.enter .board,body.enter .snd,body.enter .sub,body.enter .ver,body.enter .pool,body.enter .signTip{animation:rise .55s cubic-bezier(.2,1.3,.4,1) both}
 body.enter .nav{animation:navUp .55s cubic-bezier(.2,1.3,.4,1) .3s both}
 body.enter .sign:nth-child(1){animation-delay:.05s} body.enter .sign:nth-child(2){animation-delay:.1s} body.enter .sign:nth-child(3){animation-delay:.15s} body.enter .sign:nth-child(4){animation-delay:.2s}
-body.enter .rollRow{animation-delay:.22s} body.enter .board{animation-delay:.34s} body.enter .carBtn{animation:carIn .8s cubic-bezier(.2,1.1,.4,1) .1s both}
+body.enter .dieStage .tapHint{animation-delay:.3s} body.enter .board{animation-delay:.34s} body.enter .track .mile,body.enter .track .home{animation:fadeIn .5s ease .15s both}
 @keyframes rise{0%{opacity:0;transform:translateY(24px)}100%{opacity:1;transform:none}}
 @keyframes navUp{0%{opacity:0;transform:translate(-50%,40px)}100%{opacity:1;transform:translate(-50%,0)}}
-@keyframes carIn{0%{transform:translateX(160px)}100%{transform:none}}
+@keyframes fadeIn{0%{opacity:0}100%{opacity:1}}
 @media (prefers-reduced-motion:reduce){#splash *{animation:none!important;opacity:1!important;transform:none!important}}
 </style>
 </head>
@@ -332,19 +343,20 @@ body.enter .rollRow{animation-delay:.22s} body.enter .board{animation-delay:.34s
         <div class="ttl"><h1><span id="h1t">假日骰骰</span><button class="ver" id="verBtn"></button></h1><div class="sub" id="greet"></div></div>
         <div class="snd"><button id="bgmBtn" aria-label="背景音樂"></button><button id="sfxBtn" aria-label="音效"></button></div>
       </div>
-      <div class="dieShadow" id="dieShadow"></div>
-      <div class="dieWrap" id="dieWrap"><div class="dieIdle" id="dieIdle"><svg id="die" viewBox="0 0 120 120"></svg></div></div>
-      <button class="carBtn" id="carBtn" aria-label="叭叭車"><svg viewBox="0 0 96 66"><g class="car" id="car"></g></svg></button>
+      <div class="track" id="track"></div>
+      <button class="carBox" id="carBox" aria-label="叭叭車"><svg viewBox="0 0 110 80"><g class="carBody" id="car"></g></svg></button>
       <div class="bubble" id="bubble"></div>
     </div>
 
     <div class="signs" id="signs"></div>
     <div class="signTip" id="signTip"></div>
 
-    <div class="rollRow">
-      <button class="rollBtn" id="rollBtn"><big>骰</big><span>一下！</span></button>
-      <div class="pool" id="poolInfo"></div>
+    <div class="dieStage">
+      <div class="dieShadow" id="dieShadow"></div>
+      <button class="dieWrap" id="dieWrap" aria-label="骰一下"><div class="dieIdle" id="dieIdle"><svg id="die" viewBox="0 0 120 120"></svg></div></button>
+      <div class="tapHint" id="tapHint"><span id="tapHintIn"></span></div>
     </div>
+    <div class="pool" id="poolInfo"></div>
 
     <div class="board">
       <svg class="clip" viewBox="0 0 96 30"><rect x="18" y="4" width="60" height="22" rx="8" fill="#B9C4D3" stroke="#2B3A55" stroke-width="2.5"/><rect x="38" y="0" width="20" height="10" rx="4" fill="#fff" stroke="#2B3A55" stroke-width="2.5"/></svg>
@@ -605,6 +617,8 @@ function ui(n,s=20,c=INK){
     eyeoff:`<path d="M3 12s3.5-6 9-6 9 6 9 6-3.5 6-9 6-9-6-9-6z" fill="#E3EAF2" stroke="${c}" stroke-width="2" stroke-linejoin="round"/><path d="M4.5 19.5l15-15" ${L} stroke-width="2.2"/>`,
     check:`<rect x="3.5" y="3.5" width="17" height="17" rx="4" fill="#B8E39C" stroke="${c}" stroke-width="2"/><path d="M8 12.5l3 3 5.5-6" ${L} stroke-width="2.4"/>`,
     reset:`<path d="M5 12a7 7 0 1 0 2.1-5" ${L}/><path d="M6.5 3.5v4h4" ${L}/>`,
+    box:`<path d="M3.5 8.5 12 4.5l8.5 4v9L12 21.5l-8.5-4z" fill="#E8D6B3" stroke="${c}" stroke-width="2" stroke-linejoin="round"/><path d="M3.5 8.5 12 12.5l8.5-4M12 12.5v9" ${L} stroke-width="2"/><path d="M15.5 2.5v5M13.5 4.5l2-2 2 2" ${L} stroke-width="1.8"/>`,
+    boxIn:`<path d="M3.5 10.5 12 6.5l8.5 4v8L12 22.5l-8.5-4z" fill="#B8E39C" stroke="${c}" stroke-width="2" stroke-linejoin="round"/><path d="M3.5 10.5 12 14.5l8.5-4M12 14.5v8" ${L} stroke-width="2"/><path d="M12 1.5v6M9.5 5l2.5 2.5L14.5 5" ${L} stroke-width="1.8"/>`,
     trash:`<path d="M5 7h14l-1.2 13H6.2z" fill="#FFE1D9" stroke="${c}" stroke-width="2" stroke-linejoin="round"/><path d="M9 7V4.5h6V7M3.5 7h17" ${L} stroke-width="2"/>`,
   };
   return `<svg class="ic" width="${s}" height="${s}" viewBox="0 0 24 24">${P[n]||""}</svg>`;
@@ -698,6 +712,7 @@ const Snd = (()=>{
     // 叭叭！兩聲方波喇叭
     honk(){ [0,.2].forEach(a=>{ tone(392,.14,{at:a,vol:.07,type:"square"}); tone(494,.14,{at:a,vol:.06,type:"square"}); }); },
     steam(){ noise(.9,{freq:5000,Q:.5,vol:.12,type:"highpass"}); for(let i=0;i<4;i++) tone(140,.08,{at:i*.12,vol:.12,type:"sawtooth",to:110}); },
+    step(i){ tone(N(67+[0,2,4,5,7,9,12][i]||0),.12,{vol:.12,type:"triangle"}); noise(.05,{freq:900,Q:1,vol:.08}); },
     vroom(){ tone(90,1.1,{to:260,vol:.12,type:"sawtooth"}); noise(1,{freq:300,Q:.6,vol:.08,type:"lowpass"}); },
     oops(){ tone(330,.14,{vol:.12,type:"triangle"}); tone(262,.22,{at:.12,vol:.12,type:"triangle"}); },
   };
@@ -802,45 +817,98 @@ function setSfx(v){ if(!v) Snd.play("toggle",false); Snd.setSfx(v); if(v) Snd.pl
 $("#bgmBtn").onclick=()=>setBgm(!Snd.bgmOn);
 $("#sfxBtn").onclick=()=>setSfx(!Snd.sfxOn);
 
-/* ===== 吉祥物「叭叭車」：戳一下會叭叭叫、講話；連戳會引擎過熱冒煙 =====
-   小狀態機：IDLE → HONK → IDLE；2.5 秒內戳 5 下 → HOT（冷卻 2 秒） */
+/* ===== 吉祥物「叭叭車」：小露營車。骰到幾點就在小路上往前開幾格 =====
+   戳一下會叭叭叫、講話；2.5 秒內戳 5 下 → 引擎過熱冒煙（冷卻 2 秒） */
+// 圓滾滾小露營車（面向右邊），face: normal / happy / hot
+function carSvg(face="normal"){
+  const eyes = face==="happy" ? `<path d="M77 45q3.5-4.5 7 0M90 45q3.5-4.5 7 0" fill="none" stroke="${INK}" stroke-width="2.8" stroke-linecap="round"/>`
+    : face==="hot" ? `<path d="M77 42l6 5M83 42l-6 5M90 42l6 5M96 42l-6 5" stroke="${INK}" stroke-width="2.6" stroke-linecap="round"/>`
+    : `<ellipse cx="80.5" cy="45" rx="3.4" ry="4" fill="${INK}"/><ellipse cx="93.5" cy="45" rx="3.4" ry="4" fill="${INK}"/><circle cx="81.6" cy="43.4" r="1.2" fill="#fff"/><circle cx="94.6" cy="43.4" r="1.2" fill="#fff"/>`;
+  const mouth = face==="hot" ? `<path d="M83 53q4-3 8 0" fill="none" stroke="${INK}" stroke-width="2.4" stroke-linecap="round"/>`
+    : `<path d="M83 51q4 ${face==="happy"?6:4} 8 0" fill="${face==="happy"?"#F2735A":"none"}" stroke="${INK}" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>`;
+  const smoke = face==="hot" ? `<g fill="#fff" stroke="${INK}" stroke-width="2.2"><circle cx="60" cy="6" r="5"/><circle cx="71" cy="2" r="6.5"/><circle cx="82" cy="6" r="4.5"/></g>` : "";
+  const wheel=(x)=>`<g class="wh" style="transform-origin:${x}px 66px"><circle cx="${x}" cy="66" r="10.5" fill="${INK}"/><circle cx="${x}" cy="66" r="4.6" fill="#FFF3D6"/><path d="M${x} 58.5v3M${x} 70.5v3M${x-7.5} 66h3M${x+4.5} 66h3" stroke="#FFF3D6" stroke-width="2" stroke-linecap="round"/></g>`;
+  return `${smoke}
+    <ellipse cx="57" cy="77" rx="46" ry="3.5" fill="rgba(0,0,0,.18)"/>
+    <!-- 車頂行李 -->
+    <rect x="30" y="7" width="26" height="12" rx="4" fill="#FFD54A" stroke="${INK}" stroke-width="2.6"/><path d="M38 7v12" stroke="${INK}" stroke-width="2.2"/>
+    <rect x="58" y="10" width="14" height="9" rx="3" fill="#FF8FA3" stroke="${INK}" stroke-width="2.4"/>
+    <path d="M24 19h56" stroke="${INK}" stroke-width="3" stroke-linecap="round"/>
+    <!-- 車身：上奶油、下薄荷 -->
+    <path d="M12 60 V40 Q12 19 34 19 H80 Q98 19 104 38 L106 52 Q107 62 97 62 H16 Q12 62 12 60 Z" fill="#FFF6E2" stroke="${INK}" stroke-width="3.4" stroke-linejoin="round"/>
+    <path d="M13.7 40 H105 L106 52 Q107 60.3 97 60.3 H16 Q13.7 60.3 13.7 58 Z" fill="#7FD1BE"/>
+    <path d="M12 40 H105" stroke="${INK}" stroke-width="2.6"/>
+    <path d="M12 60 V40 Q12 19 34 19 H80 Q98 19 104 38 L106 52 Q107 62 97 62 H16 Q12 62 12 60 Z" fill="none" stroke="${INK}" stroke-width="3.4" stroke-linejoin="round"/>
+    <!-- 窗戶 -->
+    <rect x="20" y="25" width="20" height="11" rx="5" fill="#BDE6FB" stroke="${INK}" stroke-width="2.6"/>
+    <rect x="45" y="25" width="20" height="11" rx="5" fill="#BDE6FB" stroke="${INK}" stroke-width="2.6"/>
+    <path d="M71 25 H86 Q95 25 99 36 H71 Z" fill="#BDE6FB" stroke="${INK}" stroke-width="2.6" stroke-linejoin="round"/>
+    <path d="M24 28.5l4-2M49 28.5l4-2M76 29l4-2" stroke="#fff" stroke-width="2.2" stroke-linecap="round"/>
+    <!-- 車門把手、車燈 -->
+    <path d="M60 46h6" stroke="${INK}" stroke-width="2.6" stroke-linecap="round"/>
+    <circle cx="104" cy="45" r="3.4" fill="#FFD54A" stroke="${INK}" stroke-width="2.2"/>
+    <rect x="8" y="50" width="6" height="6" rx="2" fill="#FF7A59" stroke="${INK}" stroke-width="2"/>
+    <!-- 臉 -->
+    ${eyes}${mouth}
+    <ellipse cx="76" cy="52" rx="4" ry="2.4" fill="#FF9C86" opacity=".85"/><ellipse cx="98" cy="52" rx="3.5" ry="2.2" fill="#FF9C86" opacity=".85"/>
+    ${wheel(32)}${wheel(84)}`;
+}
+
 const Car=(()=>{
-  const btn=$("#carBtn"), g=$("#car"), bub=$("#bubble");
-  function draw(face="normal"){
-    const eyes = face==="happy" ? `<path d="M15 35q3-4 6 0M26 35q3-4 6 0" fill="none" stroke="${INK}" stroke-width="2.4" stroke-linecap="round"/>`
-      : face==="hot" ? `<path d="M14 33l6 4M20 33l-6 4M25 33l6 4M31 33l-6 4" stroke="${INK}" stroke-width="2.2" stroke-linecap="round"/>`
-      : `<circle cx="18" cy="35" r="3" fill="${INK}"/><circle cx="29" cy="35" r="3" fill="${INK}"/><circle cx="19" cy="34" r="1" fill="#fff"/><circle cx="30" cy="34" r="1" fill="#fff"/>`;
-    const mouth = face==="hot" ? `<path d="M19 43q4-3 8 0" fill="none" stroke="${INK}" stroke-width="2.2" stroke-linecap="round"/>` : `<path d="M19 41q4.5 5 9 0" fill="${face==="happy"?"#F2735A":"none"}" stroke="${INK}" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>`;
-    const smoke = face==="hot" ? `<g fill="#fff" stroke="${INK}" stroke-width="2"><circle cx="40" cy="6" r="5"/><circle cx="50" cy="2" r="6.5"/><circle cx="60" cy="6" r="4.5"/></g>` : "";
-    g.innerHTML=`${smoke}
-      <rect x="46" y="4" width="22" height="9" rx="2.5" fill="#E8D6B3" stroke="${INK}" stroke-width="2.4"/><path d="M57 4v9" stroke="${INK}" stroke-width="2"/>
-      <path d="M22 26 L30 13 H70 L80 26 Z" fill="#FF7A59" stroke="${INK}" stroke-width="3" stroke-linejoin="round"/>
-      <path d="M33 24 L37 16 H50 V24 Z M54 24 V16 H67 L73 24 Z" fill="#BDE6FB" stroke="${INK}" stroke-width="2.4" stroke-linejoin="round"/>
-      <rect x="6" y="24" width="86" height="28" rx="12" fill="#FF7A59" stroke="${INK}" stroke-width="3"/>
-      <rect x="8" y="38" width="7" height="6" rx="2" fill="#FFD54A" stroke="${INK}" stroke-width="2"/>
-      <ellipse cx="14" cy="45" rx="4" ry="2.4" fill="#FFB7A6"/><ellipse cx="34" cy="45" rx="4" ry="2.4" fill="#FFB7A6"/>
-      ${eyes}${mouth}
-      <path d="M52 30v18" stroke="${INK}" stroke-width="2" opacity=".5"/>
-      <g fill="${INK}"><circle cx="26" cy="54" r="9"/><circle cx="74" cy="54" r="9"/></g><g fill="#C9D8EA"><circle cx="26" cy="54" r="3.5"/><circle cx="74" cy="54" r="3.5"/></g>`;
+  const box=$("#carBox"), g=$("#car"), bub=$("#bubble"), track=$("#track");
+  let at=0, x=-120, taps=[], bubT=0, busy=false, driving=false;
+  const W=()=>track.getBoundingClientRect().width||390;
+  // 第 i 格的位置：0 = 家，1～6 = 里程牌（像查表：index → 座標）
+  const xOf=i=>{ const L=50, R=28; return L + i*(W()-L-R)/6; };
+  const place=px=>{ x=px; box.style.transform=`translateX(${px-50}px)`; };
+  function draw(face="normal"){ g.innerHTML=carSvg(face); }
+  function renderTrack(){
+    const houseSvg=`<svg viewBox="0 0 38 36"><path d="M4 17 L19 4 L34 17" fill="#FF8FA3" stroke="${INK}" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round"/><path d="M8 15v18h22V15" fill="#FFF6E2" stroke="${INK}" stroke-width="2.6" stroke-linejoin="round"/><rect x="16" y="22" width="7" height="11" rx="2" fill="#FFD54A" stroke="${INK}" stroke-width="2.2"/><path d="M5 17L19 5.5 33 17" fill="none" stroke="${INK}" stroke-width="2.6" stroke-linecap="round"/></svg>`;
+    track.innerHTML=`<div class="home" style="left:${xOf(0)}px">${houseSvg}</div>`+
+      [1,2,3,4,5,6].map(i=>`<div class="mile" id="mile${i}" style="left:${xOf(i)}px"><b style="background:${TIERS[faceTier(i)].c}">${i}</b><i></i></div>`).join("");
+    if(!driving && x>-100) place(xOf(at));
   }
-  const LINES=["叭叭！要去哪裡？","油加滿了，出發吧！","骰一下嘛～","帶阿公阿嬤一起去！","下雨也有地方去喔","記得帶水壺～","後車廂塞好了！","近的遠的我都可以"];
-  let taps=[], bubT=0, busy=false;
-  function say(t,ms=1600){ bub.textContent=t; bub.classList.add("show"); clearTimeout(bubT); bubT=setTimeout(()=>bub.classList.remove("show"),ms); }
+  function mark(i){ $$(".mile").forEach(m=>m.classList.remove("here")); const m=$("#mile"+i); if(m){ m.classList.remove("pass"); void m.offsetWidth; m.classList.add("pass","here"); } }
+  function say(t,ms=1600){
+    bub.textContent=t; const w=bub.offsetWidth, sw=W();
+    const left=Math.max(8,Math.min(sw-w-8,x-w/2));
+    bub.style.left=left+"px"; bub.style.setProperty("--tx",Math.max(16,Math.min(w-16,x-left))+"px");
+    bub.classList.add("show"); clearTimeout(bubT); bubT=setTimeout(()=>bub.classList.remove("show"),ms);
+  }
+  const anim=(from,to,ms,hop)=>{
+    const kf = hop ? [{transform:`translateX(${from-50}px)`},{transform:`translate(${(from+to)/2-50}px,-12px)`,offset:.5},{transform:`translateX(${to-50}px)`}]
+                   : [{transform:`translateX(${from-50}px)`},{transform:`translateX(${to-50}px)`}];
+    const a=box.animate(kf,{duration:ms,easing:hop?"cubic-bezier(.4,0,.4,1)":"cubic-bezier(.5,0,.3,1)"});
+    return a.finished.then(()=>place(to)).catch(()=>place(to));
+  };
+  async function driveTo(i,ms){ driving=true; bub.classList.remove("show"); box.classList.add("moving"); await anim(x,xOf(i),ms,false); at=i; box.classList.remove("moving"); driving=false; }
+  // 一格一格跳著前進，每格叫一聲（音越來越高）
+  async function hopTo(n){
+    driving=true; bub.classList.remove("show"); box.classList.add("moving");
+    for(let i=at+1;i<=n;i++){ Snd.play("step",i); await anim(x,xOf(i),300,true); at=i; mark(i); }
+    box.classList.remove("moving"); driving=false;
+  }
+  async function home(){ if(at===0 && x===xOf(0)) return; $$(".mile").forEach(m=>m.classList.remove("here")); await driveTo(0,Math.min(700,250+at*80)); }
+  async function arrive(){ place(-120); Snd.play("vroom"); await driveTo(0,1100); say("叭叭！點骰子出發吧～",1800); }
+  async function leave(){
+    Snd.play("vroom"); await driveTo(7.5,900);       // 開出畫面右邊
+    place(-120); at=0; await driveTo(0,900);          // 從左邊繞回家
+  }
   function poke(){
-    if(busy) return;
-    const now=Date.now(); taps=taps.filter(x=>now-x<2500); taps.push(now);
+    if(busy||driving) return;
+    const now=Date.now(); taps=taps.filter(t=>now-t<2500); taps.push(now);
     if(taps.length>=5){
-      busy=true; taps=[]; draw("hot"); btn.classList.remove("honk"); btn.classList.add("hot"); Snd.play("steam"); say("引擎過熱了啦～",1900);
-      setTimeout(()=>{ btn.classList.remove("hot"); draw(); busy=false; },2000); return;
+      busy=true; taps=[]; draw("hot"); box.classList.remove("honk"); box.classList.add("hot"); Snd.play("steam"); say("引擎過熱了啦～",1900);
+      setTimeout(()=>{ box.classList.remove("hot"); draw(); busy=false; },2000); return;
     }
-    btn.classList.remove("honk"); void btn.offsetWidth; btn.classList.add("honk");
+    box.classList.remove("honk"); void box.offsetWidth; box.classList.add("honk");
     Snd.play("honk"); draw("happy"); say(LINES[Math.floor(Math.random()*LINES.length)]);
     setTimeout(()=>{ if(!busy) draw(); },900);
   }
-  function leave(){ btn.classList.remove("leave"); void btn.offsetWidth; btn.classList.add("leave"); Snd.play("vroom"); setTimeout(()=>btn.classList.remove("leave"),2700); }
-  draw();
-  btn.onclick=poke;
-  return {say, leave};
+  const LINES=["叭叭！要去哪裡？","油加滿了，出發吧！","點骰子嘛～","帶阿公阿嬤一起去！","下雨也有地方去喔","記得帶水壺～","行李綁好了！","近的遠的我都可以"];
+  draw(); box.onclick=poke;
+  window.addEventListener("resize",()=>renderTrack());
+  return {say, leave, hopTo, home, arrive, renderTrack, draw, get at(){return at;}};
 })();
 
 /* ===== 首頁 ===== */
@@ -885,34 +953,40 @@ function roll(){
   const spot = pool[Math.floor(Math.random()*pool.length)];
   lastId = spot.id;
 
-  rolling=true; $("#rollBtn").disabled=true; renderSigns();
+  rolling=true; renderSigns(); $("#tapHint").classList.add("off");
+  rollAnim(face,tier,spot);
+}
+async function rollAnim(face,tier,spot){
   const wrap=$("#dieWrap"), sh=$("#dieShadow");
+  const back=Car.home();                                  // 車子先開回家（跟骰子同時）
   $("#dieIdle").style.animation="none";
-  // 骰子往上拋、翻滾、在路上彈兩下（只用 transform，桌面 App 也順）
+  // 骰子原地往上拋、翻滾、落地彈兩下（只用 transform，桌面 App 也順）
   const A=wrap.animate([
     {transform:"translate(0,0) rotate(0)"},
-    {transform:"translate(-40px,-150px) rotate(-260deg)",offset:.28},
-    {transform:"translate(-10px,0) rotate(-520deg) scale(1.08,.9)",offset:.5},
-    {transform:"translate(10px,-46px) rotate(-640deg)",offset:.66},
-    {transform:"translate(4px,0) rotate(-710deg) scale(1.04,.96)",offset:.82},
-    {transform:"translate(0,-8px) rotate(-724deg)",offset:.91},
+    {transform:"translate(-6px,-130px) rotate(-280deg) scale(1.05)",offset:.3},
+    {transform:"translate(0,0) rotate(-560deg) scale(1.1,.88)",offset:.52},
+    {transform:"translate(4px,-40px) rotate(-660deg)",offset:.68},
+    {transform:"translate(0,0) rotate(-715deg) scale(1.04,.96)",offset:.84},
+    {transform:"translate(0,-6px) rotate(-722deg)",offset:.92},
     {transform:"translate(0,0) rotate(-720deg)"}],{duration:1400,easing:"cubic-bezier(.3,.5,.4,1)"});
-  sh.animate([{transform:"scale(1)",opacity:1},{transform:"scale(.4)",opacity:.4,offset:.28},{transform:"scale(1.1)",opacity:1,offset:.5},{transform:"scale(.7)",offset:.66},{transform:"scale(1)"}],{duration:1400});
+  sh.animate([{transform:"scale(1)",opacity:1},{transform:"scale(.45)",opacity:.35,offset:.3},{transform:"scale(1.1)",opacity:1,offset:.52},{transform:"scale(.75)",offset:.68},{transform:"scale(1)"}],{duration:1400});
   // 翻滾中每 70ms 換一面，像真的在轉
   const spin=setInterval(()=>setDie(1+Math.floor(Math.random()*6)),70);
   Snd.play("rattle");
-  setTimeout(()=>Snd.play("land"),700);
-  setTimeout(()=>{ clearInterval(spin); setDie(face); },1050);
-  A.onfinish=()=>{
-    $("#dieIdle").style.animation="";
-    renderSigns(tier);
-    const s=$(`#signs .sign[data-k="${tier}"]`); if(s){ s.classList.add("hit"); }
-    Snd.play("tada"); Car.say(`骰到 ${face} 點，${TIERS[tier].name}！`,1500);
-    setTimeout(()=>{ rolling=false; $("#rollBtn").disabled=false; if(sheetOpen()) toast(`骰到：${spot.name}`); else showResult(spot,face); },650);
-  };
+  setTimeout(()=>Snd.play("land"),730);
+  setTimeout(()=>{ clearInterval(spin); setDie(face); },1100);
+  try{ await A.finished; }catch(e){}
+  $("#dieIdle").style.animation="";
+  wrap.animate([{transform:"scale(1)"},{transform:"scale(1.15)"},{transform:"scale(1)"}],{duration:380,easing:"cubic-bezier(.2,1.6,.4,1)"});
+  await back;
+  await new Promise(r=>setTimeout(r,250));
+  await Car.hopTo(face);                                  // 骰到幾點，車子就往前開幾格
+  renderSigns(tier);
+  const sg=$(`#signs .sign[data-k="${tier}"]`); if(sg) sg.classList.add("hit");
+  Snd.play("tada"); Car.say(`第 ${face} 格，${TIERS[tier].name}！`,1500);
+  setTimeout(()=>{ rolling=false; $("#tapHint").classList.remove("off"); if(sheetOpen()) toast(`骰到：${spot.name}`); else showResult(spot,face); },700);
 }
-function shake(){ $("#rollBtn").animate([{transform:"translateX(0)"},{transform:"translateX(-9px)"},{transform:"translateX(9px)"},{transform:"translateX(-5px)"},{transform:"none"}],{duration:340}); }
-$("#rollBtn").onclick=roll;
+function shake(){ $("#dieWrap").animate([{transform:"translateX(0)"},{transform:"translateX(-10px) rotate(-6deg)"},{transform:"translateX(10px) rotate(6deg)"},{transform:"translateX(-5px)"},{transform:"none"}],{duration:360}); }
 $("#dieWrap").onclick=roll;
 
 /* ===== 彈出視窗 ===== */
@@ -975,7 +1049,7 @@ function showResult(s,face){
   $("#goBtn").onclick=()=>{
     hist.push({id:s.id,t:Date.now(),name:s.name,min:s.min}); if(hist.length>500) hist=hist.slice(-500); store.set("wd_hist",hist);
     Snd.play("cheer"); confetti(); toast("出發囉！足跡記下來了");
-    setTimeout(()=>{ closeSheet(); renderAll(); setTimeout(()=>Car.leave(),250); },700);
+    setTimeout(()=>{ closeSheet(); renderAll(); setTimeout(()=>{ if(curTab==="roll") Car.leave(); },250); },700);
   };
   $("#againBtn").onclick=()=>{ closeSheet(); setTimeout(roll,250); };
   $("#editFromRes").onclick=()=>{ Snd.play("pop"); editSpot(s.id); };
@@ -993,6 +1067,80 @@ function confetti(){
     h+=`<svg width="${s}" height="${s}" viewBox="0 0 24 24" style="--x:${Math.random()*100}vw;--dx:${(Math.random()-.5)*120}px;--r:${(Math.random()-.5)*720}deg;--d:${1.3+Math.random()*.9}s;--dl:${Math.random()*.3}s">${shapes[i%3](c)}</svg>`;
   }
   box.innerHTML=h; setTimeout(()=>{ box.innerHTML=""; },2600);
+}
+
+/* ===== 資料匯出／匯入（換網址、換手機搬家用） =====
+   localStorage 依網址分開存（像每塊板子各有一顆 EEPROM），換網址就讀不到舊資料，
+   所以把要搬的 key 打包成一段代碼：WD1: + base64(JSON)。 */
+const SYNC_KEYS=["wd_data","wd_hist","wd_mode","wd_flt","wd_sfx","wd_bgm"];
+const b64e=str=>btoa(unescape(encodeURIComponent(str)));
+const b64d=str=>decodeURIComponent(escape(atob(str)));
+function makeExportCode(){
+  const d={}; SYNC_KEYS.forEach(k=>{ const v=store.get(k,undefined); if(v!==undefined) d[k]=v; });
+  return "WD1:"+b64e(JSON.stringify({app:"weekend-dice",v:1,at:Date.now(),data:d}));
+}
+function parseExportCode(code){
+  code=String(code||"").trim().replace(/\s+/g,"");
+  const i=code.indexOf("WD1:"); if(i<0) throw new Error("找不到代碼開頭 WD1:");
+  const o=JSON.parse(b64d(code.slice(i+4)));
+  if(!o || o.app!=="weekend-dice" || typeof o.data!=="object") throw new Error("不是假日骰骰的資料");
+  const d=o.data;
+  if(d.wd_data && (typeof d.wd_data!=="object" || !Array.isArray(d.wd_data.added||[]) || !Array.isArray(d.wd_data.deleted||[]))) throw new Error("名單資料格式不對");
+  if(d.wd_hist && !Array.isArray(d.wd_hist)) throw new Error("足跡資料格式不對");
+  return o;
+}
+function summary(d){
+  const dd=d.wd_data||{}, n=Object.keys(dd.edits||{}).length+(dd.added||[]).length+(dd.deleted||[]).length;
+  return {custom:(dd.added||[]).length, changed:n, hist:(d.wd_hist||[]).length};
+}
+function showExport(){
+  const code=makeExportCode(), sm=summary(JSON.parse(b64d(code.slice(4))).data);
+  openSheet(`<div class="sheetBody form">
+    <h2>匯出資料</h2>
+    <div class="note2" style="font-size:14px;line-height:1.6">打包了：自己新增 ${sm.custom} 個地點、改過的名單 ${sm.changed} 處、足跡 ${sm.hist} 筆，還有條件和音效設定。<br>複製下面這段代碼，到新的 App「足跡 → 匯入資料」貼上就好。</div>
+    <textarea id="exCode" readonly style="font-size:12px;line-height:1.4;min-height:110px;background:#fff;border:2px solid var(--ink);border-radius:10px;padding:8px;word-break:break-all">${code}</textarea>
+    <div class="formActs"><button class="btn yellow" id="exCopy">${ui("check",20)}複製代碼</button>${navigator.share?`<button class="btn" id="exShare">${ui("nav",20)}分享</button>`:""}</div>
+  </div>`);
+  $("#exCopy").onclick=async()=>{
+    let ok=false;
+    try{ await navigator.clipboard.writeText(code); ok=true; }catch(e){}
+    if(!ok){ try{ const t=$("#exCode"); t.removeAttribute("readonly"); t.select(); t.setSelectionRange(0,code.length); ok=document.execCommand("copy"); t.setAttribute("readonly",""); }catch(e){} }
+    Snd.play(ok?"tada":"oops"); toast(ok?"代碼複製好了！":"沒辦法自動複製，請長按代碼全選複製");
+  };
+  if($("#exShare")) $("#exShare").onclick=()=>{ navigator.share({title:"假日骰骰資料",text:code}).catch(()=>{}); };
+}
+function showImport(){
+  openSheet(`<div class="sheetBody form">
+    <h2>匯入資料</h2>
+    <div class="note2" style="font-size:14px;line-height:1.6">把舊 App 匯出的代碼貼在下面（開頭是 WD1:），或選存下來的檔案。</div>
+    <textarea id="imCode" placeholder="WD1:……" style="font-size:12px;line-height:1.4;min-height:100px;background:#fff;border:2px solid var(--ink);border-radius:10px;padding:8px;word-break:break-all"></textarea>
+    <label style="margin-top:10px">或選檔案</label><input type="file" id="imFile" accept=".txt,.json,text/plain,application/json">
+    <div id="imInfo" class="note2" style="font-size:14px;margin-top:10px"></div>
+    <div class="formActs"><button class="btn" id="imCheck">${ui("search",20)}檢查</button><button class="btn green" id="imGo" disabled style="opacity:.5">${ui("check",20)}確認匯入</button></div>
+  </div>`);
+  let parsed=null;
+  const check=()=>{
+    try{ parsed=parseExportCode($("#imCode").value); const sm=summary(parsed.data);
+      $("#imInfo").innerHTML=`找到：自己新增 <b>${sm.custom}</b> 個地點、改過的名單 <b>${sm.changed}</b> 處、足跡 <b>${sm.hist}</b> 筆。<br>名單和設定會換成這份；足跡會合併，不會重複。`;
+      $("#imGo").disabled=false; $("#imGo").style.opacity=1; Snd.play("pop");
+    }catch(e){ parsed=null; $("#imInfo").textContent="代碼看不懂："+e.message; $("#imGo").disabled=true; $("#imGo").style.opacity=.5; Snd.play("oops"); }
+  };
+  $("#imCheck").onclick=check;
+  $("#imFile").onchange=e=>{ const f=e.target.files[0]; if(!f) return; const r=new FileReader(); r.onload=()=>{ $("#imCode").value=String(r.result); check(); }; r.readAsText(f); };
+  $("#imGo").onclick=()=>{ if(!parsed) return; applyImport(parsed.data); closeSheet(); };
+}
+function applyImport(d){
+  if(d.wd_data){ data=Object.assign({edits:{},added:[],deleted:[]},d.wd_data); saveData(); }
+  if(d.wd_hist){
+    const seen=new Set(hist.map(h=>h.id+"@"+h.t));
+    d.wd_hist.forEach(h=>{ if(h && h.id && h.t && !seen.has(h.id+"@"+h.t)){ hist.push(h); seen.add(h.id+"@"+h.t); } });
+    hist.sort((a,b)=>a.t-b.t); if(hist.length>500) hist=hist.slice(-500); store.set("wd_hist",hist);
+  }
+  if(d.wd_mode!==undefined){ mode=+d.wd_mode||0; store.set("wd_mode",mode); }
+  if(d.wd_flt) { flt=Object.assign({rain:false,easy:false,free:false,food:false,avoid:false},d.wd_flt); store.set("wd_flt",flt); }
+  if(typeof d.wd_sfx==="boolean") Snd.setSfx(d.wd_sfx);
+  if(typeof d.wd_bgm==="boolean" && d.wd_bgm!==Snd.bgmOn) Snd.setBgm(d.wd_bgm);
+  paintSndBtns(); renderAll(); Snd.play("tada"); confetti(); toast("匯入完成！");
 }
 
 /* ===== 名單頁（票根） ===== */
@@ -1041,11 +1189,15 @@ function renderTrail(){
     <button class="set" id="sBgm">${ui("note",20)}背景音樂<span class="r">${Snd.bgmOn?"開":"關"}</span></button>
     <button class="set" id="sSfx">${ui("speaker",20)}音效<span class="r">${Snd.sfxOn?"開":"關"}</span></button>
     <button class="set" id="sLog">${ui("spark",20)}改版紀錄<span class="r">v${APP_VERSION}</span></button>
+    <button class="set" id="sExport">${ui("box",20)}匯出資料<span class="r">換手機、換網址用</span></button>
+    <button class="set" id="sImport">${ui("boxIn",20)}匯入資料<span class="r">貼上匯出的代碼</span></button>
     <button class="set" id="sReset">${ui("reset",20)}還原內建名單<span class="r">自己新增的會保留</span></button>
     <button class="set danger" id="sClear">${ui("trash",20)}清除足跡<span class="r">${hist.length} 筆</span></button>`;
   $("#sBgm").onclick=()=>setBgm(!Snd.bgmOn);
   $("#sSfx").onclick=()=>setSfx(!Snd.sfxOn);
   $("#sLog").onclick=()=>{ Snd.play("pop"); showLog(); };
+  $("#sExport").onclick=()=>{ Snd.play("pop"); showExport(); };
+  $("#sImport").onclick=()=>{ Snd.play("pop"); showImport(); };
   armBtn($("#sReset"),"再按一次確認還原",()=>{ data.edits={}; data.deleted=[]; saveData(); toast("內建名單已還原"); Snd.play("tada"); renderAll(); });
   armBtn($("#sClear"),"再按一次確認清除",()=>{ hist=[]; store.set("wd_hist",hist); toast("足跡清掉了"); renderAll(); });
   $("#footCount").textContent=`口袋名單 ${all.length} 個地點`;
@@ -1103,14 +1255,15 @@ function setTab(t){
   curTab=t;
   $$("#nav button").forEach(b=>b.classList.toggle("on",b.dataset.tab===t));
   $("#tabRoll").hidden=t!=="roll"; $("#tabList").hidden=t!=="list"; $("#tabTrail").hidden=t!=="trail";
-  if(t==="list") renderList(); if(t==="trail") renderTrail();
+  if(t==="list") renderList(); if(t==="trail") renderTrail(); if(t==="roll") Car.renderTrack();
   window.scrollTo(0,0);
 }
 $$("#nav button").forEach(b=>b.onclick=()=>{ if(curTab===b.dataset.tab) return; Snd.play("pop"); setTab(b.dataset.tab); });
 
 /* ===== 版本 & 改版紀錄 ===== */
-const APP_VERSION="1.0.0";
+const APP_VERSION="1.1.0";
 const CHANGELOG=[
+  ["1.1.0","11/08","搬新家＋小露營車！",["直接點骰子就會骰，骰到幾點，小露營車就在小路上往前開幾格","叭叭車換成圓滾滾的小露營車","App 搬到新網址；足跡頁多了「匯出資料／匯入資料」，可以把舊資料搬過來"]],
   ["1.0.0","11/05","假日骰骰上線！",["骰到幾點就去哪一區：1・2 點近郊、3・4 點小旅行、5 點遠一點、6 點出遠門","點路牌可以直接指定車程，再貼上雨天、好走、免門票、有得吃等條件","內建 140 個從新豐出發的地點，可以自己新增、編輯、刪除","結果是一張明信片，一鍵 Google 地圖導航；按「就去這！」會記到出遊足跡"]],
 ];
 const verNum=v=>v.split(".").reduce((a,x,i)=>a+(+x)*Math.pow(1000,2-i),0);
@@ -1133,7 +1286,7 @@ $("#verBtn").onclick=()=>{ Snd.play("pop"); showLog(); };
 
 /* ===== 自動檢查更新（像 FW 的 OTA：問伺服器 version.json，比手上新就重新載入） ===== */
 async function checkUpdate(){
-  if(updating || !/github\.io$/.test(location.hostname)) return;
+  if(updating || !/(github\.io|web\.app|firebaseapp\.com)$/.test(location.hostname)) return;   // 只在正式網址檢查，本機測試不檢查
   try{
     const r=await fetch("version.json?t="+Date.now(),{cache:"no-store"});
     const j=await r.json();
@@ -1164,6 +1317,8 @@ $("#addBtn").innerHTML=ui("plus",28);
 const NAV=[["roll","dice","骰子"],["list","ticketL","名單"],["trail","foot","足跡"]];
 $$("#nav button").forEach((b,i)=>b.innerHTML=ui(NAV[i][1],24)+NAV[i][2]);
 setDie(1); paintSndBtns(); renderHome();
+$("#tapHintIn").innerHTML=ui("dice",16)+"點骰子，骰一下！";
+Car.renderTrack(); splashDone.then(()=>setTimeout(()=>{ if(!rolling) Car.arrive(); },250));
 $("#footCount").textContent=`口袋名單 ${spots().length} 個地點`;
 
 /* ===== 開機畫面：天空 → 小路畫出來 → 骰子掉下來彈跳 → 字一個個跳出 → 骰子和標題飛到首頁位置（FLIP） ===== */
@@ -1196,7 +1351,7 @@ $("#footCount").textContent=`口袋名單 ${spots().length} 個地點`;
     tt.querySelectorAll("span").forEach(s=>{ s.style.animation="none"; s.style.opacity="1"; });
     $("#spDrop").style.animation="none"; $("#spDrop").style.opacity="1";
     requestAnimationFrame(()=>{
-      fly($("#spDie"),$("#dieWrap"),false);
+      fly($("#spDie"),$("#dieWrap"),true);
       fly(tt,$("#h1t"),true);
       sp.classList.add("sp-exit");
       setTimeout(finish,800);

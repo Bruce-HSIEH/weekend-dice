@@ -3,7 +3,8 @@
 假日要帶家人出門，不知道去哪？骰一下就決定！
 從新竹縣新豐出發，口袋名單都是事先挑過、適合帶小孩和長輩去的地方。
 
-網址：https://bruce-hsieh.github.io/weekend-dice/
+網址：https://weekend-dice.web.app/ （Firebase Hosting）
+舊網址 https://bruce-hsieh.github.io/weekend-dice/ 搬家中，詳見 HANDOFF.md
 
 ## 功能
 - **骰子**（首頁）：天空、小路和一台叭叭車；骰到幾點就去哪一區，再隨機挑一個地點
@@ -15,7 +16,7 @@
 - **行前檢查**（條件，可多選）：雨天可去、推車長輩好走、免門票、附近有得吃、避開 30 天內去過
 - **結果明信片**：郵票＋郵戳，一鍵 Google 地圖導航；按「就去這！」記到足跡
 - **名單**：內建 140 個地點（票根造型），可搜尋、新增、編輯、刪除，或設定「先不要骰到」
-- **足跡**：出門次數、去過的地方、時間軸，以及音樂／音效、還原名單、清除足跡等設定
+- **足跡**：出門次數、去過的地方、時間軸，以及音樂／音效、匯出／匯入資料、還原名單、清除足跡等設定
 - 叭叭車可以戳（叭叭叫），連戳會引擎過熱冒煙
 - 音效＋背景音樂（口哨＋烏克麗麗），右上角可分別開關
 
@@ -27,6 +28,7 @@
 從 LINE 打開的話，先點右上角改用瀏覽器開啟。
 
 ## 檔案
+- `HANDOFF.md`：交接文件（部署、資料、搬家狀態）
 - `index.html`：整個 App（HTML＋CSS＋JS＋自畫 SVG，單一檔案）
 - `version.json`：目前版本號，App 用它檢查新版
 - `icons/`：主畫面圖示（檔名帶版號）
@@ -38,6 +40,9 @@
 - 標記：雨＝雨天可去、走＝推車長輩好走、免＝免門票、吃＝附近有得吃
 - 車程是從新豐出發、假日一般路況的估計值；級距依分鐘自動計算
 - 使用者自己的修改存在手機瀏覽器（localStorage），內建名單更新時不會被蓋掉
+
+## 部署
+push 到 main → GitHub Actions 自動部署到 Firebase Hosting（設定見 `firebase.json`、`.github/workflows/firebase-hosting.yml`，金鑰在 GitHub Secrets `FIREBASE_SERVICE_ACCOUNT`）。
 
 ## 改版流程
 1. 修改 `index.html`
