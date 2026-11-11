@@ -1,0 +1,141 @@
+/* ---------- 上方天空標題列 ---------- */
+.top{position:relative;padding:calc(env(safe-area-inset-top) + 14px) 14px 54px;overflow:hidden;
+  background:linear-gradient(180deg,var(--sky1) 0%,var(--sky2) 65%,var(--sky3) 100%)}
+.top .cloud{position:absolute;opacity:.95}
+.top .cloud.c1{top:calc(env(safe-area-inset-top) + 58px);left:-20%;animation:drift 40s linear infinite}
+.top .cloud.c2{top:calc(env(safe-area-inset-top) + 20px);left:-20%;animation:drift 58s linear -25s infinite;opacity:.8}
+@keyframes drift{from{transform:translateX(0)}to{transform:translateX(140vw)}}
+.topbar{position:relative;z-index:2;display:flex;align-items:flex-start;gap:8px}
+.ttl{flex:1;min-width:0}
+h1{margin:0;font-size:28px;font-weight:400;letter-spacing:.05em;line-height:1.2;white-space:nowrap;color:var(--ink);
+  text-shadow:2px 2px 0 #fff,-2px 2px 0 #fff,2px -2px 0 #fff,-2px -2px 0 #fff,0 3px 0 #fff}
+#h1t{display:inline-block;line-height:1.2}
+.sub{font-size:13px;color:var(--ink);margin-top:3px;white-space:nowrap;opacity:.85;overflow:hidden;text-overflow:ellipsis}
+.ver{display:inline-block;vertical-align:middle;margin-left:4px;border:2px solid var(--ink);background:var(--sun);border-radius:999px;font-size:11px;padding:0 7px;line-height:18px;text-shadow:none;letter-spacing:0}
+.snd{display:flex;gap:6px}
+.snd button{width:38px;height:38px;border-radius:50%;border:2.5px solid var(--ink);background:#fff;display:grid;place-items:center;padding:0;box-shadow:0 3px 0 var(--ink);transition:.15s}
+.snd button.off{background:#E3EAF2;opacity:.75}
+.snd button.off svg{opacity:.45}
+.snd button:active{transform:translateY(3px);box-shadow:none}
+.vanBtn{flex:none;width:70px;height:51px;border:0;background:none;padding:0;margin:-2px 2px 0 -4px}
+.vanBtn svg{width:70px;height:51px;display:block;overflow:visible}
+.carBody{animation:carIdle .45s ease-in-out infinite alternate;transform-origin:50% 100%}
+@keyframes carIdle{to{transform:translateY(-1.2px)}}
+.vanBtn.honk .carBody{animation:honk .5s cubic-bezier(.3,1.8,.5,1)}
+@keyframes honk{0%{transform:scale(1.1,.86)}45%{transform:scale(.95,1.08) translateY(-6px)}100%{transform:none}}
+.vanBtn.hot .carBody{animation:hot .1s linear infinite}
+@keyframes hot{50%{transform:translateX(2px) rotate(1.5deg)}}
+.bubble{position:absolute;left:12px;top:calc(env(safe-area-inset-top) + 70px);z-index:6;background:#fff;border:2.5px solid var(--ink);border-radius:16px;padding:4px 11px;font-size:14px;white-space:nowrap;
+  opacity:0;transform:scale(.4) translateY(-8px);transform-origin:20px 0;transition:opacity .15s,transform .25s cubic-bezier(.2,1.6,.4,1);pointer-events:none}
+.bubble::before{content:"";position:absolute;left:22px;top:-11px;border:7px solid transparent;border-bottom-color:var(--ink);border-top:0}
+.bubble::after{content:"";position:absolute;left:23.5px;top:-7px;border:5.5px solid transparent;border-bottom-color:#fff;border-top:0}
+.bubble.show{opacity:1;transform:none}
+
+/* ---------- 台灣地圖 ---------- */
+.mapCard{position:relative;margin:-40px 14px 0;height:200px;transition:height .45s cubic-bezier(.3,1.2,.5,1);background:#CDEAF9;background-image:radial-gradient(rgba(255,255,255,.55) 1.5px,transparent 1.5px);background-size:16px 16px;border:2.5px solid var(--ink);border-radius:24px;overflow:hidden;
+  box-shadow:4px 5px 0 rgba(43,58,85,.2);z-index:3}
+.mapCard>svg{display:block;width:100%;height:100%}
+.mapCard .county{transition:fill .45s ease}
+.mapCard .tag{position:absolute;left:10px;bottom:10px;display:flex;align-items:center;gap:5px;background:#fff;border:2px solid var(--ink);border-radius:999px;padding:2px 10px 2px 6px;font-size:13px;pointer-events:none;max-width:58%;white-space:nowrap}
+.mapCard #fromTag{pointer-events:auto;cursor:pointer;box-shadow:0 3px 0 var(--ink)}
+.mapCard #fromTag .chg{font-size:11px;color:var(--ink2);text-decoration:underline;margin-left:2px}
+.mapCard.noOrigin #fromTag{background:var(--coral);color:#fff;animation:pulse 1.4s ease-in-out infinite}
+.mapCard.noOrigin #fromTag .chg{color:#fff}
+@keyframes pulse{50%{transform:scale(1.06)}}
+.mapCard.tapping{cursor:crosshair;box-shadow:0 0 0 4px var(--coral),4px 5px 0 rgba(43,58,85,.2)}
+.mapCard.tapping::after{content:"點一下地圖，選出發地點";position:absolute;left:50%;top:12px;transform:translateX(-50%);background:var(--coral);color:#fff;border:2px solid var(--ink);border-radius:999px;padding:3px 12px;font-size:14px;white-space:nowrap;pointer-events:none}
+.mapCard .reachTag{left:auto;right:10px;background:var(--sun)}
+.mapCard .reachTag b{font-weight:400}
+.dot{transition:fill .25s}
+.mapCard.picking .dot.on{fill:#FFC7B8}
+.dot.flash{fill:var(--sun)!important}
+
+/* ---------- 控制面板 ---------- */
+.panel{position:relative;background:var(--paper);border:2.5px solid var(--ink);border-radius:20px;padding:14px 14px 16px;margin:16px 14px 0;box-shadow:4px 5px 0 rgba(43,58,85,.18)}
+.panel h3{margin:0 0 8px;font-weight:400;font-size:16px;display:flex;align-items:center;gap:6px}
+.panel h3 small{margin-left:auto;font-size:11px;color:var(--ink2)}
+.panel .sec+.sec{margin-top:14px;padding-top:12px;border-top:2px dashed var(--kraft)}
+.reachRow{display:flex;gap:8px;align-items:stretch}
+.seg{flex:1;display:grid;grid-template-columns:repeat(5,1fr);gap:4px}
+.seg button{border:2.5px solid var(--ink);background:#fff;border-radius:12px;padding:7px 0 6px;font-size:13px;line-height:1.15;white-space:nowrap;transition:.15s}
+.seg button small{display:block;font-size:10px;color:var(--ink2)}
+.seg button.on{background:var(--sun);box-shadow:0 3px 0 var(--ink);transform:translateY(-2px)}
+.dirSeg{grid-template-columns:repeat(5,1fr)}
+.dirSeg button{display:flex;flex-direction:column;align-items:center;gap:2px}
+.dirSeg button.on{background:#FFD3C6}
+.rndBtn{flex:none;width:58px;border:2.5px solid var(--ink);background:#fff;border-radius:14px;padding:3px 0 2px;display:flex;flex-direction:column;align-items:center;font-size:11px;box-shadow:0 3px 0 var(--ink)}
+.rndBtn svg{width:34px;height:34px;display:block;overflow:visible}
+.rndBtn:active{transform:translateY(3px);box-shadow:none}
+.rndBtn.spin svg{animation:rndSpin .5s linear infinite}
+@keyframes rndSpin{to{transform:rotate(360deg)}}
+.farRow{display:flex;align-items:center;gap:8px;margin-top:10px;font-size:13px}
+.farRow .t{flex:1;color:var(--ink)}
+.farRow .t small{display:block;font-size:11px;color:var(--ink2)}
+.sw2{flex:none;width:48px;height:28px;border-radius:999px;border:2.5px solid var(--ink);background:#E3EAF2;position:relative;padding:0;transition:.2s}
+.sw2::after{content:"";position:absolute;top:2px;left:2px;width:19px;height:19px;border-radius:50%;background:#fff;border:2px solid var(--ink);transition:transform .2s}
+.sw2.on{background:var(--coral)}
+.sw2.on::after{transform:translateX(20px)}
+.hint{font-size:11.5px;color:var(--ink2);margin-top:8px}
+.goRow{margin:14px 14px 0;text-align:center}
+.goBtn{width:100%;border:3px solid var(--ink);border-radius:999px;background:var(--sun);font-size:21px;padding:13px 10px;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 6px 0 var(--ink);letter-spacing:.04em}
+.goBtn:active{transform:translateY(5px);box-shadow:0 1px 0 var(--ink)}
+.goBtn:disabled{opacity:.7}
+.goBtn svg{width:46px;height:34px;overflow:visible}
+.pool{display:block;width:100%;border:0;background:none;text-align:center;font-size:13px;color:var(--ink2);margin-top:8px;padding:4px}
+.pool .more{color:var(--ink);text-decoration:underline;margin-left:4px}
+.poolList{margin-top:6px;max-height:300px;overflow-y:auto;-webkit-overflow-scrolling:touch;background:var(--paper);border:2.5px solid var(--ink);border-radius:16px;padding:6px;text-align:left}
+.poolList .pl{display:flex;align-items:center;gap:8px;width:100%;border:0;border-bottom:2px dashed var(--kraft);background:none;padding:7px 4px;text-align:left}
+.poolList .pl:last-child{border-bottom:0}
+.poolList .m{flex:none;width:40px;height:34px;border-radius:9px;border:2px solid var(--ink);color:#fff;display:grid;place-items:center;font-size:15px;line-height:1}
+.poolList .m small{font-size:9px;display:block}
+.poolList .tx{flex:1;min-width:0}
+.poolList .tx b{display:block;font-weight:400;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.poolList .tx small{display:block;font-size:11px;color:var(--ink2)}
+.poolList .tg{flex:none;display:flex;gap:1px}
+.pool b{color:var(--ink);font-weight:400;background:#fff;border:2px solid var(--line);border-radius:8px;padding:0 6px}
+
+
+/* 條件按鈕：前面是勾選圓圈 */
+.ltag.ltag{padding:6px 12px 6px 7px}
+.ltag.ltag::before{display:none}
+.ltag .ck{flex:none;width:19px;height:19px;border-radius:50%;border:2px solid var(--ink);background:#fff;display:grid;place-items:center}
+.ltag.on .ck{background:var(--ink)}
+.ltag.ltag.on{background:#C8EBB2;transform:none}
+.ltag.ltag.on:nth-child(2n){transform:none}
+
+.chipGrp+.chipGrp{margin-top:12px}
+.chipTitle{font-size:12.5px;color:#7A869A;margin:0 0 6px 2px;letter-spacing:.05em}
+.tg .more{font-size:11px;font-weight:700;color:#7A869A;margin-left:1px}
+
+/* ===== 小地圖 ↔ 大地圖 ===== */
+.mapCard.big{height:min(440px,56vh);min-height:340px}
+.mapCard:not(.big) #labels{display:none}
+.mapCard:not(.big) .tag{font-size:12px;padding:1px 8px 1px 5px}
+.zoomBtn{position:absolute;right:8px;top:8px;width:34px;height:34px;border-radius:50%;border:2px solid var(--ink);background:#fff;display:grid;place-items:center;box-shadow:0 3px 0 var(--ink);padding:0}
+.zoomBtn:active{transform:translateY(2px);box-shadow:0 1px 0 var(--ink)}
+/* 幫我挑一個：固定在下方導覽列上面，選條件時隨時按得到 */
+.goRow{position:sticky;bottom:calc(env(safe-area-inset-bottom) + var(--nav-h) + 18px);z-index:30;margin:12px 14px 0;padding:6px 8px 8px;background:rgba(244,248,251,.92);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);border-radius:26px}
+.goRow .pool{margin:0 0 6px}
+.goBtn{padding:10px 10px;font-size:19px}
+.goBtn svg{width:40px;height:30px}
+#poolList{margin:12px 14px 0}
+/* 條件按鈕縮小一點，畫面比較集中 */
+.panel{padding:12px 12px 14px;margin-top:12px}
+.panel .sec+.sec{margin-top:10px;padding-top:9px}
+.panel h3{font-size:15px;margin-bottom:6px}
+.seg button{padding:5px 0 4px;font-size:12.5px}
+#chips .tags{gap:6px 6px}
+.ltag.ltag{padding:3px 9px 3px 5px;font-size:13.5px;gap:4px;border-width:2px}
+.ltag .ck{width:16px;height:16px}
+.ltag .ck svg{width:10px;height:10px}
+.ltag svg.ic{width:16px;height:16px}
+.chipGrp+.chipGrp{margin-top:8px}
+.chipTitle{font-size:11.5px;margin-bottom:4px}
+.hint{margin-top:5px}
+body #toast{bottom:calc(env(safe-area-inset-bottom) + var(--nav-h) + 128px)}
+.mapCard{height:180px}
+.dirSeg button small{display:none}
+.dirSeg button{flex-direction:row;justify-content:center;gap:2px;padding:6px 0}
+.dirSeg button svg{width:16px;height:16px}
+.farRow{margin-top:7px}
+.panel .hint{display:none}

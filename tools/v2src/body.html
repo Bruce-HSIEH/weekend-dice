@@ -1,0 +1,109 @@
+<body class="booting">
+<!-- 台灣地圖底圖（給開機畫面、明信片重複使用） -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><g id="twBase"></g></defs></svg>
+
+<div id="splash" aria-hidden="true">
+  <div class="sp-bg"></div>
+  <div class="sp-map" id="spMap"></div>
+  <div class="sp-title" id="spTitle"></div>
+  <div class="sp-tag">今天，要開多遠？</div>
+</div>
+
+<div class="app">
+  <!-- ===== 首頁 ===== -->
+  <section id="tabRoll">
+    <div class="top">
+      <div class="cloud c1" id="cl1"></div><div class="cloud c2" id="cl2"></div>
+      <div class="topbar">
+        <button class="vanBtn" id="vanBtn" aria-label="叭叭車"><svg viewBox="0 0 110 80"><g class="carBody" id="van"></g></svg></button>
+        <div class="ttl"><h1><span id="h1t">假日骰骰</span><button class="ver" id="verBtn"></button></h1><div class="sub" id="greet"></div></div>
+        <div class="snd"><button id="bgmBtn" aria-label="背景音樂"></button><button id="sfxBtn" aria-label="音效"></button></div>
+      </div>
+    </div>
+    <div class="bubble" id="bubble"></div>
+
+    <div class="mapCard" id="mapCard">
+      <svg id="map" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <clipPath id="landClip"><path id="landClipPath"/></clipPath>
+          <clipPath id="wedgeClip"><path id="wedgeClipPath"/></clipPath>
+          <!-- 遮罩：擴散圓（和方向扇形）以外的地方蓋一層淡白色 -->
+          <mask id="litMask" maskUnits="userSpaceOnUse" x="-3000" y="-3000" width="7000" height="7000">
+            <rect x="-3000" y="-3000" width="7000" height="7000" fill="#fff"/>
+            <g id="maskG"><circle id="maskCirc" fill="#000"/></g>
+          </mask>
+        </defs>
+        <g id="cam">
+          <path id="landShadow" fill="#2B3A55" opacity=".16"/>
+          <g id="counties"></g>
+          <path id="dimmer" fill="#F4F8FB" fill-opacity=".7" mask="url(#litMask)"/>
+          <path id="landStroke" fill="none" stroke="#2B3A55" stroke-width="3.2" stroke-linejoin="round" vector-effect="non-scaling-stroke"/>
+          <circle id="rippleRing" fill="none" stroke="#FF7A59"/>
+          <g id="labels"></g>
+          <g id="dots"></g>
+          <g id="home"></g>
+          <g id="pin" style="display:none"></g>
+          <g id="mapVan" style="display:none"></g>
+        </g>
+      </svg>
+      <div class="tag" id="fromTag"></div>
+      <div class="tag reachTag" id="reachTag"></div>
+      <button class="zoomBtn" id="zoomBtn" aria-label="放大地圖"></button>
+    </div>
+
+
+    <div class="panel">
+      <div class="sec">
+        <h3 id="hReach"></h3>
+        <div class="reachRow"><div class="seg" id="reachSeg"></div><button class="rndBtn" id="rndBtn" aria-label="隨機決定開多遠"><svg viewBox="0 0 120 120" id="rndDie"></svg></button></div>
+        <div class="seg dirSeg" id="dirSeg"></div>
+      </div>
+      <div class="sec">
+        <h3 id="hScene"><small>選一個，或都不選</small></h3>
+        <div class="scenes" id="scenes"></div>
+      </div>
+      <div class="sec">
+        <h3 id="hCond"></h3>
+        <div class="condSum" id="chips"></div>
+      </div>
+    </div>
+
+    <div class="poolList" id="poolList" hidden></div>
+    <div class="goRow">
+      <button class="pool" id="poolInfo"></button>
+      <button class="goBtn" id="goBtn"></button>
+    </div>
+
+    <footer class="pad">車程是依出發點估計的大約時間，出發前看一下導航<br>地圖資料：內政部國土測繪中心（政府資料開放授權）<br>Copyright © 2026 大樹 · <span class="footVer"></span></footer>
+  </section>
+
+  <!-- ===== 名單頁 ===== -->
+  <section id="tabList" hidden>
+    <div class="pageHead">
+      <h2 id="listTitle"></h2>
+      <label class="search"><span id="searchIc"></span><input id="q" type="search" placeholder="找地點、地區…" autocomplete="off"></label>
+    </div>
+    <div class="tierTabs" id="tierTabs"></div>
+    <div id="list"></div>
+    <button class="fab" id="addBtn" aria-label="新增地點"></button>
+  </section>
+
+  <!-- ===== 足跡頁 ===== -->
+  <section id="tabTrail" hidden>
+    <div class="pageHead"><h2 id="trailTitle"></h2></div>
+    <div class="stats" id="stats"></div>
+    <div class="trail" id="trail"></div>
+    <div class="settings" id="settings"></div>
+    <footer class="pad">Copyright © 2026 大樹 · <span class="footVer"></span><br><span id="footCount"></span></footer>
+  </section>
+</div>
+
+<nav class="nav" id="nav">
+  <button data-tab="roll" class="on"></button>
+  <button data-tab="list"></button>
+  <button data-tab="trail"></button>
+</nav>
+
+<div id="overlay"><div class="sheet" id="sheet" role="dialog"></div></div>
+<div id="confetti"></div>
+<div id="toast"></div>

@@ -1,0 +1,86 @@
+/* ===== 主題：成熟一點的可愛（薄荷綠＋珊瑚，暖白底） ===== */
+:root{
+  --ink:#2B3A55; --ink2:#738096; --line:#E3DED4;
+  --sun:#9EDFD3;           /* 原本的黃色 → 淡薄荷：選中、標籤 */
+  --pri:#2E9E92;           /* 主色：深一點的薄荷綠 */
+  --pri-d:#21796F;
+  --coral:#F27D62; --paper:#FFFDF9; --kraft:#E8DFD0;
+  --sky1:#BFE6E0; --sky2:#DDF1EC; --sky3:#F6F3EE;
+}
+html,body{background:#F6F3EE}
+body{background-image:radial-gradient(rgba(43,58,85,.07) 1.2px,transparent 1.2px);background-size:22px 22px}
+.top{background:linear-gradient(180deg,#BFE6E0 0%,#DDF1EC 60%,#F6F3EE 100%)}
+
+/* 地圖 */
+.mapCard{background:#D7ECF2;border-color:var(--ink)}
+.mapCard .reachTag{background:#fff}
+.mapCard .reachTag b{color:var(--pri-d)}
+
+/* 卡片 */
+.panel{background:var(--paper);border:2px solid var(--ink);border-radius:22px;box-shadow:0 4px 0 rgba(43,58,85,.12);padding:14px 14px 14px}
+.panel h3{font-size:15.5px;margin:0 0 9px;color:var(--ink)}
+.panel h3 small{color:var(--ink2)}
+.panel .sec+.sec{margin-top:14px;padding-top:13px;border-top:1.5px dashed var(--kraft)}
+
+/* 開多遠：一排膠囊 */
+.reachRow{display:flex;gap:6px;align-items:stretch}
+.seg{gap:5px}
+.seg button{border:2px solid var(--ink);border-radius:12px;background:#fff;padding:6px 0 5px;font-size:13px;box-shadow:none;transform:none}
+.seg button small{font-size:9.5px}
+.seg button.on{background:var(--pri);color:#fff;box-shadow:0 3px 0 var(--ink);transform:translateY(-1px)}
+.seg button.on small{color:#E2F6F2}
+.rndBtn{flex:none;width:46px;border:2px solid var(--ink);border-radius:12px;background:#fff;padding:4px;display:grid;place-items:center;box-shadow:0 3px 0 var(--ink)}
+.rndBtn svg{width:30px;height:30px}
+/* 方向：小一號，跟開多遠疊在一起 */
+.dirSeg{margin-top:8px}
+.dirSeg button{display:flex;flex-direction:row;justify-content:center;align-items:center;gap:3px;padding:5px 0;font-size:12.5px}
+.dirSeg button.on{background:#E3F5F1;color:var(--ink);box-shadow:0 3px 0 var(--ink)}
+
+/* 情境卡：3×2 */
+.scenes{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.scene{position:relative;border:2px solid var(--ink);border-radius:16px;background:#fff;padding:9px 4px 8px;display:flex;flex-direction:column;align-items:center;gap:1px;transition:transform .15s,background .15s}
+.scene .si{width:44px;height:44px;border-radius:50%;background:#F1EEE7;display:grid;place-items:center;margin-bottom:3px;transition:background .15s}
+.scene b{font-weight:400;font-size:14px;white-space:nowrap}
+.scene small{font-size:9.5px;color:var(--ink2);white-space:nowrap}
+.scene i{position:absolute;top:5px;right:6px;font-style:normal;font-size:10px;color:var(--ink2);background:#F1EEE7;border-radius:999px;padding:0 6px;line-height:16px}
+.scene:active{transform:scale(.96)}
+.scene.on{background:#E3F5F1;box-shadow:0 3px 0 var(--ink);transform:translateY(-2px)}
+.scene.on .si{background:#fff;box-shadow:0 0 0 2.5px var(--pri)}
+.scene.on i{background:var(--pri);color:#fff}
+
+/* 講究一下：摘要＋按鈕 */
+.condSum{display:flex;flex-direction:column;gap:8px}
+.sumTags{display:flex;flex-wrap:wrap;gap:6px}
+.sumTag{display:inline-flex;align-items:center;gap:4px;border:2px solid var(--ink);border-radius:999px;background:#E3F5F1;padding:2px 6px 2px 8px;font-size:13px}
+.sumTag .x{margin-left:2px;width:16px;height:16px;border-radius:50%;background:var(--ink);color:#fff;display:grid;place-items:center;font-size:11px;line-height:1}
+.sumNone{font-size:13px;color:var(--ink2)}
+.addCond{display:flex;align-items:center;gap:6px;border:2px dashed var(--ink2);border-radius:14px;background:none;padding:9px 12px;font-size:14px;width:100%}
+.addCond small{margin-left:auto;font-size:11px;color:var(--ink2)}
+
+/* 條件 sheet */
+.condSheet .chipGrp{margin-top:14px}
+.condSheet .chipTitle{font-size:12px;color:var(--ink2);margin-bottom:6px}
+.condSheet .tags{display:flex;flex-wrap:wrap;gap:7px}
+.condSheet .ltag.ltag{padding:4px 11px 4px 6px;font-size:14px;gap:5px;border-width:2px;background:#fff;transform:none}
+.condSheet .ltag.ltag.on{background:#E3F5F1}
+.ltag .ck{width:17px;height:17px;border:2px solid var(--ink);border-radius:50%;display:grid;place-items:center;background:#fff;flex:none}
+.ltag.on .ck{background:var(--pri);border-color:var(--pri-d)}
+.condFoot{position:sticky;bottom:-1px;display:flex;gap:8px;margin-top:18px;padding:10px 0 4px;background:var(--paper)}
+.condFoot .btn{flex:none}
+.condFoot #condDone{flex:1}
+
+/* 主按鈕：薄荷綠＋白字 */
+.goRow{background:rgba(246,243,238,.92)}
+.goBtn{background:var(--pri);color:#fff;border:2.5px solid var(--ink);box-shadow:0 5px 0 var(--ink);font-size:19px;padding:10px}
+.goBtn:active{box-shadow:0 1px 0 var(--ink)}
+.pool b{border-color:var(--line)}
+.btn.yellow{background:var(--pri);color:#fff}
+.nav button.on{background:var(--sun)}
+.ver{background:#fff}
+.scene.zero:not(.on){opacity:.45}
+/* 跑馬燈：亮起的縣市 */
+.mapCard .county.lit{fill:#FF9F80!important;opacity:1!important;transition:none!important}
+.mapCard.picking .county:not(.lit){opacity:.45}
+.mapCard .county{transition:fill .45s ease,opacity .2s}
+.mapCard.picking .county{transition:fill .25s ease,opacity .2s}
+.mapCard .county.lit+.county{}

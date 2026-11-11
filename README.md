@@ -58,3 +58,11 @@ push 到 main → GitHub Actions 自動部署到 Firebase Hosting（設定見 `f
 - 常駐動畫只用 transform／opacity；背景音樂用 `<audio>` 播預先渲染好的 WAV
 
 Copyright © 2026 大樹
+
+## v2 之後怎麼改（重要）
+`index.html` 是用 `tools/v2src/compose.py` 組出來的，**不要直接改 index.html**：
+- 邏輯：`tools/v2src/main.js`；版面：`body.html`；樣式：`top.css`、`theme.css`（配色）
+- 地點資料：`spots_v3.js`（格式 `[名稱, 地區, 從新豐分鐘, 標記, 說明, 緯度, 經度]`）
+- 台灣地圖：`map.json`（由 `build_q.mjs` 產生）；背景音樂：`bgm_pop.js`、`bgm_synth.js`
+- 版號與改版紀錄：在 `compose.py` 的 VER 那段
+- 改完執行 `python3 tools/v2src/compose.py`，會覆寫根目錄的 `index.html`

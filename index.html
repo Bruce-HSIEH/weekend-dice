@@ -50,94 +50,147 @@ svg.ic{display:inline-block;vertical-align:middle;flex:none}
 .app{max-width:520px;margin:0 auto}
 .pad{padding:0 16px}
 
-/* ---------- 風景（首頁上方） ---------- */
-.scene{position:relative;height:calc(env(safe-area-inset-top) + 318px);overflow:hidden;
-  background:linear-gradient(180deg,var(--sky1) 0%,var(--sky2) 55%,var(--sky3) 100%);border-radius:0 0 34px 34px}
-.scene .sun{position:absolute;left:18px;top:calc(env(safe-area-inset-top) + 64px);width:58px;height:58px}
-.scene .sun svg{animation:spinSlow 24s linear infinite;display:block}
-@keyframes spinSlow{to{transform:rotate(360deg)}}
-.cloud{position:absolute;opacity:.95}
-.cloud.c1{top:calc(env(safe-area-inset-top) + 92px);left:-20%;animation:drift 38s linear infinite}
-.cloud.c2{top:calc(env(safe-area-inset-top) + 140px);left:-20%;animation:drift 52s linear -20s infinite;opacity:.8}
-.cloud.c3{top:calc(env(safe-area-inset-top) + 58px);left:-20%;animation:drift 64s linear -40s infinite;opacity:.7}
+/* ---------- 上方天空標題列 ---------- */
+.top{position:relative;padding:calc(env(safe-area-inset-top) + 14px) 14px 54px;overflow:hidden;
+  background:linear-gradient(180deg,var(--sky1) 0%,var(--sky2) 65%,var(--sky3) 100%)}
+.top .cloud{position:absolute;opacity:.95}
+.top .cloud.c1{top:calc(env(safe-area-inset-top) + 58px);left:-20%;animation:drift 40s linear infinite}
+.top .cloud.c2{top:calc(env(safe-area-inset-top) + 20px);left:-20%;animation:drift 58s linear -25s infinite;opacity:.8}
 @keyframes drift{from{transform:translateX(0)}to{transform:translateX(140vw)}}
-.hills{position:absolute;left:0;right:0;bottom:70px;height:120px}
-.hills svg{width:100%;height:100%;display:block}
-.road{position:absolute;left:0;right:0;bottom:0;height:78px;background:var(--road);border-top:5px solid #454A57}
-.road::before{content:"";position:absolute;left:0;right:0;top:34px;height:5px;background:repeating-linear-gradient(90deg,var(--lane) 0 28px,transparent 28px 52px)}
-.road::after{content:"";position:absolute;left:0;right:0;bottom:0;height:12px;background:var(--grass-d)}
-.topbar{position:absolute;left:0;right:0;top:calc(env(safe-area-inset-top) + 12px);display:flex;align-items:flex-start;padding:0 16px;gap:8px;z-index:3}
-.ttl{flex:1;min-width:0;text-align:center;padding-left:84px}
-h1{margin:0;font-size:30px;font-weight:400;letter-spacing:.06em;line-height:1.2;white-space:nowrap;color:var(--ink);
-  text-shadow:2px 2px 0 #fff,-2px 2px 0 #fff,2px -2px 0 #fff,-2px -2px 0 #fff,0 3px 0 #fff,0 5px 0 rgba(43,58,85,.15)}
+.topbar{position:relative;z-index:2;display:flex;align-items:flex-start;gap:8px}
+.ttl{flex:1;min-width:0}
+h1{margin:0;font-size:28px;font-weight:400;letter-spacing:.05em;line-height:1.2;white-space:nowrap;color:var(--ink);
+  text-shadow:2px 2px 0 #fff,-2px 2px 0 #fff,2px -2px 0 #fff,-2px -2px 0 #fff,0 3px 0 #fff}
 #h1t{display:inline-block;line-height:1.2}
-.sub{font-size:13px;color:var(--ink);margin-top:2px;white-space:nowrap;opacity:.8}
+.sub{font-size:13px;color:var(--ink);margin-top:3px;white-space:nowrap;opacity:.85;overflow:hidden;text-overflow:ellipsis}
 .ver{display:inline-block;vertical-align:middle;margin-left:4px;border:2px solid var(--ink);background:var(--sun);border-radius:999px;font-size:11px;padding:0 7px;line-height:18px;text-shadow:none;letter-spacing:0}
 .snd{display:flex;gap:6px}
 .snd button{width:38px;height:38px;border-radius:50%;border:2.5px solid var(--ink);background:#fff;display:grid;place-items:center;padding:0;box-shadow:0 3px 0 var(--ink);transition:.15s}
 .snd button.off{background:#E3EAF2;opacity:.75}
 .snd button.off svg{opacity:.45}
 .snd button:active{transform:translateY(3px);box-shadow:none}
-
-/* 小路上的里程牌（1～6）和家 */
-.track{position:absolute;left:0;right:0;bottom:0;height:160px;z-index:2;pointer-events:none}
-.mile{position:absolute;bottom:76px;width:28px;margin-left:-14px;text-align:center;transform-origin:50% 100%}
-.mile b{display:block;width:28px;height:25px;border-radius:8px;border:2.5px solid var(--ink);color:#fff;font-weight:400;font-size:15px;line-height:20px;transition:box-shadow .2s}
-.mile i{display:block;width:4px;height:10px;background:var(--ink);margin:0 auto;border-radius:0 0 2px 2px}
-.mile.pass{animation:milePop .45s cubic-bezier(.2,1.6,.4,1)}
-.mile.here b{box-shadow:0 0 0 3px #fff,0 0 0 6px var(--sun)}
-@keyframes milePop{45%{transform:translateY(-10px) scale(1.3)}100%{transform:none}}
-.home{position:absolute;bottom:74px;width:38px;margin-left:-19px}
-.home svg{display:block;width:38px;height:36px}
-.carBox{position:absolute;left:0;bottom:12px;width:100px;height:73px;z-index:3;pointer-events:auto;border:0;background:none;padding:0;transform:translateX(-120px)}
-.carBox svg{width:100px;height:73px;display:block;overflow:visible}
+.vanBtn{flex:none;width:70px;height:51px;border:0;background:none;padding:0;margin:-2px 2px 0 -4px}
+.vanBtn svg{width:70px;height:51px;display:block;overflow:visible}
 .carBody{animation:carIdle .45s ease-in-out infinite alternate;transform-origin:50% 100%}
 @keyframes carIdle{to{transform:translateY(-1.2px)}}
-.carBox .wh{transform-box:view-box}
-.carBox.moving .wh{animation:wheel .32s linear infinite}
-@keyframes wheel{to{transform:rotate(360deg)}}
-.carBox.honk .carBody{animation:honk .5s cubic-bezier(.3,1.8,.5,1)}
+.vanBtn.honk .carBody{animation:honk .5s cubic-bezier(.3,1.8,.5,1)}
 @keyframes honk{0%{transform:scale(1.1,.86)}45%{transform:scale(.95,1.08) translateY(-6px)}100%{transform:none}}
-.carBox.hot .carBody{animation:hot .1s linear infinite}
+.vanBtn.hot .carBody{animation:hot .1s linear infinite}
 @keyframes hot{50%{transform:translateX(2px) rotate(1.5deg)}}
-.bubble{position:absolute;left:0;bottom:90px;z-index:5;background:#fff;border:2.5px solid var(--ink);border-radius:16px;padding:4px 11px;font-size:14px;white-space:nowrap;
-  opacity:0;transform:scale(.4) translateY(8px);transform-origin:var(--tx,50%) 100%;transition:opacity .15s,transform .25s cubic-bezier(.2,1.6,.4,1);pointer-events:none}
-.bubble::before{content:"";position:absolute;left:var(--tx,50%);margin-left:-7px;bottom:-11px;border:7px solid transparent;border-top-color:var(--ink);border-bottom:0}
-.bubble::after{content:"";position:absolute;left:var(--tx,50%);margin-left:-5.5px;bottom:-7px;border:5.5px solid transparent;border-top-color:#fff;border-bottom:0}
+.bubble{position:absolute;left:12px;top:calc(env(safe-area-inset-top) + 70px);z-index:6;background:#fff;border:2.5px solid var(--ink);border-radius:16px;padding:4px 11px;font-size:14px;white-space:nowrap;
+  opacity:0;transform:scale(.4) translateY(-8px);transform-origin:20px 0;transition:opacity .15s,transform .25s cubic-bezier(.2,1.6,.4,1);pointer-events:none}
+.bubble::before{content:"";position:absolute;left:22px;top:-11px;border:7px solid transparent;border-bottom-color:var(--ink);border-top:0}
+.bubble::after{content:"";position:absolute;left:23.5px;top:-7px;border:5.5px solid transparent;border-bottom-color:#fff;border-top:0}
 .bubble.show{opacity:1;transform:none}
 
-/* ---------- 路標 ---------- */
-.signs{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:-6px 0 0;padding:0 14px;position:relative;z-index:3}
-.sign{position:relative;border:0;background:none;padding:0 0 20px;transition:transform .25s cubic-bezier(.2,1.6,.4,1),opacity .2s}
-.sign::before,.sign::after{content:"";position:absolute;bottom:0;width:6px;height:24px;background:#8E98A8;border:2px solid var(--ink);border-top:0;border-radius:0 0 3px 3px;z-index:-1}
-.sign::before{left:28%} .sign::after{right:28%}
-.sign .pl{display:block;border-radius:12px;border:2.5px solid var(--ink);padding:3px;box-shadow:0 4px 0 var(--ink)}
-.sign .in{display:block;border:2px solid rgba(255,255,255,.9);border-radius:8px;color:#fff;padding:5px 2px 4px;text-align:center}
-.sign .ex{display:inline-block;font-size:10px;background:#fff;color:var(--ink);border-radius:5px;padding:0 4px;line-height:15px}
-.sign b{display:block;font-weight:400;font-size:15px;white-space:nowrap;margin-top:2px;letter-spacing:.04em}
-.sign small{display:block;font-size:10.5px;white-space:nowrap;opacity:.95}
-.sign .pin{position:absolute;top:-10px;left:50%;transform:translateX(-50%) rotate(-6deg);background:var(--sun);border:2px solid var(--ink);border-radius:7px;font-size:11px;padding:0 6px;line-height:17px;white-space:nowrap}
-.signs.locked .sign:not(.on){opacity:.4}
-.sign.hit{animation:signHit .9s cubic-bezier(.2,1.6,.4,1)}
-@keyframes signHit{0%{transform:none}25%{transform:rotate(-7deg) scale(1.12)}50%{transform:rotate(5deg) scale(1.1)}75%{transform:rotate(-2deg) scale(1.06)}100%{transform:scale(1.04)}}
-.sign.won .pl{box-shadow:0 4px 0 var(--ink),0 0 0 4px var(--sun)}
-.signTip{text-align:center;font-size:12px;color:var(--ink2);margin:6px 0 0}
+/* ---------- 台灣地圖 ---------- */
+.mapCard{position:relative;margin:-40px 14px 0;height:200px;transition:height .45s cubic-bezier(.3,1.2,.5,1);background:#CDEAF9;background-image:radial-gradient(rgba(255,255,255,.55) 1.5px,transparent 1.5px);background-size:16px 16px;border:2.5px solid var(--ink);border-radius:24px;overflow:hidden;
+  box-shadow:4px 5px 0 rgba(43,58,85,.2);z-index:3}
+.mapCard>svg{display:block;width:100%;height:100%}
+.mapCard .county{transition:fill .45s ease}
+.mapCard .tag{position:absolute;left:10px;bottom:10px;display:flex;align-items:center;gap:5px;background:#fff;border:2px solid var(--ink);border-radius:999px;padding:2px 10px 2px 6px;font-size:13px;pointer-events:none;max-width:58%;white-space:nowrap}
+.mapCard #fromTag{pointer-events:auto;cursor:pointer;box-shadow:0 3px 0 var(--ink)}
+.mapCard #fromTag .chg{font-size:11px;color:var(--ink2);text-decoration:underline;margin-left:2px}
+.mapCard.noOrigin #fromTag{background:var(--coral);color:#fff;animation:pulse 1.4s ease-in-out infinite}
+.mapCard.noOrigin #fromTag .chg{color:#fff}
+@keyframes pulse{50%{transform:scale(1.06)}}
+.mapCard.tapping{cursor:crosshair;box-shadow:0 0 0 4px var(--coral),4px 5px 0 rgba(43,58,85,.2)}
+.mapCard.tapping::after{content:"點一下地圖，選出發地點";position:absolute;left:50%;top:12px;transform:translateX(-50%);background:var(--coral);color:#fff;border:2px solid var(--ink);border-radius:999px;padding:3px 12px;font-size:14px;white-space:nowrap;pointer-events:none}
+.mapCard .reachTag{left:auto;right:10px;background:var(--sun)}
+.mapCard .reachTag b{font-weight:400}
+.dot{transition:fill .25s}
+.mapCard.picking .dot.on{fill:#FFC7B8}
+.dot.flash{fill:var(--sun)!important}
 
-/* 骰子本體就是按鈕 */
-.dieStage{position:relative;height:196px;margin-top:4px}
-.dieWrap{position:absolute;left:50%;top:14px;width:136px;height:136px;margin-left:-68px;border:0;background:none;padding:0;z-index:4}
-.dieIdle{width:136px;height:136px;animation:dieIdle 2.6s ease-in-out infinite}
-@keyframes dieIdle{0%,100%{transform:none}50%{transform:translateY(-8px) rotate(-4deg)}}
-.dieWrap svg{display:block;width:136px;height:136px;overflow:visible}
-.dieWrap:active svg{transform:scale(.94)}
-.dieShadow{position:absolute;left:50%;top:150px;width:104px;height:14px;margin-left:-58px;border-radius:50%;background:rgba(43,58,85,.18)}
-.tapHint{position:absolute;left:0;right:0;top:170px;text-align:center;font-size:14px;color:var(--ink)}
-.tapHint span{display:inline-flex;align-items:center;gap:5px;background:#fff;border:2px solid var(--ink);border-radius:999px;padding:2px 12px;animation:hint 1.6s ease-in-out infinite}
-@keyframes hint{50%{transform:translateY(-3px)}}
-.tapHint.off span{opacity:0;transition:opacity .2s}
-.pool{text-align:center;font-size:13px;color:var(--ink2);margin-top:6px}
+/* ---------- 控制面板 ---------- */
+.panel{position:relative;background:var(--paper);border:2.5px solid var(--ink);border-radius:20px;padding:14px 14px 16px;margin:16px 14px 0;box-shadow:4px 5px 0 rgba(43,58,85,.18)}
+.panel h3{margin:0 0 8px;font-weight:400;font-size:16px;display:flex;align-items:center;gap:6px}
+.panel h3 small{margin-left:auto;font-size:11px;color:var(--ink2)}
+.panel .sec+.sec{margin-top:14px;padding-top:12px;border-top:2px dashed var(--kraft)}
+.reachRow{display:flex;gap:8px;align-items:stretch}
+.seg{flex:1;display:grid;grid-template-columns:repeat(5,1fr);gap:4px}
+.seg button{border:2.5px solid var(--ink);background:#fff;border-radius:12px;padding:7px 0 6px;font-size:13px;line-height:1.15;white-space:nowrap;transition:.15s}
+.seg button small{display:block;font-size:10px;color:var(--ink2)}
+.seg button.on{background:var(--sun);box-shadow:0 3px 0 var(--ink);transform:translateY(-2px)}
+.dirSeg{grid-template-columns:repeat(5,1fr)}
+.dirSeg button{display:flex;flex-direction:column;align-items:center;gap:2px}
+.dirSeg button.on{background:#FFD3C6}
+.rndBtn{flex:none;width:58px;border:2.5px solid var(--ink);background:#fff;border-radius:14px;padding:3px 0 2px;display:flex;flex-direction:column;align-items:center;font-size:11px;box-shadow:0 3px 0 var(--ink)}
+.rndBtn svg{width:34px;height:34px;display:block;overflow:visible}
+.rndBtn:active{transform:translateY(3px);box-shadow:none}
+.rndBtn.spin svg{animation:rndSpin .5s linear infinite}
+@keyframes rndSpin{to{transform:rotate(360deg)}}
+.farRow{display:flex;align-items:center;gap:8px;margin-top:10px;font-size:13px}
+.farRow .t{flex:1;color:var(--ink)}
+.farRow .t small{display:block;font-size:11px;color:var(--ink2)}
+.sw2{flex:none;width:48px;height:28px;border-radius:999px;border:2.5px solid var(--ink);background:#E3EAF2;position:relative;padding:0;transition:.2s}
+.sw2::after{content:"";position:absolute;top:2px;left:2px;width:19px;height:19px;border-radius:50%;background:#fff;border:2px solid var(--ink);transition:transform .2s}
+.sw2.on{background:var(--coral)}
+.sw2.on::after{transform:translateX(20px)}
+.hint{font-size:11.5px;color:var(--ink2);margin-top:8px}
+.goRow{margin:14px 14px 0;text-align:center}
+.goBtn{width:100%;border:3px solid var(--ink);border-radius:999px;background:var(--sun);font-size:21px;padding:13px 10px;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 6px 0 var(--ink);letter-spacing:.04em}
+.goBtn:active{transform:translateY(5px);box-shadow:0 1px 0 var(--ink)}
+.goBtn:disabled{opacity:.7}
+.goBtn svg{width:46px;height:34px;overflow:visible}
+.pool{display:block;width:100%;border:0;background:none;text-align:center;font-size:13px;color:var(--ink2);margin-top:8px;padding:4px}
+.pool .more{color:var(--ink);text-decoration:underline;margin-left:4px}
+.poolList{margin-top:6px;max-height:300px;overflow-y:auto;-webkit-overflow-scrolling:touch;background:var(--paper);border:2.5px solid var(--ink);border-radius:16px;padding:6px;text-align:left}
+.poolList .pl{display:flex;align-items:center;gap:8px;width:100%;border:0;border-bottom:2px dashed var(--kraft);background:none;padding:7px 4px;text-align:left}
+.poolList .pl:last-child{border-bottom:0}
+.poolList .m{flex:none;width:40px;height:34px;border-radius:9px;border:2px solid var(--ink);color:#fff;display:grid;place-items:center;font-size:15px;line-height:1}
+.poolList .m small{font-size:9px;display:block}
+.poolList .tx{flex:1;min-width:0}
+.poolList .tx b{display:block;font-weight:400;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.poolList .tx small{display:block;font-size:11px;color:var(--ink2)}
+.poolList .tg{flex:none;display:flex;gap:1px}
 .pool b{color:var(--ink);font-weight:400;background:#fff;border:2px solid var(--line);border-radius:8px;padding:0 6px}
 
+
+/* 條件按鈕：前面是勾選圓圈 */
+.ltag.ltag{padding:6px 12px 6px 7px}
+.ltag.ltag::before{display:none}
+.ltag .ck{flex:none;width:19px;height:19px;border-radius:50%;border:2px solid var(--ink);background:#fff;display:grid;place-items:center}
+.ltag.on .ck{background:var(--ink)}
+.ltag.ltag.on{background:#C8EBB2;transform:none}
+.ltag.ltag.on:nth-child(2n){transform:none}
+
+.chipGrp+.chipGrp{margin-top:12px}
+.chipTitle{font-size:12.5px;color:#7A869A;margin:0 0 6px 2px;letter-spacing:.05em}
+.tg .more{font-size:11px;font-weight:700;color:#7A869A;margin-left:1px}
+
+/* ===== 小地圖 ↔ 大地圖 ===== */
+.mapCard.big{height:min(440px,56vh);min-height:340px}
+.mapCard:not(.big) #labels{display:none}
+.mapCard:not(.big) .tag{font-size:12px;padding:1px 8px 1px 5px}
+.zoomBtn{position:absolute;right:8px;top:8px;width:34px;height:34px;border-radius:50%;border:2px solid var(--ink);background:#fff;display:grid;place-items:center;box-shadow:0 3px 0 var(--ink);padding:0}
+.zoomBtn:active{transform:translateY(2px);box-shadow:0 1px 0 var(--ink)}
+/* 幫我挑一個：固定在下方導覽列上面，選條件時隨時按得到 */
+.goRow{position:sticky;bottom:calc(env(safe-area-inset-bottom) + var(--nav-h) + 18px);z-index:30;margin:12px 14px 0;padding:6px 8px 8px;background:rgba(244,248,251,.92);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);border-radius:26px}
+.goRow .pool{margin:0 0 6px}
+.goBtn{padding:10px 10px;font-size:19px}
+.goBtn svg{width:40px;height:30px}
+#poolList{margin:12px 14px 0}
+/* 條件按鈕縮小一點，畫面比較集中 */
+.panel{padding:12px 12px 14px;margin-top:12px}
+.panel .sec+.sec{margin-top:10px;padding-top:9px}
+.panel h3{font-size:15px;margin-bottom:6px}
+.seg button{padding:5px 0 4px;font-size:12.5px}
+#chips .tags{gap:6px 6px}
+.ltag.ltag{padding:3px 9px 3px 5px;font-size:13.5px;gap:4px;border-width:2px}
+.ltag .ck{width:16px;height:16px}
+.ltag .ck svg{width:10px;height:10px}
+.ltag svg.ic{width:16px;height:16px}
+.chipGrp+.chipGrp{margin-top:8px}
+.chipTitle{font-size:11.5px;margin-bottom:4px}
+.hint{margin-top:5px}
+body #toast{bottom:calc(env(safe-area-inset-bottom) + var(--nav-h) + 128px)}
+.mapCard{height:180px}
+.dirSeg button small{display:none}
+.dirSeg button{flex-direction:row;justify-content:center;gap:2px;padding:6px 0}
+.dirSeg button svg{width:16px;height:16px}
+.farRow{margin-top:7px}
+.panel .hint{display:none}
 /* ---------- 行前檢查（條件） ---------- */
 .board{position:relative;background:var(--paper);border:2.5px solid var(--ink);border-radius:20px;padding:26px 16px 16px;margin:24px 16px 0;box-shadow:5px 6px 0 rgba(43,58,85,.18)}
 .board .clip{position:absolute;top:-16px;left:50%;transform:translateX(-50%);width:96px;height:30px}
@@ -280,92 +333,206 @@ footer{text-align:center;font-size:12px;color:var(--ink2);margin-top:22px;line-h
 #confetti svg{position:absolute;left:var(--x);top:-30px;animation:fall var(--d) cubic-bezier(.25,.6,.4,1) var(--dl) both}
 @keyframes fall{0%{transform:translate(0,0) rotate(0)}100%{transform:translate(var(--dx),110vh) rotate(var(--r))}}
 
-/* ---------- 開機畫面：天空 → 小路畫出來 → 骰子掉到路上彈跳 → 字跳出 → 飛到首頁 ---------- */
+/* ---------- 開機畫面：天空 → 台灣浮出來 → 從家裡一圈圈擴散 → 字跳出 → 標題飛到首頁 ---------- */
 #splash{position:fixed;inset:0;z-index:200;overflow:hidden;pointer-events:none}
 #splash .sp-bg{position:absolute;inset:0;background:linear-gradient(180deg,#8FD0F5 0%,#C4E9FC 55%,#EAF7FF 100%);transition:opacity .5s ease}
-#splash .sp-road{position:absolute;left:0;right:0;top:calc(36% + 112px);height:64px;background:var(--road);border-top:5px solid #454A57;transform:scaleX(0);transform-origin:0 50%}
-#splash .sp-road::before{content:"";position:absolute;left:0;right:0;top:27px;height:5px;background:repeating-linear-gradient(90deg,var(--lane) 0 28px,transparent 28px 52px)}
-#splash.sp-live .sp-road{animation:spRoad .55s cubic-bezier(.5,0,.2,1) .05s both}
-@keyframes spRoad{to{transform:none}}
-#splash .sp-cloud{position:absolute;opacity:0}
-#splash .sp-cloud.a{left:8%;top:18%} #splash .sp-cloud.b{right:6%;top:26%}
-#splash.sp-live .sp-cloud{animation:spCloud .8s ease-out both}
-#splash.sp-live .sp-cloud.b{animation-delay:.12s}
-@keyframes spCloud{0%{opacity:0;transform:translateX(-30px)}100%{opacity:.95;transform:none}}
-#splash .sp-die{position:absolute;left:50%;top:36%;width:120px;height:120px;margin-left:-60px;transform-origin:0 0}
-#splash .sp-drop{width:120px;height:120px;opacity:0}
-#splash.sp-live .sp-drop{animation:spDrop 1.2s cubic-bezier(.3,.6,.4,1) .35s both}
-@keyframes spDrop{0%{opacity:0;transform:translateY(-260px) rotate(-200deg)}10%{opacity:1}42%{transform:translateY(8px) rotate(8deg) scale(1.08,.9)}58%{transform:translateY(-34px) rotate(-6deg)}76%{transform:translateY(2px) rotate(2deg) scale(1.03,.97)}88%,100%{opacity:1;transform:none}}
-#splash .sp-die svg{width:120px;height:120px;display:block;overflow:visible}
-#splash .sp-title{position:absolute;left:0;top:calc(36% + 200px);font-size:40px;letter-spacing:.06em;line-height:1.2;color:var(--ink);white-space:nowrap;transform-origin:0 0;display:inline-block;
-  text-shadow:2px 2px 0 #fff,-2px 2px 0 #fff,2px -2px 0 #fff,-2px -2px 0 #fff,0 3px 0 #fff,0 5px 0 rgba(43,58,85,.15)}
+#splash .sp-map{position:absolute;left:50%;top:9%;width:210px;height:378px;margin-left:-105px;opacity:0}
+#splash .sp-map svg{width:100%;height:100%;display:block;overflow:visible}
+#splash.sp-live .sp-map{animation:spMap .7s cubic-bezier(.2,1.3,.4,1) .05s both}
+@keyframes spMap{0%{opacity:0;transform:translateY(30px) scale(.8)}100%{opacity:1;transform:none}}
+#splash .sp-ring{fill:#FFD54A;fill-opacity:.25;stroke:var(--coral);stroke-width:7;opacity:0}
+#splash.sp-live .sp-ring{animation:spRing 1.6s ease-out infinite}
+#splash.sp-live .sp-ring.r2{animation-delay:.55s}
+#splash.sp-live .sp-ring.r3{animation-delay:1.1s}
+@keyframes spRing{0%{opacity:.9;transform:scale(.1)}100%{opacity:0;transform:scale(1)}}
+#splash .sp-title{position:absolute;left:0;top:calc(9% + 392px);font-size:40px;letter-spacing:.05em;line-height:1.2;color:var(--ink);white-space:nowrap;transform-origin:0 0;display:inline-block;
+  text-shadow:2px 2px 0 #fff,-2px 2px 0 #fff,2px -2px 0 #fff,-2px -2px 0 #fff,0 3px 0 #fff}
 #splash .sp-title span{display:inline-block;opacity:0}
-#splash.sp-live .sp-title span{animation:spLetter .5s cubic-bezier(.2,1.6,.4,1) both;animation-delay:calc(.95s + var(--i) * 110ms)}
+#splash.sp-live .sp-title span{animation:spLetter .5s cubic-bezier(.2,1.6,.4,1) both;animation-delay:calc(.75s + var(--i) * 110ms)}
 @keyframes spLetter{0%{opacity:0;transform:translateY(18px) rotate(-10deg) scale(.4)}100%{opacity:1;transform:none}}
-#splash .sp-tag{position:absolute;left:0;right:0;top:calc(36% + 256px);text-align:center;font-size:16px;color:var(--ink2);opacity:0}
-#splash.sp-live .sp-tag{animation:spTag .6s ease 1.55s both}
+#splash .sp-tag{position:absolute;left:0;right:0;top:calc(9% + 448px);text-align:center;font-size:16px;color:var(--ink2);opacity:0}
+#splash.sp-live .sp-tag{animation:spTag .6s ease 1.35s both}
 @keyframes spTag{0%{opacity:0;transform:translateY(8px)}100%{opacity:1;transform:none}}
-#splash.sp-exit .sp-bg,#splash.sp-exit .sp-tag,#splash.sp-exit .sp-road,#splash.sp-exit .sp-cloud{opacity:0!important;transition:opacity .45s ease;animation:none}
-#splash.sp-exit .sp-road{transform:none}
+#splash.sp-exit .sp-bg,#splash.sp-exit .sp-tag,#splash.sp-exit .sp-map{opacity:0!important;transition:opacity .45s ease;animation:none}
 #splash.sp-fade{opacity:0;transition:opacity .5s ease}
-@media (max-height:700px){#splash .sp-die{top:28%}#splash .sp-road{top:calc(28% + 112px)}#splash .sp-title{top:calc(28% + 200px)}#splash .sp-tag{top:calc(28% + 256px)}}
+@media (max-height:700px){#splash .sp-map{top:5%;width:170px;height:306px;margin-left:-85px}#splash .sp-title{top:calc(5% + 318px)}#splash .sp-tag{top:calc(5% + 372px)}}
 body.booting .app,body.booting .nav{opacity:0}
-body.sp-flying #h1t,body.sp-flying #dieWrap{visibility:hidden}
-body.enter .signs .sign,body.enter .dieStage .tapHint,body.enter .board,body.enter .snd,body.enter .sub,body.enter .ver,body.enter .pool,body.enter .signTip{animation:rise .55s cubic-bezier(.2,1.3,.4,1) both}
+body.sp-flying #h1t{visibility:hidden}
+body.enter .mapCard,body.enter .panel,body.enter .goRow,body.enter .snd,body.enter .vanBtn,body.enter .sub,body.enter .ver{animation:rise .55s cubic-bezier(.2,1.3,.4,1) both}
 body.enter .nav{animation:navUp .55s cubic-bezier(.2,1.3,.4,1) .3s both}
-body.enter .sign:nth-child(1){animation-delay:.05s} body.enter .sign:nth-child(2){animation-delay:.1s} body.enter .sign:nth-child(3){animation-delay:.15s} body.enter .sign:nth-child(4){animation-delay:.2s}
-body.enter .dieStage .tapHint{animation-delay:.3s} body.enter .board{animation-delay:.34s} body.enter .track .mile,body.enter .track .home{animation:fadeIn .5s ease .15s both}
+body.enter .mapCard{animation-delay:.05s} body.enter .goRow{animation-delay:.15s} body.enter .panel{animation-delay:.25s}
+body.enter .vanBtn{animation:vanIn .9s cubic-bezier(.2,1.1,.4,1) .1s both}
+
 @keyframes rise{0%{opacity:0;transform:translateY(24px)}100%{opacity:1;transform:none}}
 @keyframes navUp{0%{opacity:0;transform:translate(-50%,40px)}100%{opacity:1;transform:translate(-50%,0)}}
-@keyframes fadeIn{0%{opacity:0}100%{opacity:1}}
+@keyframes vanIn{0%{transform:translateX(-60vw)}100%{transform:none}}
 @media (prefers-reduced-motion:reduce){#splash *{animation:none!important;opacity:1!important;transform:none!important}}
+/* ===== 主題：成熟一點的可愛（薄荷綠＋珊瑚，暖白底） ===== */
+:root{
+  --ink:#2B3A55; --ink2:#738096; --line:#E3DED4;
+  --sun:#9EDFD3;           /* 原本的黃色 → 淡薄荷：選中、標籤 */
+  --pri:#2E9E92;           /* 主色：深一點的薄荷綠 */
+  --pri-d:#21796F;
+  --coral:#F27D62; --paper:#FFFDF9; --kraft:#E8DFD0;
+  --sky1:#BFE6E0; --sky2:#DDF1EC; --sky3:#F6F3EE;
+}
+html,body{background:#F6F3EE}
+body{background-image:radial-gradient(rgba(43,58,85,.07) 1.2px,transparent 1.2px);background-size:22px 22px}
+.top{background:linear-gradient(180deg,#BFE6E0 0%,#DDF1EC 60%,#F6F3EE 100%)}
+
+/* 地圖 */
+.mapCard{background:#D7ECF2;border-color:var(--ink)}
+.mapCard .reachTag{background:#fff}
+.mapCard .reachTag b{color:var(--pri-d)}
+
+/* 卡片 */
+.panel{background:var(--paper);border:2px solid var(--ink);border-radius:22px;box-shadow:0 4px 0 rgba(43,58,85,.12);padding:14px 14px 14px}
+.panel h3{font-size:15.5px;margin:0 0 9px;color:var(--ink)}
+.panel h3 small{color:var(--ink2)}
+.panel .sec+.sec{margin-top:14px;padding-top:13px;border-top:1.5px dashed var(--kraft)}
+
+/* 開多遠：一排膠囊 */
+.reachRow{display:flex;gap:6px;align-items:stretch}
+.seg{gap:5px}
+.seg button{border:2px solid var(--ink);border-radius:12px;background:#fff;padding:6px 0 5px;font-size:13px;box-shadow:none;transform:none}
+.seg button small{font-size:9.5px}
+.seg button.on{background:var(--pri);color:#fff;box-shadow:0 3px 0 var(--ink);transform:translateY(-1px)}
+.seg button.on small{color:#E2F6F2}
+.rndBtn{flex:none;width:46px;border:2px solid var(--ink);border-radius:12px;background:#fff;padding:4px;display:grid;place-items:center;box-shadow:0 3px 0 var(--ink)}
+.rndBtn svg{width:30px;height:30px}
+/* 方向：小一號，跟開多遠疊在一起 */
+.dirSeg{margin-top:8px}
+.dirSeg button{display:flex;flex-direction:row;justify-content:center;align-items:center;gap:3px;padding:5px 0;font-size:12.5px}
+.dirSeg button.on{background:#E3F5F1;color:var(--ink);box-shadow:0 3px 0 var(--ink)}
+
+/* 情境卡：3×2 */
+.scenes{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.scene{position:relative;border:2px solid var(--ink);border-radius:16px;background:#fff;padding:9px 4px 8px;display:flex;flex-direction:column;align-items:center;gap:1px;transition:transform .15s,background .15s}
+.scene .si{width:44px;height:44px;border-radius:50%;background:#F1EEE7;display:grid;place-items:center;margin-bottom:3px;transition:background .15s}
+.scene b{font-weight:400;font-size:14px;white-space:nowrap}
+.scene small{font-size:9.5px;color:var(--ink2);white-space:nowrap}
+.scene i{position:absolute;top:5px;right:6px;font-style:normal;font-size:10px;color:var(--ink2);background:#F1EEE7;border-radius:999px;padding:0 6px;line-height:16px}
+.scene:active{transform:scale(.96)}
+.scene.on{background:#E3F5F1;box-shadow:0 3px 0 var(--ink);transform:translateY(-2px)}
+.scene.on .si{background:#fff;box-shadow:0 0 0 2.5px var(--pri)}
+.scene.on i{background:var(--pri);color:#fff}
+
+/* 講究一下：摘要＋按鈕 */
+.condSum{display:flex;flex-direction:column;gap:8px}
+.sumTags{display:flex;flex-wrap:wrap;gap:6px}
+.sumTag{display:inline-flex;align-items:center;gap:4px;border:2px solid var(--ink);border-radius:999px;background:#E3F5F1;padding:2px 6px 2px 8px;font-size:13px}
+.sumTag .x{margin-left:2px;width:16px;height:16px;border-radius:50%;background:var(--ink);color:#fff;display:grid;place-items:center;font-size:11px;line-height:1}
+.sumNone{font-size:13px;color:var(--ink2)}
+.addCond{display:flex;align-items:center;gap:6px;border:2px dashed var(--ink2);border-radius:14px;background:none;padding:9px 12px;font-size:14px;width:100%}
+.addCond small{margin-left:auto;font-size:11px;color:var(--ink2)}
+
+/* 條件 sheet */
+.condSheet .chipGrp{margin-top:14px}
+.condSheet .chipTitle{font-size:12px;color:var(--ink2);margin-bottom:6px}
+.condSheet .tags{display:flex;flex-wrap:wrap;gap:7px}
+.condSheet .ltag.ltag{padding:4px 11px 4px 6px;font-size:14px;gap:5px;border-width:2px;background:#fff;transform:none}
+.condSheet .ltag.ltag.on{background:#E3F5F1}
+.ltag .ck{width:17px;height:17px;border:2px solid var(--ink);border-radius:50%;display:grid;place-items:center;background:#fff;flex:none}
+.ltag.on .ck{background:var(--pri);border-color:var(--pri-d)}
+.condFoot{position:sticky;bottom:-1px;display:flex;gap:8px;margin-top:18px;padding:10px 0 4px;background:var(--paper)}
+.condFoot .btn{flex:none}
+.condFoot #condDone{flex:1}
+
+/* 主按鈕：薄荷綠＋白字 */
+.goRow{background:rgba(246,243,238,.92)}
+.goBtn{background:var(--pri);color:#fff;border:2.5px solid var(--ink);box-shadow:0 5px 0 var(--ink);font-size:19px;padding:10px}
+.goBtn:active{box-shadow:0 1px 0 var(--ink)}
+.pool b{border-color:var(--line)}
+.btn.yellow{background:var(--pri);color:#fff}
+.nav button.on{background:var(--sun)}
+.ver{background:#fff}
+.scene.zero:not(.on){opacity:.45}
+/* 跑馬燈：亮起的縣市 */
+.mapCard .county.lit{fill:#FF9F80!important;opacity:1!important;transition:none!important}
+.mapCard.picking .county:not(.lit){opacity:.45}
+.mapCard .county{transition:fill .45s ease,opacity .2s}
+.mapCard.picking .county{transition:fill .25s ease,opacity .2s}
+.mapCard .county.lit+.county{}
+
 </style>
 </head>
 <body class="booting">
+<!-- 台灣地圖底圖（給開機畫面、明信片重複使用） -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><g id="twBase"></g></defs></svg>
+
 <div id="splash" aria-hidden="true">
   <div class="sp-bg"></div>
-  <div class="sp-cloud a" id="spC1"></div><div class="sp-cloud b" id="spC2"></div>
-  <div class="sp-road"></div>
-  <div class="sp-die" id="spDie"><div class="sp-drop" id="spDrop"></div></div>
+  <div class="sp-map" id="spMap"></div>
   <div class="sp-title" id="spTitle"></div>
-  <div class="sp-tag">骰一下，全家出發！</div>
+  <div class="sp-tag">今天，要開多遠？</div>
 </div>
 
 <div class="app">
-  <!-- ===== 骰子頁 ===== -->
+  <!-- ===== 首頁 ===== -->
   <section id="tabRoll">
-    <div class="scene">
-      <div class="sun" id="sun"></div>
-      <div class="cloud c1" id="cl1"></div><div class="cloud c2" id="cl2"></div><div class="cloud c3" id="cl3"></div>
-      <div class="hills" id="hills"></div>
-      <div class="road"></div>
+    <div class="top">
+      <div class="cloud c1" id="cl1"></div><div class="cloud c2" id="cl2"></div>
       <div class="topbar">
+        <button class="vanBtn" id="vanBtn" aria-label="叭叭車"><svg viewBox="0 0 110 80"><g class="carBody" id="van"></g></svg></button>
         <div class="ttl"><h1><span id="h1t">假日骰骰</span><button class="ver" id="verBtn"></button></h1><div class="sub" id="greet"></div></div>
         <div class="snd"><button id="bgmBtn" aria-label="背景音樂"></button><button id="sfxBtn" aria-label="音效"></button></div>
       </div>
-      <div class="track" id="track"></div>
-      <button class="carBox" id="carBox" aria-label="叭叭車"><svg viewBox="0 0 110 80"><g class="carBody" id="car"></g></svg></button>
-      <div class="bubble" id="bubble"></div>
+    </div>
+    <div class="bubble" id="bubble"></div>
+
+    <div class="mapCard" id="mapCard">
+      <svg id="map" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <clipPath id="landClip"><path id="landClipPath"/></clipPath>
+          <clipPath id="wedgeClip"><path id="wedgeClipPath"/></clipPath>
+          <!-- 遮罩：擴散圓（和方向扇形）以外的地方蓋一層淡白色 -->
+          <mask id="litMask" maskUnits="userSpaceOnUse" x="-3000" y="-3000" width="7000" height="7000">
+            <rect x="-3000" y="-3000" width="7000" height="7000" fill="#fff"/>
+            <g id="maskG"><circle id="maskCirc" fill="#000"/></g>
+          </mask>
+        </defs>
+        <g id="cam">
+          <path id="landShadow" fill="#2B3A55" opacity=".16"/>
+          <g id="counties"></g>
+          <path id="dimmer" fill="#F4F8FB" fill-opacity=".7" mask="url(#litMask)"/>
+          <path id="landStroke" fill="none" stroke="#2B3A55" stroke-width="3.2" stroke-linejoin="round" vector-effect="non-scaling-stroke"/>
+          <circle id="rippleRing" fill="none" stroke="#FF7A59"/>
+          <g id="labels"></g>
+          <g id="dots"></g>
+          <g id="home"></g>
+          <g id="pin" style="display:none"></g>
+          <g id="mapVan" style="display:none"></g>
+        </g>
+      </svg>
+      <div class="tag" id="fromTag"></div>
+      <div class="tag reachTag" id="reachTag"></div>
+      <button class="zoomBtn" id="zoomBtn" aria-label="放大地圖"></button>
     </div>
 
-    <div class="signs" id="signs"></div>
-    <div class="signTip" id="signTip"></div>
 
-    <div class="dieStage">
-      <div class="dieShadow" id="dieShadow"></div>
-      <button class="dieWrap" id="dieWrap" aria-label="骰一下"><div class="dieIdle" id="dieIdle"><svg id="die" viewBox="0 0 120 120"></svg></div></button>
-      <div class="tapHint" id="tapHint"><span id="tapHintIn"></span></div>
+    <div class="panel">
+      <div class="sec">
+        <h3 id="hReach"></h3>
+        <div class="reachRow"><div class="seg" id="reachSeg"></div><button class="rndBtn" id="rndBtn" aria-label="隨機決定開多遠"><svg viewBox="0 0 120 120" id="rndDie"></svg></button></div>
+        <div class="seg dirSeg" id="dirSeg"></div>
+      </div>
+      <div class="sec">
+        <h3 id="hScene"><small>選一個，或都不選</small></h3>
+        <div class="scenes" id="scenes"></div>
+      </div>
+      <div class="sec">
+        <h3 id="hCond"></h3>
+        <div class="condSum" id="chips"></div>
+      </div>
     </div>
-    <div class="pool" id="poolInfo"></div>
 
-    <div class="board">
-      <svg class="clip" viewBox="0 0 96 30"><rect x="18" y="4" width="60" height="22" rx="8" fill="#B9C4D3" stroke="#2B3A55" stroke-width="2.5"/><rect x="38" y="0" width="20" height="10" rx="4" fill="#fff" stroke="#2B3A55" stroke-width="2.5"/></svg>
-      <h3 id="hCond"></h3>
-      <div class="note2">想要的條件貼上去，可以多選</div>
-      <div class="tags" id="chips"></div>
-      <div class="modeLine" id="modeLine"></div>
+    <div class="poolList" id="poolList" hidden></div>
+    <div class="goRow">
+      <button class="pool" id="poolInfo"></button>
+      <button class="goBtn" id="goBtn"></button>
     </div>
-    <footer class="pad">車程是從新豐出發、假日一般路況的估計<br>Copyright © 2026 大樹 · <span class="footVer"></span></footer>
+
+    <footer class="pad">車程是依出發點估計的大約時間，出發前看一下導航<br>地圖資料：內政部國土測繪中心（政府資料開放授權）<br>Copyright © 2026 大樹 · <span class="footVer"></span></footer>
   </section>
 
   <!-- ===== 名單頁 ===== -->
@@ -399,160 +566,358 @@ body.enter .dieStage .tapHint{animation-delay:.3s} body.enter .board{animation-d
 <div id="confetti"></div>
 <div id="toast"></div>
 <script>
-/* ===== 內建口袋名單 =====
-   格式：[名稱, 地區, 車程分鐘(從新豐出發的估計), 標記, 一句話]
-   標記：雨＝雨天/室內可去　走＝推車、長輩好走　免＝免門票　吃＝附近好吃飯
-   車程分級：≤30 近郊／30–60 小旅行／60–90 遠一點／90+ 出遠門（依分鐘自動分級） */
+/* ===== 內建口袋名單（從新豐出發） =====
+   格式：[名稱, 地區, 車程分鐘(估計), 標記, 一句話, 緯度, 經度]
+   標記：草＝放電大草地　動＝餵小動物　水＝玩水　車＝火車　沙＝沙坑　滑＝溜滑梯　手＝動手體驗　機＝看飛機　蔭＝樹蔭　停＝好停車　奶＝哺乳室　泉＝泡腳溫泉　約＝要預約　雨＝雨天/室內可去　走＝推車、長輩好走　免＝免門票　吃＝附近好吃飯 */
 const BASE_RAW = [
-  // ---- 近郊 ≤30 分 ----
-  ["新豐紅樹林","新竹縣新豐",10,"走免","木棧道穿過紅樹林，看招潮蟹、彈塗魚，傍晚有夕陽"],
-  ["坡頭漁港","新竹縣新豐",12,"走免吃","小漁港散步看海，順便買海鮮"],
-  ["竹北水圳森林公園","竹北",15,"走免","湖畔木棧道，繞一圈約半小時"],
-  ["新瓦屋客家文化保存區","竹北",15,"走免吃","大草皮可以跑，客家老屋拍照"],
-  ["湖口老街","湖口",15,"免吃","紅磚拱廊老街，邊走邊吃"],
-  ["東興圳生態公園","竹北",18,"走免","水圳旁的平坦步道，散步很舒服"],
-  ["竹北新月沙灣","竹北",18,"免","海邊沙灘、看風車，玩沙記得帶小鏟子"],
-  ["竹北蓮華寺","竹北",18,"雨走免","百年觀音寺，安靜好走"],
-  ["湖口好客文創園區","湖口",18,"走免","老營區改建，大草地和老房子"],
-  ["新竹縣文化局","竹北",20,"雨走免","圖書館兒童區、展覽，下雨天好去處"],
-  ["遠百竹北","竹北",20,"雨走免吃","百貨逛街吃飯，推車好推"],
-  ["IKEA 新竹店","新竹",22,"雨走吃","逛家具、吃瑞典肉丸，有兒童區"],
-  ["新埔義民廟","新埔",25,"免吃","大廟走走，周邊客家小吃"],
-  ["新竹科學園區靜心湖","新竹市",25,"走免","園區湖畔，假日人少很清幽"],
-  ["巨城購物中心","新竹市",25,"雨走免吃","大型商場，吃喝逛一次滿足"],
-  ["南寮漁港＋17 公里海岸","新竹市",25,"走免吃","溜滑梯城堡、沙坑、波光市集，海邊散步"],
-  ["埔心牧場","楊梅",25,"走吃","餵動物、大草地，小孩放電"],
-  ["新埔老街","新埔",27,"免吃","客家老街，粄條、柿餅"],
-  ["大魯閣湳雅廣場","新竹市",28,"雨走免吃","室內商場，有遊樂設施"],
-  ["新埔柿餅（秋冬限定）","新埔",28,"免吃","大約 10–1 月曬柿餅，一片橘色很好拍"],
-  ["新竹市立動物園","新竹市",30,"走吃","65 歲以上、未滿 6 歲免票；週一休園"],
-  ["新竹公園＋玻璃工藝博物館","新竹市",30,"走免","湖畔散步，順便看玻璃藝術"],
-  ["新竹之心（東門城）","新竹市",30,"走免吃","市中心散步，附近好多小吃"],
-  ["新竹城隍廟商圈","新竹市",30,"免吃","米粉、貢丸、肉圓吃一輪"],
-  ["新屋綠色走廊","桃園新屋",30,"走免","綠蔭自行車道，平坦好推車"],
-  ["永安漁港","桃園新屋",30,"走免吃","彩虹橋看海，吃海鮮"],
-
-  // ---- 小旅行 30–60 分 ----
-  ["新竹十八尖山","新竹市",32,"免","林蔭步道，坡比較陡，適合腳力好的"],
-  ["Xpark 水族館","桃園青埔",35,"雨走吃","企鵝、水母很療癒；4 歲以下免費"],
-  ["華泰名品城","桃園青埔",35,"雨走免吃","Outlet 逛街吃飯，旁邊就是 Xpark"],
-  ["桃園市兒童美術館","桃園青埔",35,"雨走","給小朋友的美術館，展覽常換"],
-  ["香山親子館","新竹市",35,"雨免","0–12 歲兒童免費室內遊戲區"],
-  ["新竹青青草原","新竹市",35,"免","超長溜滑梯、大草原放風箏"],
-  ["香山濕地賞蟹步道","新竹市",38,"走免","退潮看螃蟹，步道平坦"],
-  ["關西老街＋東安古橋","關西",38,"免吃","老街吃仙草，古橋拍照"],
-  ["六福村","關西",40,"吃","主題樂園＋野生動物園，玩一整天"],
-  ["小人國主題樂園","龍潭",40,"走吃","迷你建築、遊樂設施，推車好走"],
-  ["龍潭大池","龍潭",40,"走免吃","環湖步道、吊橋，附近吃客家菜"],
-  ["桃園機場觀景台","大園",40,"雨走免吃","看飛機起降，小朋友超興奮"],
-  ["觀音蓮花園（夏季）","桃園觀音",40,"免吃","大約 6–9 月蓮花季，吃蓮子料理"],
-  ["草漯沙丘","桃園觀音",40,"免","北台灣大沙丘，沙地不好推車"],
-  ["寶山水庫","寶山",40,"免","環湖走走看山景"],
-  ["金勇番茄農場（冬春）","關西",40,"吃","大約冬天到春天可以採番茄"],
-  ["頭份尚順育樂世界","頭份",40,"雨走吃","室內樂園＋商場＋電影院"],
-  ["竹東動漫園區","竹東",42,"雨走免","動漫展覽，室內好逛"],
-  ["蕭如松藝術園區","竹東",42,"走","日式宿舍群，安靜好拍"],
-  ["竹東中央市場","竹東",42,"免吃","在地小吃一條街"],
-  ["石門水庫","大溪",45,"吃","吃活魚、看水庫，有些坡"],
-  ["北埔老街","北埔",45,"免吃","擂茶、柿餅、客家小吃"],
-  ["軟橋彩繪村","竹東",45,"走免","牆上彩繪很好拍，路平好走"],
-  ["竹南崎頂子母隧道","竹南",45,"免","老鐵道隧道步道，可以看海"],
-  ["龍鳳漁港","竹南",45,"走免吃","漁港吃海鮮，看海"],
-  ["許厝港濕地","大園",45,"走免","賞鳥、看海，步道平坦"],
-  ["八德埤塘自然生態公園","八德",45,"走免","埤塘環湖步道"],
-  ["桃園市立圖書館總館","桃園",45,"雨走免","超大新圖書館，兒童區很棒"],
-  ["橫山書法藝術公園","大園",45,"走免","大草坪、水池，可以野餐"],
-  ["IKEA 桃園店","桃園",45,"雨走吃","逛家具吃肉丸"],
-  ["合興車站","橫山",50,"免","愛情火車站，小站散步拍照"],
-  ["峨眉湖","峨眉",50,"免","環湖步道、吊橋，有些坡"],
-  ["綠世界生態農場","北埔",50,"吃","羊駝、鳥類表演，坡比較多"],
-  ["大溪老街","大溪",50,"免吃","巴洛克老街、豆干"],
-  ["造橋香格里拉樂園","造橋",50,"吃","老牌遊樂園，小小孩也能玩"],
-  ["苗栗火車頭園區","苗栗市",50,"雨走","火車頭展館，門票百元左右"],
-  ["功維敘隧道","苗栗市",50,"走免","七彩燈光老隧道，步道平坦"],
-  ["永和山水庫","頭份",50,"免","環湖步道看湖景"],
-  ["貓裏山公園","苗栗市",52,"免","山上公園看市景"],
-  ["內灣老街","橫山",55,"免吃","老街、吊橋、野薑花粽"],
-  ["馬武督探索森林","關西",55,"吃","柳杉林步道，空氣超好"],
-  ["慈湖","大溪",55,"走免","湖畔步道、衛兵交接"],
-  ["臺灣客家文化館","銅鑼",55,"雨走免","免門票，有大型親子遊戲區"],
-  ["後龍好望角","後龍",55,"免","海邊大風車步道，風很大記得帶外套"],
-  ["後龍過港隧道","後龍",55,"走免","黃金燈光鐵道隧道，騎車散步都好"],
-  ["明德水庫（日新島）","頭屋",55,"走免吃","湖心小島散步，喝咖啡"],
-  ["鶯歌老街＋陶瓷博物館","鶯歌",55,"雨吃","捏陶 DIY、逛陶瓷"],
-  ["林口三井 Outlet","林口",55,"雨走免吃","逛街吃飯，推車好推"],
-  ["公館棗莊古藝庭園","公館",58,"吃","庭園餐廳吃客家菜"],
-
-  // ---- 遠一點 60–90 分 ----
-  ["三峽老街＋祖師廟","三峽",60,"免吃","紅磚老街、金牛角"],
-  ["新北大都會公園","新北三重",60,"走免","超大草皮、共融遊戲場"],
-  ["板橋林家花園","新北板橋",60,"免","古典園林，有一些階梯"],
-  ["飛牛牧場","通霄",65,"吃","餵小牛、大草原，坡比較多"],
-  ["通霄精鹽廠","通霄",65,"雨免吃","鹽的觀光工廠，吃鹹冰棒"],
-  ["三義木雕街＋木雕博物館","三義",65,"雨吃","看木雕，博物館室內好逛"],
-  ["南庄老街","南庄",65,"免吃","桂花巷、老街小吃，有坡"],
-  ["八里左岸＋十三行博物館","新北八里",65,"雨走吃","河岸騎車散步，博物館室內"],
-  ["大稻埕碼頭＋迪化街","台北大同",65,"免吃","看夕陽、逛南北貨"],
-  ["白沙屯拱天宮","通霄",68,"免吃","海線大廟，附近小吃"],
-  ["華山 1914 文創園區","台北中正",68,"雨走免吃","展覽、市集、文創小店"],
-  ["勝興車站","三義",70,"免吃","舊山線老車站，有坡"],
-  ["舊山線鐵道自行車","三義",70,"吃","騎鐵道車過山洞，要先預約"],
-  ["大湖草莓園（冬春）","大湖",70,"吃","大約 12–4 月採草莓"],
-  ["大湖酒莊","大湖",70,"雨免吃","草莓酒、草莓冰淇淋"],
-  ["苑裡藺草文化館","苑裡",70,"雨免","藺草編織 DIY"],
-  ["台北兒童新樂園","台北士林",70,"走吃","小小孩的遊樂園，推車友善"],
-  ["國立臺灣科學教育館","台北士林",70,"雨走吃","互動科學展，室內玩一整天"],
-  ["台北市立天文館","台北士林",70,"雨走","宇宙展覽、立體劇場"],
-  ["台北 101＋信義商圈","台北信義",70,"雨走吃","逛百貨、上觀景台"],
-  ["松山文創園區","台北信義",70,"雨走免吃","老菸廠展覽、誠品"],
-  ["麗寶 Outlet＋天空之夢摩天輪","台中后里",70,"雨走吃","逛街、坐摩天輪"],
-  ["大甲鎮瀾宮","台中大甲",70,"免吃","媽祖大廟、芋頭酥"],
-  ["后里中社觀光花市","台中后里",72,"吃","花海季節限定，拍照很美"],
-  ["台北市立動物園","台北木柵",75,"雨吃","企鵝館、無尾熊館是室內；園區大有坡"],
-  ["淡水漁人碼頭","新北淡水",75,"走免吃","情人橋看夕陽"],
-  ["淡水老街","新北淡水",75,"免吃","阿給、魚丸、河岸散步"],
-  ["北投地熱谷＋圖書館","台北北投",75,"免吃","看溫泉煙、綠建築圖書館"],
-  ["高美濕地","台中清水",75,"走免","木棧道看夕陽、風車"],
-  ["梧棲漁港","台中梧棲",75,"走免吃","大漁港吃海鮮"],
-  ["泰安溫泉","泰安",75,"吃","泡湯，山路比較彎"],
-  ["貓空纜車","台北木柵",78,"吃","坐纜車、喝茶"],
-  ["國立自然科學博物館","台中北區",80,"雨走吃","恐龍廳、植物園，推車好逛"],
-  ["秋紅谷＋草悟道","台中西屯",80,"走免吃","市中心公園散步"],
-  ["台中國家歌劇院","台中西屯",80,"雨走免","特殊建築，空中花園"],
-  ["東海大學路思義教堂","台中西屯",80,"走免","大草地、校園散步，吃東海乳品"],
-  ["深坑老街","新北深坑",80,"吃","豆腐料理吃到飽"],
-  ["國立臺灣美術館","台中西區",85,"雨走免","兒童藝術館很好玩"],
-  ["審計新村","台中西區",85,"免吃","文創小店、市集"],
-
-  // ---- 出遠門 90 分以上 ----
-  ["礁溪溫泉公園","宜蘭礁溪",90,"免吃","免費泡腳，吃溫泉美食"],
-  ["蘭陽博物館","宜蘭頭城",95,"雨走","單面山造型建築，展覽好逛"],
-  ["幾米廣場＋宜蘭酒廠","宜蘭市",95,"雨走免吃","繪本場景拍照、逛酒廠"],
-  ["基隆正濱漁港","基隆",95,"免吃","彩色屋拍照、吃海鮮"],
-  ["國立傳統藝術中心","宜蘭五結",100,"雨走吃","老街、表演、DIY"],
-  ["冬山河親水公園","宜蘭五結",100,"走免","河岸大草地，夏天玩水"],
-  ["羅東運動公園","宜蘭羅東",100,"走免","超大公園，平坦好推車"],
-  ["羅東林業文化園區","宜蘭羅東",100,"走免","老火車、貯木池散步"],
-  ["金車噶瑪蘭威士忌酒廠","宜蘭員山",100,"雨免吃","參觀酒廠、吃冰淇淋"],
-  ["張美阿嬤農場","宜蘭員山",100,"吃","餵動物，要先預約"],
-  ["野柳地質公園","新北萬里",100,"吃","女王頭，步道有些高低"],
-  ["金山老街","新北金山",100,"免吃","鴨肉、地瓜"],
-  ["國立海洋科技博物館","基隆",100,"雨走","海洋展、兒童廳"],
-  ["彰化扇形車庫","彰化市",100,"免","看火車轉向，鐵道迷必去"],
-  ["十分老街","新北平溪",100,"吃","放天燈、看瀑布"],
-  ["梅花湖","宜蘭冬山",105,"走免","環湖步道很平"],
-  ["鹿港老街","彰化鹿港",110,"免吃","老街、天后宮、蚵仔煎"],
-  ["台灣玻璃館","彰化鹿港",110,"雨免","玻璃觀光工廠，玻璃廟很好拍"],
-  ["埔里紙教堂","南投埔里",120,"免吃","紙做的教堂，生態池散步"],
-  ["台一生態教育休閒農場","南投埔里",120,"吃","花園、蝴蝶館"],
-  ["福隆海水浴場","新北貢寮",120,"吃","沙灘、吃福隆便當"],
-  ["集集小鎮","南投集集",130,"免吃","騎車、老車站"],
-  ["日月潭","南投魚池",140,"走吃","環湖步道、坐船、纜車"],
-  ["溪頭自然教育園區","南投鹿谷",150,"吃","大學池、森林步道"],
-  ["妖怪村","南投鹿谷",150,"吃","妖怪主題街，就在溪頭旁"],
-  ["清境農場","南投仁愛",180,"吃","青青草原綿羊秀，山路很彎"],
+  ["新豐紅樹林","新竹縣新豐",10,"走免","木棧道穿過紅樹林，看招潮蟹、彈塗魚，傍晚有夕陽",24.912,120.975],
+  ["坡頭漁港","新竹縣新豐",12,"走免吃","小漁港散步看海，順便買海鮮",24.928,121.006],
+  ["竹北水圳森林公園","竹北",15,"草走免","湖畔木棧道，繞一圈約半小時",24.827,121.012],
+  ["新瓦屋客家文化保存區","竹北",15,"草走免吃停","大草皮可以跑，客家老屋拍照",24.815,121.033],
+  ["湖口老街","湖口",15,"免吃","紅磚拱廊老街，邊走邊吃",24.877,121.045],
+  ["東興圳生態公園","竹北",18,"草走免","水圳旁的平坦步道，散步很舒服",24.823,121.02],
+  ["竹北新月沙灣","竹北",18,"免水沙","海邊沙灘、看風車，玩沙記得帶小鏟子",24.853,120.988],
+  ["竹北蓮華寺","竹北",18,"雨走免","百年觀音寺，安靜好走",24.842,121.009],
+  ["湖口好客文創園區","湖口",18,"草走免停","老營區改建，大草地和老房子",24.895,121.048],
+  ["新竹縣文化局","竹北",20,"雨走免奶","圖書館兒童區、展覽，下雨天好去處",24.826,121.017],
+  ["遠百竹北","竹北",20,"雨走免吃停奶","百貨逛街吃飯，推車好推",24.822,121.024],
+  ["IKEA 新竹店","新竹",22,"雨走吃停奶","逛家具、吃瑞典肉丸，有兒童區",24.81,121.04],
+  ["新埔義民廟","新埔",25,"免吃","大廟走走，周邊客家小吃",24.849,121.095],
+  ["新竹科學園區靜心湖","新竹市",25,"走免","園區湖畔，假日人少很清幽",24.785,121.002],
+  ["巨城購物中心","新竹市",25,"雨走免吃停奶","大型商場，吃喝逛一次滿足",24.809,120.975],
+  ["南寮漁港＋17 公里海岸","新竹市",25,"草走免吃沙滑","溜滑梯城堡、沙坑、波光市集，海邊散步",24.848,120.926],
+  ["埔心牧場","楊梅",25,"草走吃動停","餵動物、大草地，小孩放電",24.927,121.159],
+  ["新埔老街","新埔",27,"免吃","客家老街，粄條、柿餅",24.826,121.073],
+  ["大魯閣湳雅廣場","新竹市",28,"雨走免吃奶","室內商場，有遊樂設施",24.818,120.973],
+  ["新埔柿餅（秋冬限定）","新埔",28,"免吃","大約 10–1 月曬柿餅，一片橘色很好拍",24.835,121.1],
+  ["新竹市立動物園","新竹市",30,"走吃動奶","65 歲以上、未滿 6 歲免票；週一休園",24.801,120.979],
+  ["新竹公園＋玻璃工藝博物館","新竹市",30,"草走免","湖畔散步，順便看玻璃藝術",24.799,120.981],
+  ["新竹之心（東門城）","新竹市",30,"走免吃","市中心散步，附近好多小吃",24.804,120.971],
+  ["新竹城隍廟商圈","新竹市",30,"免吃","米粉、貢丸、肉圓吃一輪",24.805,120.966],
+  ["新屋綠色走廊","桃園新屋",30,"走免蔭","綠蔭自行車道，平坦好推車",24.972,121.105],
+  ["永安漁港","桃園新屋",30,"走免吃","彩虹橋看海，吃海鮮",24.99,121.013],
+  ["新竹十八尖山","新竹市",32,"免蔭","林蔭步道，坡比較陡，適合腳力好的",24.795,120.985],
+  ["Xpark 水族館","桃園青埔",35,"雨走吃奶","企鵝、水母很療癒；4 歲以下免費",25.013,121.215],
+  ["華泰名品城","桃園青埔",35,"雨走免吃停奶","Outlet 逛街吃飯，旁邊就是 Xpark",25.012,121.212],
+  ["桃園市兒童美術館","桃園青埔",35,"雨走奶","給小朋友的美術館，展覽常換",25.016,121.218],
+  ["香山親子館","新竹市",35,"雨免滑奶","0–12 歲兒童免費室內遊戲區",24.767,120.926],
+  ["新竹青青草原","新竹市",35,"草免滑","超長溜滑梯、大草原放風箏",24.77,120.946],
+  ["香山濕地賞蟹步道","新竹市",38,"走免","退潮看螃蟹，步道平坦",24.77,120.91],
+  ["關西老街＋東安古橋","關西",38,"免吃","老街吃仙草，古橋拍照",24.79,121.177],
+  ["六福村","關西",40,"吃動停奶","主題樂園＋野生動物園，玩一整天",24.785,121.172],
+  ["小人國主題樂園","龍潭",40,"走吃停奶","迷你建築、遊樂設施，推車好走",24.838,121.23],
+  ["龍潭大池","龍潭",40,"走免吃","環湖步道、吊橋，附近吃客家菜",24.864,121.218],
+  ["桃園機場觀景台","大園",40,"雨走免吃機","看飛機起降，小朋友超興奮",25.077,121.232],
+  ["觀音蓮花園（夏季）","桃園觀音",40,"免吃","大約 6–9 月蓮花季，吃蓮子料理",25.03,121.12],
+  ["草漯沙丘","桃園觀音",40,"免沙","北台灣大沙丘，沙地不好推車",25.048,121.08],
+  ["寶山水庫","寶山",40,"免","環湖走走看山景",24.725,121.045],
+  ["金勇番茄農場（冬春）","關西",40,"吃手","大約冬天到春天可以採番茄",24.8,121.15],
+  ["頭份尚順育樂世界","頭份",40,"雨走吃停奶","室內樂園＋商場＋電影院",24.694,120.902],
+  ["竹東動漫園區","竹東",42,"雨走免","動漫展覽，室內好逛",24.737,121.09],
+  ["蕭如松藝術園區","竹東",42,"走","日式宿舍群，安靜好拍",24.735,121.093],
+  ["竹東中央市場","竹東",42,"免吃","在地小吃一條街",24.737,121.088],
+  ["石門水庫","大溪",45,"吃停","吃活魚、看水庫，有些坡",24.81,121.245],
+  ["北埔老街","北埔",45,"免吃","擂茶、柿餅、客家小吃",24.7,121.057],
+  ["軟橋彩繪村","竹東",45,"走免","牆上彩繪很好拍，路平好走",24.716,121.12],
+  ["竹南崎頂子母隧道","竹南",45,"免","老鐵道隧道步道，可以看海",24.721,120.869],
+  ["龍鳳漁港","竹南",45,"走免吃","漁港吃海鮮，看海",24.695,120.852],
+  ["許厝港濕地","大園",45,"走免","賞鳥、看海，步道平坦",25.087,121.17],
+  ["八德埤塘自然生態公園","八德",45,"草走免","埤塘環湖步道",24.938,121.29],
+  ["桃園市立圖書館總館","桃園",45,"雨走免奶","超大新圖書館，兒童區很棒",24.997,121.301],
+  ["橫山書法藝術公園","大園",45,"草走免水","大草坪、水池，可以野餐",25.064,121.215],
+  ["IKEA 桃園店","桃園",45,"雨走吃停奶","逛家具吃肉丸",25.013,121.303],
+  ["合興車站","橫山",50,"免車","愛情火車站，小站散步拍照",24.716,121.17],
+  ["峨眉湖","峨眉",50,"免","環湖步道、吊橋，有些坡",24.662,121.015],
+  ["綠世界生態農場","北埔",50,"草吃動停","羊駝、鳥類表演，坡比較多",24.672,121.05],
+  ["大溪老街","大溪",50,"免吃","巴洛克老街、豆干",24.883,121.287],
+  ["造橋香格里拉樂園","造橋",50,"吃停","老牌遊樂園，小小孩也能玩",24.63,120.88],
+  ["苗栗火車頭園區","苗栗市",50,"雨走車","火車頭展館，門票百元左右",24.567,120.82],
+  ["功維敘隧道","苗栗市",50,"走免","七彩燈光老隧道，步道平坦",24.565,120.826],
+  ["永和山水庫","頭份",50,"免","環湖步道看湖景",24.64,120.93],
+  ["貓裏山公園","苗栗市",52,"免","山上公園看市景",24.57,120.832],
+  ["內灣老街","橫山",55,"免吃","老街、吊橋、野薑花粽",24.705,121.183],
+  ["馬武督探索森林","關西",55,"吃蔭","柳杉林步道，空氣超好",24.766,121.257],
+  ["慈湖","大溪",55,"草走免停","湖畔步道、衛兵交接",24.844,121.288],
+  ["臺灣客家文化館","銅鑼",55,"草雨走免停滑奶","免門票，有大型親子遊戲區",24.488,120.808],
+  ["後龍好望角","後龍",55,"草免","海邊大風車步道，風很大記得帶外套",24.643,120.752],
+  ["後龍過港隧道","後龍",55,"走免","黃金燈光鐵道隧道，騎車散步都好",24.634,120.762],
+  ["明德水庫（日新島）","頭屋",55,"走免吃","湖心小島散步，喝咖啡",24.585,120.873],
+  ["鶯歌老街＋陶瓷博物館","鶯歌",55,"雨吃手","捏陶 DIY、逛陶瓷",24.954,121.354],
+  ["林口三井 Outlet","林口",55,"雨走免吃停奶","逛街吃飯，推車好推",25.07,121.364],
+  ["公館棗莊古藝庭園","公館",58,"吃","庭園餐廳吃客家菜",24.51,120.83],
+  ["三峽老街＋祖師廟","三峽",60,"免吃","紅磚老街、金牛角",24.934,121.369],
+  ["新北大都會公園","新北三重",60,"草走免停沙滑","超大草皮、共融遊戲場",25.065,121.481],
+  ["板橋林家花園","新北板橋",60,"免","古典園林，有一些階梯",25.012,121.455],
+  ["飛牛牧場","通霄",65,"草吃動停","餵小牛、大草原，坡比較多",24.475,120.735],
+  ["通霄精鹽廠","通霄",65,"雨免吃停","鹽的觀光工廠，吃鹹冰棒",24.484,120.682],
+  ["三義木雕街＋木雕博物館","三義",65,"雨吃","看木雕，博物館室內好逛",24.411,120.77],
+  ["南庄老街","南庄",65,"免吃","桂花巷、老街小吃，有坡",24.597,121.0],
+  ["八里左岸＋十三行博物館","新北八里",65,"雨走吃","河岸騎車散步，博物館室內",25.157,121.401],
+  ["大稻埕碼頭＋迪化街","台北大同",65,"免吃","看夕陽、逛南北貨",25.056,121.508],
+  ["白沙屯拱天宮","通霄",68,"免吃","海線大廟，附近小吃",24.563,120.7],
+  ["華山 1914 文創園區","台北中正",68,"雨走免吃","展覽、市集、文創小店",25.044,121.529],
+  ["勝興車站","三義",70,"免吃車","舊山線老車站，有坡",24.388,120.785],
+  ["舊山線鐵道自行車","三義",70,"吃車約","騎鐵道車過山洞，要先預約",24.392,120.778],
+  ["大湖草莓園（冬春）","大湖",70,"吃手","大約 12–4 月採草莓",24.42,120.865],
+  ["大湖酒莊","大湖",70,"雨免吃","草莓酒、草莓冰淇淋",24.418,120.868],
+  ["苑裡藺草文化館","苑裡",70,"雨免手","藺草編織 DIY",24.43,120.66],
+  ["台北兒童新樂園","台北士林",70,"走吃奶","小小孩的遊樂園，推車友善",25.097,121.515],
+  ["國立臺灣科學教育館","台北士林",70,"雨走吃奶","互動科學展，室內玩一整天",25.096,121.516],
+  ["台北市立天文館","台北士林",70,"雨走奶","宇宙展覽、立體劇場",25.095,121.518],
+  ["台北 101＋信義商圈","台北信義",70,"雨走吃奶","逛百貨、上觀景台",25.034,121.565],
+  ["松山文創園區","台北信義",70,"雨走免吃","老菸廠展覽、誠品",25.044,121.561],
+  ["麗寶 Outlet＋天空之夢摩天輪","台中后里",70,"雨走吃停","逛街、坐摩天輪",24.32,120.7],
+  ["大甲鎮瀾宮","台中大甲",70,"免吃","媽祖大廟、芋頭酥",24.346,120.624],
+  ["后里中社觀光花市","台中后里",72,"吃","花海季節限定，拍照很美",24.322,120.729],
+  ["台北市立動物園","台北木柵",75,"雨吃動奶","企鵝館、無尾熊館是室內；園區大有坡",24.999,121.581],
+  ["淡水漁人碼頭","新北淡水",75,"走免吃","情人橋看夕陽",25.184,121.411],
+  ["淡水老街","新北淡水",75,"免吃","阿給、魚丸、河岸散步",25.17,121.44],
+  ["北投地熱谷＋圖書館","台北北投",75,"免吃","看溫泉煙、綠建築圖書館",25.137,121.508],
+  ["高美濕地","台中清水",75,"走免","木棧道看夕陽、風車",24.312,120.549],
+  ["梧棲漁港","台中梧棲",75,"走免吃","大漁港吃海鮮",24.29,120.52],
+  ["泰安溫泉","泰安",75,"吃泉","泡湯，山路比較彎",24.462,120.987],
+  ["貓空纜車","台北木柵",78,"吃","坐纜車、喝茶",24.968,121.588],
+  ["國立自然科學博物館","台中北區",80,"草雨走吃奶","恐龍廳、植物園，推車好逛",24.157,120.666],
+  ["秋紅谷＋草悟道","台中西屯",80,"草走免吃","市中心公園散步",24.166,120.64],
+  ["台中國家歌劇院","台中西屯",80,"雨走免奶","特殊建築，空中花園",24.163,120.64],
+  ["東海大學路思義教堂","台中西屯",80,"草走免蔭","大草地、校園散步，吃東海乳品",24.178,120.601],
+  ["深坑老街","新北深坑",80,"吃","豆腐料理吃到飽",25.002,121.616],
+  ["國立臺灣美術館","台中西區",85,"雨走免奶","兒童藝術館很好玩",24.141,120.663],
+  ["審計新村","台中西區",85,"免吃","文創小店、市集",24.144,120.662],
+  ["礁溪溫泉公園","宜蘭礁溪",90,"免吃泉","免費泡腳，吃溫泉美食",24.827,121.766],
+  ["蘭陽博物館","宜蘭頭城",95,"雨走奶","單面山造型建築，展覽好逛",24.869,121.832],
+  ["幾米廣場＋宜蘭酒廠","宜蘭市",95,"雨走免吃","繪本場景拍照、逛酒廠",24.754,121.758],
+  ["基隆正濱漁港","基隆",95,"免吃","彩色屋拍照、吃海鮮",25.149,121.774],
+  ["國立傳統藝術中心","宜蘭五結",100,"雨走吃停奶手","老街、表演、DIY",24.686,121.823],
+  ["冬山河親水公園","宜蘭五結",100,"草走免水停","河岸大草地，夏天玩水",24.676,121.81],
+  ["羅東運動公園","宜蘭羅東",100,"草走免停","超大公園，平坦好推車",24.692,121.761],
+  ["羅東林業文化園區","宜蘭羅東",100,"走免車","老火車、貯木池散步",24.679,121.775],
+  ["金車噶瑪蘭威士忌酒廠","宜蘭員山",100,"雨免吃停","參觀酒廠、吃冰淇淋",24.762,121.676],
+  ["張美阿嬤農場","宜蘭員山",100,"草吃動停約","餵動物，要先預約",24.742,121.716],
+  ["野柳地質公園","新北萬里",100,"吃","女王頭，步道有些高低",25.207,121.69],
+  ["金山老街","新北金山",100,"免吃","鴨肉、地瓜",25.222,121.638],
+  ["國立海洋科技博物館","基隆",100,"雨走奶","海洋展、兒童廳",25.141,121.8],
+  ["彰化扇形車庫","彰化市",100,"免車","看火車轉向，鐵道迷必去",24.083,120.54],
+  ["十分老街","新北平溪",100,"吃車","放天燈、看瀑布",25.041,121.775],
+  ["梅花湖","宜蘭冬山",105,"草走免停","環湖步道很平",24.645,121.735],
+  ["鹿港老街","彰化鹿港",110,"免吃","老街、天后宮、蚵仔煎",24.056,120.432],
+  ["台灣玻璃館","彰化鹿港",110,"雨免停","玻璃觀光工廠，玻璃廟很好拍",24.04,120.43],
+  ["埔里紙教堂","南投埔里",120,"草免吃","紙做的教堂，生態池散步",23.946,120.968],
+  ["台一生態教育休閒農場","南投埔里",120,"草吃","花園、蝴蝶館",23.986,120.98],
+  ["福隆海水浴場","新北貢寮",120,"吃水沙","沙灘、吃福隆便當",25.021,121.946],
+  ["集集小鎮","南投集集",130,"免吃車","騎車、老車站",23.827,120.785],
+  ["日月潭","南投魚池",140,"走吃","環湖步道、坐船、纜車",23.866,120.915],
+  ["溪頭自然教育園區","南投鹿谷",150,"吃蔭","大學池、森林步道",23.674,120.796],
+  ["妖怪村","南投鹿谷",150,"吃","妖怪主題街，就在溪頭旁",23.678,120.795],
+  ["清境農場","南投仁愛",180,"草吃動","青青草原綿羊秀，山路很彎",24.058,121.162],
+  // ---- 全台擴充 ----
+  ["大安森林公園","台北大安",75,"草走免吃蔭沙滑","市中心大草皮，有共融遊戲場",25.03,121.536],
+  ["台北植物園","台北中正",70,"走免蔭","荷花池、溫室，平坦好推車",25.032,121.509],
+  ["美麗華摩天輪","台北中山",75,"雨走吃奶","百貨逛街，坐摩天輪看台北",25.083,121.557],
+  ["擎天崗草原","台北陽明山",100,"草免","山上大草原，風大記得帶外套",25.167,121.574],
+  ["朱銘美術館","新北金山",105,"草吃","戶外雕塑大草坪，小朋友可以跑",25.232,121.617],
+  ["碧潭風景區","新北新店",80,"走免吃","吊橋、河岸步道、踩天鵝船",24.956,121.537],
+  ["烏來老街＋台車","新北烏來",95,"吃車泉","溫泉老街、坐台車，有坡",24.864,121.55],
+  ["九份老街","新北瑞芳",105,"吃","山城老街，階梯很多",25.109,121.845],
+  ["猴硐貓村","新北瑞芳",105,"免","貓咪村、老礦場",25.087,121.827],
+  ["和平島地質公園","基隆",100,"吃水","海蝕地形、海水池",25.16,121.762],
+  ["基隆廟口夜市","基隆",95,"吃","晚上去最熱鬧",25.128,121.743],
+  ["南方澳漁港","宜蘭蘇澳",110,"走免吃","跨港大橋、吃海鮮",24.585,121.866],
+  ["外澳沙灘","宜蘭頭城",95,"免吃水沙","沙灘看龜山島",24.884,121.852],
+  ["太平山國家森林遊樂區","宜蘭大同",170,"吃車蔭約","高山森林，山路彎、要預約",24.497,121.532],
+  ["台中都會公園","台中西屯",80,"草走免停","超大草坪，放風箏很適合",24.21,120.596],
+  ["文心森林公園","台中南屯",85,"草走免","市區大草地、圓滿戶外劇場",24.14,120.649],
+  ["彩虹眷村","台中南屯",85,"免","彩繪老眷村拍照",24.134,120.61],
+  ["后豐鐵馬道","台中后里",75,"走免吃","騎單車過花樑鋼橋、隧道",24.276,120.718],
+  ["新社花海（秋冬）","台中新社",95,"吃","大約 11–12 月花海季",24.226,120.81],
+  ["麗寶樂園","台中后里",70,"吃水停奶","遊樂園＋夏天玩水",24.321,120.698],
+  ["田尾公路花園","彰化田尾",110,"走吃","花卉園藝一條街",23.89,120.524],
+  ["八卦山大佛","彰化市",100,"免","大佛、看彰化市景",24.08,120.551],
+  ["王功漁港","彰化芳苑",125,"免吃","燈塔、看夕陽",23.968,120.32],
+  ["九族文化村","南投魚池",145,"吃","主題樂園＋日月潭纜車",23.878,120.948],
+  ["中興新村","南投",110,"草走免蔭","綠蔭大草地，很適合野餐",23.958,120.684],
+  ["車埕車站","南投水里",135,"走免吃車","木業小鎮老車站",23.832,120.865],
+  ["猴探井天空之橋","南投",125,"吃","吊橋看風景",23.874,120.693],
+  ["杉林溪森林生態渡假園區","南投竹山",165,"吃蔭","森林步道、花季，山路彎",23.64,120.793],
+  ["竹山紫南宮","南投竹山",140,"免吃","求發財金的廟，附近小吃",23.712,120.673],
+  ["劍湖山世界","雲林古坑",145,"吃停奶","大型主題樂園，也有小小孩區",23.623,120.585],
+  ["古坑綠色隧道","雲林古坑",145,"走免蔭","芒果樹綠色隧道散步",23.64,120.56],
+  ["斗六膨鼠森林公園","雲林斗六",140,"草走免滑","大草地、遊戲場",23.703,120.547],
+  ["西螺大橋＋延平老街","雲林西螺",125,"免吃","紅色大橋、醬油老街",23.802,120.461],
+  ["雲林布袋戲館","雲林虎尾",140,"雨走","看布袋戲偶、展覽",23.708,120.432],
+  ["興隆毛巾觀光工廠","雲林虎尾",140,"雨吃停手","毛巾蛋糕 DIY",23.709,120.4],
+  ["北港朝天宮","雲林北港",160,"免吃","媽祖大廟、老街小吃",23.567,120.304],
+  ["故宮南院","嘉義太保",150,"草雨走吃停奶","博物館＋湖邊大草地",23.473,120.29],
+  ["檜意森活村","嘉義市",145,"走免吃蔭","日式宿舍群散步",23.484,120.453],
+  ["森林之歌","嘉義市",145,"走免車","戶外裝置藝術，旁邊鐵道散步",23.481,120.449],
+  ["蘭潭風景區","嘉義市",150,"走免","環湖步道看夕陽",23.469,120.483],
+  ["東石漁人碼頭","嘉義東石",165,"草走免吃停滑","海邊草地、遊戲場、吃海鮮",23.457,120.15],
+  ["高跟鞋教堂","嘉義布袋",170,"免吃","布袋海景公園，順便吃海鮮",23.402,120.15],
+  ["奮起湖老街","嘉義竹崎",220,"吃車","鐵路便當、老街，山路彎",23.505,120.696],
+  ["阿里山國家森林遊樂區","嘉義阿里山",250,"吃車蔭","神木步道、小火車，山上冷",23.511,120.804],
+  ["奇美博物館","台南仁德",185,"草雨走吃停奶","歐式建築＋超大草坪",22.935,120.226],
+  ["國立臺灣歷史博物館","台南安南",180,"草雨走停奶","博物館、濕地草原步道",23.034,120.215],
+  ["台南市美術館二館","台南中西區",185,"雨走奶","白色碎形建築，展覽好逛",22.99,120.202],
+  ["林百貨","台南中西區",185,"雨走吃","老百貨、頂樓神社",22.992,120.199],
+  ["赤崁樓＋孔廟","台南中西區",185,"吃","古蹟散步，附近小吃超多",22.997,120.202],
+  ["安平古堡＋安平老街","台南安平",190,"吃","古堡、蝦餅、豆花",23.001,120.16],
+  ["四草綠色隧道","台南安南",190,"吃","坐船穿過紅樹林隧道",23.016,120.137],
+  ["漁光島","台南安平",190,"走免水蔭沙","沙灘、木麻黃林",22.98,120.155],
+  ["藍晒圖文創園區","台南南區",185,"走免吃","彩繪牆、文創小店",22.985,120.198],
+  ["十鼓仁糖文創園區","台南仁德",185,"吃滑","老糖廠改建，有溜滑梯",22.94,120.25],
+  ["走馬瀨農場","台南大內",185,"草吃動停","大草原、動物、熱氣球",23.143,120.385],
+  ["頑皮世界野生動物園","台南學甲",180,"吃動停","可以餵動物",23.237,120.177],
+  ["七股鹽山","台南七股",185,"吃","白色鹽山、吃鹹冰淇淋",23.152,120.101],
+  ["烏山頭水庫","台南官田",175,"吃","水庫風景、八田與一紀念園區",23.205,120.39],
+  ["衛武營都會公園","高雄鳳山",205,"草走免","超大草坪，旁邊是衛武營藝術中心",22.624,120.341],
+  ["駁二藝術特區","高雄鹽埕",205,"走免吃","倉庫藝術區、海邊散步",22.62,120.282],
+  ["高雄流行音樂中心","高雄苓雅",205,"走免","海邊特殊建築，晚上有燈",22.618,120.29],
+  ["高雄市立美術館＋內惟埤","高雄鼓山",205,"草走免","湖邊大草地、兒童美術館",22.656,120.287],
+  ["蓮池潭風景區","高雄左營",200,"走免吃","龍虎塔、環潭步道",22.68,120.294],
+  ["國立科學工藝博物館","高雄三民",205,"雨走吃奶","互動科學展，室內玩一整天",22.64,120.322],
+  ["壽山動物園","高雄鼓山",210,"吃動奶","山上動物園，有坡",22.635,120.274],
+  ["旗津海岸公園","高雄旗津",215,"免吃水沙","坐渡輪、沙灘、海產",22.603,120.268],
+  ["佛陀紀念館","高雄大樹",205,"雨走免吃停奶","大佛、平坦好走",22.758,120.441],
+  ["義大世界＋義大 Outlet","高雄大樹",200,"雨吃停奶","遊樂園＋逛街",22.731,120.403],
+  ["大魯閣草衙道","高雄前鎮",210,"雨走吃停奶","室內樂園＋商場",22.583,120.329],
+  ["美濃老街＋客家文物館","高雄美濃",215,"吃","粄條、油紙傘",22.897,120.546],
+  ["勝利星村創意生活園區","屏東市",220,"走免吃","日式眷舍、文青小店",22.677,120.495],
+  ["大鵬灣國家風景區","屏東東港",235,"草走免停","環灣自行車道、草地",22.443,120.475],
+  ["東港華僑市場","屏東東港",235,"吃","黑鮪魚、海鮮",22.465,120.448],
+  ["原住民族文化園區","屏東瑪家",235,"吃停","排灣族、魯凱族文化，有表演",22.704,120.638],
+  ["國立海洋生物博物館","屏東車城",270,"雨走吃停奶","超大水族館，可以夜宿",22.047,120.698],
+  ["恆春古城","屏東恆春",280,"免吃","古城門、老街",22.002,120.745],
+  ["墾丁大街＋南灣","屏東恆春",285,"吃水沙","海灘、夜市",21.948,120.795],
+  ["鵝鑾鼻燈塔公園","屏東恆春",295,"草吃","白色燈塔、大草地看海",21.902,120.853],
+  ["七星潭","花蓮新城",205,"免","礫石海灘看海，浪大不要下水",24.03,121.629],
+  ["花蓮文化創意產業園區","花蓮市",210,"走免吃","老酒廠改建",23.976,121.607],
+  ["東大門夜市","花蓮市",210,"吃","晚上去最熱鬧",23.974,121.61],
+  ["雲山水夢幻湖","花蓮壽豐",215,"草走免","湖邊草地、椰子樹",23.929,121.57],
+  ["鯉魚潭","花蓮壽豐",215,"走免吃","環湖步道、踩天鵝船",23.93,121.51],
+  ["遠雄海洋公園","花蓮壽豐",220,"吃停奶","海洋主題樂園",23.901,121.6],
+  ["林田山林業文化園區","花蓮鳳林",235,"走免","日式林業村落",23.729,121.432],
+  ["光復糖廠","花蓮光復",240,"吃停","老糖廠吃冰",23.65,121.418],
+  ["瑞穗牧場","花蓮瑞穗",260,"草吃動停","餵小牛、喝鮮奶",23.491,121.381],
+  ["太魯閣國家公園","花蓮秀林",225,"","峽谷風景，出發前確認步道開放",24.158,121.621],
+  ["池上伯朗大道","台東池上",300,"走免吃","稻田大道騎單車",23.11,121.22],
+  ["鹿野高台","台東鹿野",315,"草吃停","大草原，夏天熱氣球季",22.912,121.135],
+  ["初鹿牧場","台東卑南",320,"草吃動停","牧場大草地、餵動物",22.813,121.05],
+  ["台東森林公園（活水湖）","台東市",330,"草走免蔭停滑","湖邊草地、騎單車",22.766,121.168],
+  ["鐵花村","台東市",330,"免吃","晚上音樂、市集",22.754,121.15],
+  ["國立臺灣史前文化博物館","台東市",330,"雨走","史前文化展，室內好逛",22.786,121.114],
+  ["三仙台","台東成功",330,"免","八拱橋走到小島",23.122,121.41],
+  ["知本溫泉","台東卑南",340,"吃泉","泡湯",22.7,121.05],
+  ["多良車站","台東太麻里",345,"免車","最美車站看海",22.5,120.954],
+  // ---- 網路搜尋新增（2024–2026 文章）----
+  ["文山森林公園", "台北文山", 70, "草免滑", "台北最長山坡溜滑梯，大草坡可滾", 24.989, 121.568],
+  ["國家鐵道博物館", "台北信義", 75, "雨走車奶", "2025 開館，台北機廠大車庫看老火車", 25.046, 121.567],
+  ["故宮兒童學藝中心", "台北士林", 75, "雨走奶", "故宮給小小孩的互動展區", 25.102, 121.548],
+  ["北美館兒童藝術教育中心", "台北中山", 70, "雨走免奶", "互動藝術展，常態免費", 25.072, 121.525],
+  ["榮星花園公園", "台北中山", 70, "草免走滑", "台北首座特色遊戲場，磨石子山丘滑梯", 25.063, 121.538],
+  ["新店親情河濱公園", "新北新店", 70, "草免走蔭滑", "河濱大草地＋遊戲場，推車好推", 24.963, 121.533],
+  ["板橋浮洲恐龍遊戲場", "新北板橋", 60, "草免滑", "恐龍主題遊戲場，旁邊就是大草原", 24.996, 121.443],
+  ["新北市客家文化園區", "新北三峽", 60, "雨免走", "室內展館＋戶外草坪，免門票", 24.937, 121.374],
+  ["吳福洋襪子故事館", "新北林口", 55, "雨免停手", "襪子觀光工廠，免門票可 DIY", 25.073, 121.385],
+  ["台電北部展示館", "新北萬里", 90, "雨免走", "免費室內能源互動館，海邊順遊", 25.204, 121.663],
+  ["潮境公園＋潮境智能海洋館", "基隆八斗子", 95, "草走", "看海大草坡，旁邊有小海洋館", 25.143, 121.802],
+  ["風禾公園", "桃園桃園", 55, "草免走停滑", "萬坪草地＋特色遊具，全台首座防災公園", 25.013, 121.3],
+  ["頭城運動公園", "宜蘭頭城", 95, "草免滑", "全台十大特色公園之一，草地大", 24.86, 121.82],
+  ["廢物媽媽育兒農場", "新竹香山", 35, "草動約", "預約制，驢子、水豚、梅花鹿", 24.76, 120.91],
+  ["關新公園", "新竹東區", 25, "草免滑", "草坡溜滑梯＋塗鴉黑板牆，2–5 歲區", 24.785, 121.017],
+  ["竹北生肖公園（星際戰艦）", "新竹竹北", 25, "草免滑", "竹北星際系列遊戲場，太空艙滑梯", 24.81, 121.03],
+  ["四方鮮乳牧場", "苗栗竹南", 45, "草吃動停", "看乳牛、喝鮮奶、霜淇淋", 24.686, 120.88],
+  ["卓也小屋", "苗栗三義", 75, "草吃停手", "藍染、竹林、三合院蔬食", 24.389, 120.77],
+  ["西湖渡假村", "苗栗三義", 70, "草動停", "大園區步道＋小動物", 24.4, 120.79],
+  ["橙香森林", "苗栗頭屋", 60, "雨手", "精油觀光工廠，室內 DIY", 24.58, 120.87],
+  ["葛瑞絲香草田", "苗栗大湖", 65, "草吃", "香草花園＋餐廳，看山", 24.42, 120.86],
+  ["北屯兒童公園", "台中北屯", 95, "草免走蔭沙滑", "林間探索遊戲場，沙坑有遮陽", 24.18, 120.7],
+  ["頂魚寮公園", "台中梧棲", 95, "草免滑", "花園迷宮遊戲區，全台十大特色公園", 24.25, 120.54],
+  ["馬卡龍公園", "台中太平", 100, "草免滑", "水塔造型大溜滑梯＋共融遊具", 24.13, 120.73],
+  ["新社百菇莊", "台中新社", 95, "雨吃停手", "採香菇、做菇菇茶碗蒸", 24.21, 120.8],
+  ["伊莎貝爾烘焙觀光工廠", "台中大雅", 90, "雨免停", "薑餅屋城堡外觀，室內好逛", 24.23, 120.65],
+  ["台灣民俗文物館", "台中北屯", 95, "走", "小江南園區，繞一圈半小時", 24.17, 120.69],
+  ["八仙山國家森林遊樂區", "台中和平", 95, "走水蔭", "森林步道＋夏天戲水池", 24.18, 121.03],
+  ["八卦山親子探索園區", "彰化市", 110, "草免蔭滑", "27 公尺水管溜滑梯，樹蔭不曬", 24.077, 120.55],
+  ["芊動公園", "彰化市", 115, "免走", "2025 開幕，巨型爬牆大貓、三隻小豬", 24.08, 120.54],
+  ["成美文化園", "彰化市", 110, "走", "日式庭園，好走好拍", 24.1, 120.55],
+  ["埔茂花市", "彰化芬園", 115, "免停沙滑", "花市附沙坑溜滑梯", 24.02, 120.63],
+  ["溪湖糖廠", "彰化溪湖", 130, "免吃車停", "糖廠冰品，假日小火車", 23.96, 120.48],
+  ["九九峰動物樂園", "南投草屯", 115, "草動停", "鳥類大網籠，可餵動物", 23.98, 120.73],
+  ["鳳凰谷鳥園生態園區", "南投鹿谷", 135, "走蔭", "賞鳥步道，空氣好", 23.73, 120.73],
+  ["鵝媽媽鵝童樂園", "雲林斗六", 140, "草動停", "餵鵝餵綿羊，小小孩友善", 23.7, 120.53],
+  ["千巧谷牛樂園牧場", "雲林古坑", 145, "草免動停沙", "免門票乳牛主題，玩沙餵牛", 23.63, 120.58],
+  ["虎尾 632 高地公園", "雲林虎尾", 145, "免水滑", "虎爺溜滑梯＋親水區", 23.7, 120.43],
+  ["持法媽祖宮", "雲林斗六", 145, "免走", "最美媽祖廟，庭園步道好走", 23.68, 120.55],
+  ["三隻小豬觀光農場", "嘉義民雄", 160, "草動水停", "巨無霸粉紅豬，玩水看小動物", 23.55, 120.43],
+  ["金桔農莊", "嘉義民雄", 160, "免蔭停滑", "樹屋溜滑梯＋繩索步道", 23.57, 120.42],
+  ["旺來山文化園", "嘉義民雄", 160, "雨免停", "鳳梨酥觀光工廠，好停車", 23.57, 120.425],
+  ["佐登妮絲城堡", "嘉義大林", 150, "雨走停", "歐風城堡，全室內冷氣，推車好推", 23.63, 120.47],
+  ["向禾漁場", "嘉義東石", 165, "草吃手", "漁塭體驗＋海鮮", 23.45, 120.15],
+  ["南瀛親子館", "台南新營", 170, "雨免滑奶", "透明溜滑梯室內樂園", 23.31, 120.32],
+  ["黑橋牌香腸博物館", "台南安平", 200, "雨免", "老台南街景重現，免門票", 22.98, 120.16],
+  ["牛稠子車站公園", "台南仁德", 195, "草免車", "鐵道主題公園，平交道拉繩會叮叮叫", 23.03, 120.25],
+  ["台南交通公園", "台南中西區", 200, "免", "交通主題親子公園（週一二休）", 22.98, 120.19],
+  ["左鎮化石園區", "台南左鎮", 185, "雨", "看恐龍化石，室內展館", 23.06, 120.4],
+  ["水交社文化園區", "台南南區", 200, "免走", "眷村園區＋草坪", 22.97, 120.21],
+  ["高雄親子遊樂園區", "高雄鳳山", 225, "雨免滑奶", "2026/8 開幕，半室內 30 項設施免費", 22.63, 120.37],
+  ["星光水岸公園", "高雄鳳山", 225, "草免水", "全台最大戶外親水空間", 22.632, 120.36],
+  ["野森動物學校", "高雄內門", 195, "草動約", "2026 新園區，預約制，狐狸樹懶水獺", 22.94, 120.47],
+  ["淨園農場", "高雄大寮", 235, "草動車停滑機", "長頸鹿溜滑梯、小火車、看飛機", 22.57, 120.35],
+  ["凹子底森林公園", "高雄鼓山", 225, "草免走滑", "都會大草地＋遊戲場", 22.66, 120.3],
+  ["橋頭糖廠", "高雄橋頭", 215, "免走車蔭停", "糖廠老樹、冰品", 22.76, 120.31],
+  ["航空教育展示館", "高雄岡山", 215, "雨免機", "看真飛機，免費", 22.79, 120.27],
+  ["澄清湖風景區", "高雄鳥松", 225, "走蔭", "湖畔步道好推", 22.66, 120.36],
+  ["林邊蓮霧公園", "屏東林邊", 245, "免滑", "30 米飛天小火車溜滑梯", 22.43, 120.51],
+  ["六堆客家文化園區", "屏東內埔", 220, "草免走水停沙", "30 公頃大草原、噴泉戲水、沙坑", 22.67, 120.56],
+  ["屏東縣民公園", "屏東市", 220, "草免走停", "大草地，夏天有狂歡祭", 22.67, 120.48],
+  ["潮州日式文化園區", "屏東潮州", 230, "走", "日式宿舍群（週一休）", 22.55, 120.54],
+  ["雙流國家森林遊樂區", "屏東獅子", 260, "走水蔭", "平坦步道＋吊橋，跳石過溪", 22.21, 120.8],
+  ["鹿境梅花鹿園", "屏東恆春", 280, "草動", "餵梅花鹿、水豚", 22.0, 120.75],
+  ["墾丁金享主題樂園", "屏東恆春", 280, "雨吃", "2024 開幕室內樂園，雨天備案", 21.99, 120.75],
+  ["宜蘭免睡殿", "宜蘭蘇澳", 105, "雨", "床墊跳跳館，枕頭大戰", 24.6, 121.84],
+  ["歪歪球", "宜蘭蘇澳", 105, "雨", "12 種丟球關卡（週三休）", 24.59, 121.845],
+  ["安永心食館", "宜蘭蘇澳", 100, "雨吃停手", "海洋生態＋美食觀光工廠", 24.62, 121.83],
+  ["宜蘭頭等倉", "宜蘭員山", 90, "雨", "室內遊樂 15 關，長輩愛心票（週三休）", 24.74, 121.71],
+  ["清水地熱公園", "宜蘭三星", 85, "免吃泉手", "地熱煮蛋煮玉米", 24.62, 121.64],
+  ["宜蘭運動公園", "宜蘭市", 90, "草免", "大草地好跑", 24.74, 121.74],
+  ["宜農牧場", "宜蘭五結", 95, "草吃動停", "看乳牛、喝鮮奶", 24.7, 121.78],
+  ["大農大富平地森林園區", "花蓮光復", 210, "草免蔭", "全台最大平地森林，單車道", 23.65, 121.44],
+  ["富山護漁區", "台東卑南", 200, "走水", "看魚群、看海", 22.86, 121.195],
+  // ---- 花東宜蘭加強（2024–2026 文章）----
+  ["知卡宣森林公園", "花蓮市", 180, "草免走滑", "大草坪＋共融遊戲場，在地人溜小孩首選", 23.958, 121.585],
+  ["張家樹園", "花蓮吉安", 180, "草蔭滑", "樹林裡盪鞦韆、溜滑梯，像私人森林", 23.95, 121.56],
+  ["立川漁場", "花蓮壽豐", 190, "吃水手", "摸黃金蜆，蜆仔料理", 23.86, 121.52],
+  ["兆豐農場（墾夢莊園）", "花蓮鳳林", 205, "草吃動停", "浣熊、水豚，大園區可住宿", 23.72, 121.46],
+  ["吉蒸牧場", "花蓮瑞穗", 225, "草免吃動停", "免門票餵羊，牛奶火鍋", 23.5, 121.37],
+  ["花蓮考古博物館", "花蓮壽豐", 190, "雨手", "舊市場改建，挖化石體驗（週三至日開）", 23.86, 121.51],
+  ["花蓮將軍府 1936", "花蓮市", 175, "免走吃", "2024 整修開幕日式宿舍群，美食文創", 23.98, 121.61],
+  ["花蓮又一村", "花蓮市", 180, "免走", "眷村文創小區，花蓮版審計新村", 23.98, 121.6],
+  ["崇德瑩農場", "花蓮新城", 165, "草動", "海景草地農場，可餵動物", 24.17, 121.65],
+  ["原生應用植物園", "台東卑南", 205, "草吃", "植物園散步＋養生火鍋", 22.79, 121.08],
+  ["關山親水公園", "台東關山", 185, "草水", "大草地、親水步道", 23.04, 121.17],
+  ["加路蘭遊憩區", "台東市", 205, "草免", "海邊大草坪，看太平洋", 22.8, 121.19],
+  ["可可娜咖啡", "台東東河", 200, "吃沙", "南洋風看海，沙坑給小孩玩", 22.865, 121.2],
+  ["知本國家森林遊樂區", "台東卑南", 215, "走蔭", "步道繞一圈不到一小時", 22.69, 120.99],
+  ["大坡池", "台東池上", 175, "免走", "湖邊環湖步道，伯朗大道順遊", 23.1, 121.21],
+  ["星星部落", "台東卑南", 205, "吃", "景觀咖啡，看台東市夜景", 22.8, 121.09],
+  ["成功漁港", "台東成功", 265, "吃", "旗魚料理，看漁船", 23.1, 121.38],
+  ["蘭陽動植物王國", "宜蘭員山", 90, "草動水停", "全台首個袋鼠互動，划輪胎船", 24.73, 121.7],
+  ["鴨寮故事館", "宜蘭五結", 95, "草動手", "撿鴨蛋、餵鴨，100cm 以下免門票（週四休）", 24.68, 121.79],
+  ["農夫青蔥農場", "宜蘭三星", 85, "草吃動手", "拔蔥做蔥油餅、餵梅花鹿（週二休）", 24.67, 121.65],
+  ["三星稻莊休閒農場", "宜蘭三星", 85, "草雨動", "水豚、狐獴，室內積木區", 24.66, 121.66],
+  ["潭酵天地觀光工廠", "宜蘭礁溪", 95, "雨免停滑", "免門票，雙層膠囊溜滑梯免費玩", 24.84, 121.77],
+  ["橘之鄉蜜餞形象館", "宜蘭市", 90, "雨免", "愛麗絲巨大桌椅、玻璃屋咖啡", 24.75, 121.74],
+  ["溪和水產觀光工廠", "宜蘭五結", 95, "雨吃停手", "水產 DIY，彩繪貝殼", 24.69, 121.8],
+  ["中興文化創意園區", "宜蘭五結", 95, "免走手", "老紙廠改建，親子 DIY", 24.69, 121.79],
+  ["奇麗灣珍奶文化館", "宜蘭冬山", 95, "雨手", "手搖珍奶 DIY", 24.64, 121.77],
+  // ---- 餵動物新增 ----
+  ["鹿羽松牧場", "新北金山", 85, "草動", "餵梅花鹿、綿羊豬、小羊", 25.205, 121.6],
+  ["麗寶美樂地親子農場", "台中后里", 85, "草動停", "樂園旁新農場，水豚、狐獴，門票送飼料", 24.32, 120.7],
+  ["今夜星辰休閒農場", "彰化市", 115, "草動", "小型動物園，可餵動物（週二休）", 24.06, 120.57],
+  ["星夢森林劇場", "宜蘭冬山", 95, "草動水停", "動物親子樂園，天鵝湖划小船", 24.64, 121.73],
 ];
 
+const MAP = {"W":400,"H":720,"scale":10765.77780084959,"translate":[-22538.802035615798,4927.827013097913],"counties":[{"n":"宜蘭縣","d":"M378.4,77.3L377.9,77.5L376.9,77.8L375.5,78.4L373.6,79.1L371.3,80.7L368.6,83.1L365.5,86.4L362.0,90.4L359.2,94.0L357,97.0L355.3,99.6L354.4,101.7L353.5,104.3L352.7,107.5L352.0,111.4L351.5,115.8L351.5,121.0L352.2,127.1L353.5,133.9L355.4,141.6L357.1,147.5L358.6,151.7L360.0,154.1L361.3,154.8L362.1,156.2L362.4,158.3L362.3,161.2L361.8,164.7L361.0,167.6L360.0,169.7L358.8,171.2L357.3,171.9L356.4,172.9L356.0,174.3L356.3,175.9L357.2,177.7L357.4,179.5L356.9,181.0L355.7,182.3L353.8,183.4L352.0,185.0L350.4,186.9L348.9,189.3L347.6,192.0L346.3,195.3L345.2,199.1L344.3,203.3L343.5,208.1L342.9,211.7L342.5,214.1L342.3,215.3L341.6,215.2L340.2,214.9L338.1,214.4L335.3,213.8L332.1,212.9L328.5,211.6L324.5,209.9L320.2,207.8L317.1,206.7L315.1,206.5L314.5,207.2L315.0,208.8L313.8,210.0L310.9,210.7L306.3,210.9L299.9,210.7L294.6,210.2L290.4,209.5L287.2,208.4L285.0,207.1L283.4,206.1L282.3,205.5L281.8,205.1L281.6,204.9L281.3,204.4L280.8,203.7L280.1,202.8L278.8,202.3L277.0,202.2L274.6,202.5L271.6,203.3L268.8,203.5L266.2,203.1L263.8,202.1L261.7,200.5L260.0,198.8L258.6,196.9L257.7,194.9L257.3,192.6L256.9,191.0L256.6,189.8L256.5,189.3L257.5,188.2L259.5,185.9L262.4,182.5L266.4,178.0L269.4,173.8L271.4,169.9L272.4,166.3L272.5,163.1L272.5,160.7L272.6,159.1L272.6,158.3L273.2,157.2L274.6,155.1L276.5,151.9L279.2,147.7L281.4,144.6L283.2,142.5L284.6,141.4L285.6,141.3L286.3,141.3L286.8,141.3L287.0,141.3L287.7,141.1L289.0,140.7L291.0,140.1L293.7,139.4L296.4,138.3L299.2,136.9L302.0,135.2L304.8,133.2L306.9,130.9L308.2,128.3L308.7,125.5L308.5,122.4L309.4,119.7L311.6,117.4L314.9,115.5L319.5,113.9L324.0,111.8L328.5,109.2L332.9,106.0L337.2,102.3L341.3,99.0L345.1,96.3L348.7,94.0L352.0,92.2L354.4,90.4L356,88.6L356.6,86.7L356.4,84.8L357.6,83.1L360.3,81.6L364.4,80.2L370.0,79.0L374.2,78.1L377.0,77.6Z"},{"n":"彰化縣","d":"M94.7,237.6L95.3,237.8L96.4,238.2L98.1,238.8L100.3,239.7L102.4,241.1L104.1,243.2L105.7,245.9L107.0,249.2L108.9,252.0L111.4,254.2L114.6,256.0L118.4,257.3L121.3,259.1L123.5,261.6L124.9,264.7L125.5,268.5L126.6,271.5L128.1,273.7L130.2,275.3L132.7,276.1L134.6,276.7L135.8,277.2L136.5,277.4L136.0,277.4L135.2,277.6L133.9,277.8L132.2,278.0L130.8,278.9L129.6,280.5L128.6,282.8L127.9,285.7L127.5,288.6L127.3,291.4L127.4,294.2L127.7,297.0L127.8,299.8L127.6,302.6L127.1,305.5L126.4,308.4L126.6,311.1L127.7,313.6L129.8,315.9L132.9,318.0L134.6,319.7L135.1,321.1L134.4,322.3L132.3,323.0L130.8,323.6L129.8,324.0L129.3,324.2L127.7,324.0L124.7,323.7L120.2,323.1L114.1,322.4L108.6,321.5L103.7,320.4L99.5,319.0L95.8,317.5L91.6,316.4L86.8,315.9L81.5,315.9L75.6,316.4L70.6,316.6L66.4,316.5L63.1,316.1L60.6,315.4L58.3,314.4L56.3,313.3L54.4,311.9L52.8,310.2L51.6,309.0L50.8,308.2L50.3,307.8L50.8,307.3L51.7,306.5L53.0,305.2L54.7,303.5L56.4,301.5L57.9,299.2L59.2,296.6L60.5,293.7L62.0,290.8L63.8,287.8L65.8,284.9L68.2,281.9L70.1,279.0L71.4,276.3L72.3,273.8L72.7,271.4L73.4,269.3L74.6,267.4L76.2,265.8L78.2,264.3L80.1,262.0L82.1,258.9L84.0,254.8L85.9,249.9L87.7,245.9L89.4,242.8L91.0,240.7L92.5,239.4L93.6,238.5L94.4,237.9Z"},{"n":"南投縣","d":"M129.3,324.2L129.8,324.0L130.8,323.6L132.3,323.0L134.4,322.3L135.1,321.1L134.6,319.7L132.9,318.0L129.8,315.9L127.7,313.6L126.6,311.1L126.4,308.4L127.1,305.5L127.6,302.6L127.8,299.8L127.7,297.0L127.4,294.2L127.3,291.4L127.5,288.6L127.9,285.7L128.6,282.8L129.6,280.5L130.8,278.9L132.2,278.0L133.9,277.8L135.2,277.6L136.0,277.4L136.5,277.4L137.2,277.6L138.8,278.0L141.2,278.6L144.4,279.3L147.7,279.0L151.3,277.5L155.0,274.9L158.9,271.2L162.0,267.7L164.3,264.4L165.9,261.4L166.6,258.7L168.0,256.9L170.1,256.0L173.0,255.9L176.5,256.8L180.0,257.3L183.4,257.4L186.9,257.1L190.2,256.4L193.1,255.4L195.5,254.1L197.3,252.4L198.6,250.5L200.0,249.1L201.4,248.2L202.9,247.9L204.4,248.1L206.2,247.7L208.2,246.7L210.5,245.1L213.0,242.9L216.4,241.0L220.7,239.3L226.0,237.9L232.2,236.8L237.2,235.6L241.0,234.3L243.5,233.0L244.8,231.7L246.7,231.0L249.1,230.9L252.2,231.4L255.8,232.5L258.6,233.4L260.4,233.9L261.3,234.2L261.4,234.5L261.5,235.1L261.8,236.0L262.1,237.2L261.6,238.4L260.2,239.6L258.1,240.8L255.1,242.0L252.8,243.4L251.2,245.1L250.3,246.9L250.1,249.1L250.4,251.0L251.4,252.6L253.0,253.9L255.2,255.0L256.4,256.6L256.4,258.7L255.4,261.3L253.2,264.4L251.4,267.6L249.8,270.7L248.4,273.9L247.3,277.1L246.7,279.8L246.6,282.1L247.0,283.9L247.8,285.2L248.3,287.4L248.4,290.5L248.2,294.4L247.6,299.2L246.7,303.9L245.5,308.6L244.1,313.1L242.3,317.6L240.8,321.2L239.3,323.8L238.1,325.4L237.0,326.0L236.6,327.3L236.9,329.3L237.9,331.9L239.6,335.2L240.5,339.0L240.7,343.4L240.2,348.4L238.9,354.0L237.2,358.4L235.1,361.5L232.7,363.4L229.9,364.1L227.7,365.3L226.3,367.2L225.5,369.6L225.4,372.5L224.3,374.9L222.3,376.6L219.4,377.8L215.5,378.3L212.0,379.8L208.8,382.2L206.0,385.5L203.5,389.7L201.6,392.9L200.3,395.1L199.7,396.1L199.6,395.8L199.5,395.1L199.2,394.1L198.9,392.7L198.1,391.6L196.7,390.7L194.8,390.1L192.4,389.7L190.7,389.4L189.5,389.2L188.9,389.1L187.5,389.1L184.7,389.1L180.5,389.0L174.9,388.9L170.4,388.0L166.9,386.3L164.4,383.8L163.0,380.5L162.0,377.1L161.4,373.8L161.2,370.5L161.5,367.2L160.7,364.6L158.9,362.6L156.0,361.4L152.1,360.9L149.2,360.6L147.2,360.3L146.3,360.2L145.4,360.2L143.8,360.2L141.4,360.2L138.1,360.2L135.3,359.9L132.9,359.3L130.9,358.3L129.4,357.1L128.6,354.6L128.5,350.9L129.0,345.9L130.3,339.8L131.0,334.7L131.3,330.9L131.0,328.1L130.3,326.6L129.8,325.4L129.4,324.6Z"},{"n":"雲林縣","d":"M50.3,307.8L50.8,308.2L51.6,309.0L52.8,310.2L54.4,311.9L56.3,313.3L58.3,314.4L60.6,315.4L63.1,316.1L66.4,316.5L70.6,316.6L75.6,316.4L81.5,315.9L86.8,315.9L91.6,316.4L95.8,317.5L99.5,319.0L103.7,320.4L108.6,321.5L114.1,322.4L120.2,323.1L124.7,323.7L127.7,324.0L129.3,324.2L129.4,324.6L129.8,325.4L130.3,326.6L131.0,328.1L131.3,330.9L131.0,334.7L130.3,339.8L129.0,345.9L128.5,350.9L128.6,354.6L129.4,357.1L130.9,358.3L132.9,359.3L135.3,359.9L138.1,360.2L141.4,360.2L143.8,360.2L145.4,360.2L146.3,360.2L146.3,360.7L146.5,361.7L146.6,363.3L146.9,365.4L146.0,366.6L144.0,367.1L140.9,366.7L136.6,365.5L133.0,364.7L130.1,364.4L127.7,364.6L126.0,365.1L123.9,365.4L121.4,365.4L118.4,365.0L115.0,364.4L112.0,363.4L109.5,362.1L107.5,360.4L105.9,358.3L103.5,356.8L100.4,356.0L96.4,355.8L91.7,356.2L86.3,357.6L80.1,360.0L73.3,363.4L65.7,367.8L59.9,371.6L55.6,374.7L53.1,377.2L52.2,379.1L50.6,380.4L48.4,380.9L45.4,380.7L41.8,379.9L39.1,379.3L37.3,378.8L36.3,378.6L36.3,377.2L36.1,374.4L35.8,370.1L35.5,364.4L35.0,360.0L34.5,356.9L33.9,355.0L33.2,354.4L33.3,352.5L34.0,349.2L35.4,344.6L37.5,338.7L39.0,333.9L39.8,330.3L39.9,327.8L39.3,326.5L39.6,324.5L40.8,321.7L42.9,318.2L45.9,314.0L48.1,310.9L49.6,308.8Z"},{"n":"基隆市","d":"M347.8,45.5L347.3,45.9L346.1,46.6L344.5,47.7L342.2,49.1L340.8,50.7L340.1,52.4L340.3,54.3L341.2,56.3L341.4,58.0L340.8,59.4L339.5,60.6L337.5,61.5L335.0,61.6L332.2,61.0L329.0,59.7L325.4,57.5L322.4,55.4L319.9,53.1L318.0,50.8L316.6,48.4L316.6,46.1L317.9,44.0L320.4,41.9L324.3,40.0L327.3,38.6L329.2,37.6L330.2,37.1Z"},{"n":"台北市","d":"M304.1,32.8L304.8,34.2L306.1,36.8L308.0,40.7L310.6,46.0L312.5,50.6L313.8,54.8L314.4,58.4L314.4,61.4L314.8,63.8L315.7,65.7L317.0,67.1L318.9,67.8L319.5,68.5L318.8,69.1L316.9,69.6L313.8,70.0L311.5,71.1L309.9,72.7L309.1,74.9L309.1,77.7L307.7,78.9L305.0,78.3L301.0,76.1L295.7,72.2L292.0,68.9L289.9,66.1L289.4,63.7L290.5,61.9L290.7,59.9L290.1,57.6L288.7,55.1L286.4,52.4L285.3,49.7L285.2,47.0L286.1,44.3L288.2,41.7L290.5,39.5L293.2,37.5L296.1,35.9L299.3,34.7L301.7,33.8L303.3,33.1Z"},{"n":"新北市","d":"M378.4,77.3L377.0,77.6L374.2,78.1L370.0,79.0L364.4,80.2L360.3,81.6L357.6,83.1L356.4,84.8L356.6,86.7L356,88.6L354.4,90.4L352.0,92.2L348.7,94.0L345.1,96.3L341.3,99.0L337.2,102.3L332.9,106.0L328.5,109.2L324.0,111.8L319.5,113.9L314.9,115.5L311.6,117.4L309.4,119.7L308.5,122.4L308.7,125.5L308.2,128.3L306.9,130.9L304.8,133.2L302.0,135.2L299.2,136.9L296.4,138.3L293.7,139.4L291.0,140.1L289.0,140.7L287.7,141.1L287.0,141.3L286.4,140.1L285.0,137.8L283.0,134.4L280.4,129.7L278.7,126.0L278.0,123.1L278.2,121.0L279.5,119.9L280.0,118.3L279.8,116.5L278.9,114.2L277.3,111.7L275.7,109.8L274.0,108.5L272.3,107.9L270.5,108.0L268.5,107.2L266.3,105.5L263.8,102.9L261.1,99.5L259.1,96.0L257.9,92.3L257.5,88.4L257.8,84.4L259.0,81.1L260.9,78.5L263.7,76.7L267.2,75.6L269.8,73.9L271.3,71.8L271.7,69.1L271.2,65.8L269.5,62.7L266.7,59.6L262.7,56.6L257.7,53.7L253.9,51.5L251.3,50.0L250.1,49.3L251.3,48.9L253.8,48.2L257.6,47.0L262.6,45.4L267.1,42.9L271.0,39.4L274.5,34.9L277.5,29.5L280.7,24.8L284.3,21.0L288.1,18.0L292.3,15.9L296.4,14.5L300.4,14L304.3,14.2L308.2,15.3L311.2,16.5L313.3,17.9L314.7,19.5L315.2,21.2L316.5,23.4L318.5,25.9L321.3,28.8L324.8,32.1L327.5,34.6L329.3,36.3L330.2,37.1L329.2,37.6L327.3,38.6L324.3,40.0L320.4,41.9L317.9,44.0L316.6,46.1L316.6,48.4L318.0,50.8L319.9,53.1L322.4,55.4L325.4,57.5L329.0,59.7L332.2,61.0L335.0,61.6L337.5,61.5L339.5,60.6L340.8,59.4L341.4,58.0L341.2,56.3L340.3,54.3L340.1,52.4L340.8,50.7L342.2,49.1L344.5,47.7L346.1,46.6L347.3,45.9L347.8,45.5L348.9,45.7L350.9,46.1L354.1,46.8L358.2,47.6L361.8,48.2L364.7,48.3L366.9,48.2L368.5,47.7L369.6,48.0L370.2,49.1L370.2,51.0L369.6,53.6L369.6,56.3L370.1,59.1L371.1,62.0L372.6,64.9L374.3,67.2L376.2,68.7L378.4,69.5L380.7,69.6L382.1,70.1L382.6,71.1L382.1,72.5L380.6,74.4L379.5,75.8L378.7,76.8ZM304.1,32.8L303.3,33.1L301.7,33.8L299.3,34.7L296.1,35.9L293.2,37.5L290.5,39.5L288.2,41.7L286.1,44.3L285.2,47.0L285.3,49.7L286.4,52.4L288.7,55.1L290.1,57.6L290.7,59.9L290.5,61.9L289.4,63.7L289.9,66.1L292.0,68.9L295.7,72.2L301.0,76.1L305.0,78.3L307.7,78.9L309.1,77.7L309.1,74.9L309.9,72.7L311.5,71.1L313.8,70.0L316.9,69.6L318.8,69.1L319.5,68.5L318.9,67.8L317.0,67.1L315.7,65.7L314.8,63.8L314.4,61.4L314.4,58.4L313.8,54.8L312.5,50.6L310.6,46.0L308.0,40.7L306.1,36.8L304.8,34.2Z"},{"n":"台中市","d":"M256.5,189.3L256.6,189.8L256.9,191.0L257.3,192.6L257.7,194.9L258.6,196.9L260.0,198.8L261.7,200.5L263.8,202.1L266.2,203.1L268.8,203.5L271.6,203.3L274.6,202.5L277.0,202.2L278.8,202.3L280.1,202.8L280.8,203.7L281.3,204.4L281.6,204.9L281.8,205.1L281.6,205.7L281.2,206.8L280.6,208.4L279.8,210.6L278.5,212.7L276.8,214.9L274.7,217.2L272.2,219.4L269.8,221.8L267.6,224.3L265.7,227.0L263.9,229.9L262.6,232.1L261.7,233.5L261.3,234.2L260.4,233.9L258.6,233.4L255.8,232.5L252.2,231.4L249.1,230.9L246.7,231.0L244.8,231.7L243.5,233.0L241.0,234.3L237.2,235.6L232.2,236.8L226.0,237.9L220.7,239.3L216.4,241.0L213.0,242.9L210.5,245.1L208.2,246.7L206.2,247.7L204.4,248.1L202.9,247.9L201.4,248.2L200.0,249.1L198.6,250.5L197.3,252.4L195.5,254.1L193.1,255.4L190.2,256.4L186.9,257.1L183.4,257.4L180.0,257.3L176.5,256.8L173.0,255.9L170.1,256.0L168.0,256.9L166.6,258.7L165.9,261.4L164.3,264.4L162.0,267.7L158.9,271.2L155.0,274.9L151.3,277.5L147.7,279.0L144.4,279.3L141.2,278.6L138.8,278.0L137.2,277.6L136.5,277.4L135.8,277.2L134.6,276.7L132.7,276.1L130.2,275.3L128.1,273.7L126.6,271.5L125.5,268.5L124.9,264.7L123.5,261.6L121.3,259.1L118.4,257.3L114.6,256.0L111.4,254.2L108.9,252.0L107.0,249.2L105.7,245.9L104.1,243.2L102.4,241.1L100.3,239.7L98.1,238.8L96.4,238.2L95.3,237.8L94.7,237.6L95.5,236.2L97.1,233.4L99.5,229.2L102.6,223.6L106.1,217.8L110.0,211.8L114.3,205.6L118.9,199.2L122.3,194.3L124.6,191.1L125.8,189.5L126.6,190.5L128.3,192.3L130.7,195.1L134.0,198.8L138.2,202.6L143.1,206.5L148.9,210.4L155.6,214.4L161.4,217.4L166.4,219.4L170.6,220.3L173.9,220.2L176.8,219.5L179.2,218.1L181.1,216.2L182.6,213.5L184.5,211.7L186.8,210.7L189.6,210.5L192.9,211.0L195.7,211.9L198.0,213.1L199.9,214.6L201.3,216.4L203.4,217.3L206.2,217.3L209.6,216.5L213.6,214.7L217.7,212.6L221.7,210.0L225.7,206.9L229.7,203.5L233.0,201.1L235.6,199.7L237.5,199.4L238.6,200.1L239.8,200.0L241.0,198.9L242.3,197.0L243.5,194.2L244.5,192.1L245.2,190.7L245.5,190.0Z"},{"n":"台南市","d":"M131.7,439.3L131.6,439.8L131.3,440.9L130.9,442.5L130.3,444.6L129.1,447.3L127.2,450.7L124.7,454.8L121.6,459.5L118.2,464.1L114.4,468.7L110.3,473.3L105.8,477.8L102.3,481.1L99.6,483.4L97.8,484.5L96.9,484.4L95.7,485.5L94.2,487.7L92.4,491.0L90.3,495.5L88.0,499.2L85.5,502.1L82.8,504.2L79.9,505.6L76.6,506.5L72.7,507.1L68.5,507.3L63.8,507.0L59.3,506.7L55.1,506.1L51.1,505.4L47.4,504.5L44.6,503.8L42.7,503.4L41.8,503.2L41.3,502.1L40.5,499.9L39.2,496.6L37.5,492.3L34.9,488.2L31.5,484.2L27.2,480.5L22.0,476.9L18.7,472.5L17.3,467.3L17.8,461.3L20.1,454.5L22.0,448.1L23.6,442.1L24.8,436.6L25.7,431.6L26.6,427.3L27.6,423.7L28.6,420.9L29.6,418.8L30.4,417.2L30.9,416.1L31.1,415.6L32.3,416.2L34.8,417.3L38.4,419.0L43.2,421.3L47.7,421.9L51.8,421.0L55.5,418.6L58.9,414.5L62.1,411.1L65.1,408.4L68.0,406.4L70.6,405.1L73.7,403.9L77.1,403.0L80.9,402.2L85.0,401.6L89.0,401.7L92.8,402.7L96.4,404.4L99.8,406.9L102.4,410.4L104.3,414.8L105.5,420.3L105.9,426.7L106.9,431.8L108.5,435.6L110.6,438.1L113.4,439.4L116.4,440.2L119.5,440.6L122.9,440.5L126.4,440.0L129.1,439.6L130.8,439.4Z"},{"n":"桃園市","d":"M287.0,141.3L286.8,141.3L286.3,141.3L285.6,141.3L284.6,141.4L283.2,142.5L281.4,144.6L279.2,147.7L276.5,151.9L274.6,155.1L273.2,157.2L272.6,158.3L272.1,158.1L271.2,157.8L269.8,157.4L267.9,156.8L266.4,155.5L265.2,153.5L264.4,150.9L264.0,147.5L263.2,144.7L262.1,142.2L260.8,140.2L259.1,138.6L257.7,136.6L256.5,134.2L255.5,131.2L254.7,127.9L252.3,124.3L248.4,120.5L242.8,116.5L235.7,112.3L230.2,108.7L226.3,105.7L224.0,103.4L223.3,101.6L221.9,100.0L219.7,98.4L216.8,96.9L213.2,95.4L210.2,93.8L207.9,92.1L206.3,90.1L205.4,88.0L204.0,86.5L202.2,85.6L200.0,85.4L197.4,85.7L195.4,85.9L194.1,86.1L193.5,86.2L194.0,85.2L195.1,83.1L196.7,79.9L198.9,75.8L201.3,72.1L203.8,68.9L206.5,66.2L209.4,64.0L213.6,61.6L219.0,58.9L225.7,56.0L233.7,52.8L239.9,50.5L244.5,49.1L247.3,48.6L248.4,48.9L249.3,49.1L249.8,49.2L250.1,49.3L251.3,50.0L253.9,51.5L257.7,53.7L262.7,56.6L266.7,59.6L269.5,62.7L271.2,65.8L271.7,69.1L271.3,71.8L269.8,73.9L267.2,75.6L263.7,76.7L260.9,78.5L259.0,81.1L257.8,84.4L257.5,88.4L257.9,92.3L259.1,96.0L261.1,99.5L263.8,102.9L266.3,105.5L268.5,107.2L270.5,108.0L272.3,107.9L274.0,108.5L275.7,109.8L277.3,111.7L278.9,114.2L279.8,116.5L280.0,118.3L279.5,119.9L278.2,121.0L278.0,123.1L278.7,126.0L280.4,129.7L283.0,134.4L285.0,137.8L286.4,140.1Z"},{"n":"苗栗縣","d":"M245.5,190.0L245.2,190.7L244.5,192.1L243.5,194.2L242.3,197.0L241.0,198.9L239.8,200.0L238.6,200.1L237.5,199.4L235.6,199.7L233.0,201.1L229.7,203.5L225.7,206.9L221.7,210.0L217.7,212.6L213.6,214.7L209.6,216.5L206.2,217.3L203.4,217.3L201.3,216.4L199.9,214.6L198.0,213.1L195.7,211.9L192.9,211.0L189.6,210.5L186.8,210.7L184.5,211.7L182.6,213.5L181.1,216.2L179.2,218.1L176.8,219.5L173.9,220.2L170.6,220.3L166.4,219.4L161.4,217.4L155.6,214.4L148.9,210.4L143.1,206.5L138.2,202.6L134.0,198.8L130.7,195.1L128.3,192.3L126.6,190.5L125.8,189.5L126.3,189.0L127.3,187.9L128.9,186.2L130.9,183.9L133.0,180.8L135.2,176.6L137.5,171.5L139.9,165.4L142.5,160.0L145.4,155.3L148.6,151.2L152.0,147.8L155.0,145.2L157.5,143.3L159.5,142.3L161.2,142.0L163.0,140.9L165.0,139.1L167.2,136.4L169.6,133.0L171.4,130.5L172.7,128.8L173.3,127.9L184.7,133.3L186.4,134.9L189.9,138.0L195.1,142.8L202.0,149.1L207.0,154.3L210.0,158.3L211.0,161.2L210.0,162.8L209.4,164.9L209.2,167.2L209.2,169.9L209.7,173.0L211.7,175.1L215.4,176.2L220.6,176.3L227.5,175.5L233.1,175.9L237.5,177.5L240.6,180.2L242.6,184.1L244.0,187.1L245.0,189.0Z"},{"n":"嘉義市","d":"M93.0,379.2L93.8,379.7L95.2,380.8L97.4,382.5L100.3,384.7L101.6,386.8L101.4,388.8L99.7,390.8L96.4,392.6L93.5,393.6L90.8,393.9L88.3,393.5L86.2,392.3L84.5,391.0L83.4,389.5L82.7,387.8L82.4,385.9L82.9,384.3L84.2,382.9L86.2,381.7L88.9,380.7L91.0,379.9L92.4,379.4Z"},{"n":"嘉義縣","d":"M146.3,360.2L147.2,360.3L149.2,360.6L152.1,360.9L156.0,361.4L158.9,362.6L160.7,364.6L161.5,367.2L161.2,370.5L161.4,373.8L162.0,377.1L163.0,380.5L164.4,383.8L166.9,386.3L170.4,388.0L174.9,388.9L180.5,389.0L184.7,389.1L187.5,389.1L188.9,389.1L187.6,389.8L185.0,391.1L181.2,393.0L176.1,395.5L172.1,398.0L169.0,400.4L167.0,402.8L166.1,405.1L164.5,407.2L162.4,409.1L159.7,410.9L156.3,412.4L153.2,414.4L150.1,416.7L147.3,419.4L144.5,422.4L141.8,424.6L139.2,425.8L136.7,426.0L134.2,425.4L132.4,425.8L131.3,427.3L130.9,429.9L131.3,433.7L131.5,436.5L131.6,438.3L131.7,439.3L130.8,439.4L129.1,439.6L126.4,440.0L122.9,440.5L119.5,440.6L116.4,440.2L113.4,439.4L110.6,438.1L108.5,435.6L106.9,431.8L105.9,426.7L105.5,420.3L104.3,414.8L102.4,410.4L99.8,406.9L96.4,404.4L92.8,402.7L89.0,401.7L85.0,401.6L80.9,402.2L77.1,403.0L73.7,403.9L70.6,405.1L68.0,406.4L65.1,408.4L62.1,411.1L58.9,414.5L55.5,418.6L51.8,421.0L47.7,421.9L43.2,421.3L38.4,419.0L34.8,417.3L32.3,416.2L31.1,415.6L31.6,415.0L32.5,413.9L33.9,412.2L35.7,409.9L37.0,407.1L37.6,403.8L37.6,399.9L36.9,395.6L36.2,391.7L35.3,388.4L34.2,385.6L33.1,383.3L32.5,381.5L32.5,380.2L33.2,379.4L34.4,379.1L35.4,378.8L36.0,378.7L36.3,378.6L37.3,378.8L39.1,379.3L41.8,379.9L45.4,380.7L48.4,380.9L50.6,380.4L52.2,379.1L53.1,377.2L55.6,374.7L59.9,371.6L65.7,367.8L73.3,363.4L80.1,360.0L86.3,357.6L91.7,356.2L96.4,355.8L100.4,356.0L103.5,356.8L105.9,358.3L107.5,360.4L109.5,362.1L112.0,363.4L115.0,364.4L118.4,365.0L121.4,365.4L123.9,365.4L126.0,365.1L127.7,364.6L130.1,364.4L133.0,364.7L136.6,365.5L140.9,366.7L144.0,367.1L146.0,366.6L146.9,365.4L146.6,363.3L146.5,361.7L146.3,360.7ZM93.0,379.2L92.4,379.4L91.0,379.9L88.9,380.7L86.2,381.7L84.2,382.9L82.9,384.3L82.4,385.9L82.7,387.8L83.4,389.5L84.5,391.0L86.2,392.3L88.3,393.5L90.8,393.9L93.5,393.6L96.4,392.6L99.7,390.8L101.4,388.8L101.6,386.8L100.3,384.7L97.4,382.5L95.2,380.8L93.8,379.7Z"},{"n":"高雄市","d":"M188.9,389.1L189.5,389.2L190.7,389.4L192.4,389.7L194.8,390.1L196.7,390.7L198.1,391.6L198.9,392.7L199.2,394.1L199.5,395.1L199.6,395.8L199.7,396.1L199.8,396.5L200.1,397.3L200.5,398.4L201.0,399.9L201.0,401.6L200.3,403.6L199.1,405.8L197.2,408.2L196.5,410.4L197.1,412.5L198.8,414.4L201.7,416.2L203.6,417.8L204.6,419.4L204.6,420.9L203.6,422.3L202.9,423.4L202.4,424.1L202.2,424.4L201.5,424.6L200.1,425.1L198.1,425.7L195.3,426.5L192.7,427.7L190.0,429.2L187.4,431.1L184.8,433.3L182.8,435.6L181.5,438.0L180.7,440.5L180.6,443.1L180.1,445.5L179.2,447.7L177.9,449.7L176.2,451.6L175.1,453.6L174.5,455.8L174.5,458.2L175.1,460.8L175.5,463.5L175.5,466.5L175.3,469.7L174.9,473.0L173.8,476.5L172.2,480.0L170.1,483.7L167.3,487.5L165.5,491.3L164.5,495.1L164.5,499.0L165.3,502.8L166.2,506.3L167.3,509.3L168.4,511.9L169.6,514.0L170.5,515.6L171.1,516.6L171.4,517.2L170.9,516.9L169.9,516.3L168.5,515.4L166.5,514.3L164.5,513.8L162.5,514.0L160.5,514.9L158.4,516.4L156.0,517.0L153.3,516.6L150.3,515.2L147.0,512.8L144.1,511.4L141.7,510.8L139.8,511.2L138.3,512.4L136.8,513.0L135.3,512.9L133.9,512.1L132.4,510.7L130.2,510.4L127.3,511.1L123.7,512.9L119.5,515.8L115.3,517.9L111.1,519.3L107.1,519.9L103.0,519.8L99.9,521.2L97.6,524.0L96.1,528.3L95.5,534.0L94.8,538.9L94.1,543.2L93.2,546.6L92.3,549.4L91.7,552.7L91.4,556.7L91.4,561.3L91.7,566.5L91.7,571.6L91.4,576.6L90.8,581.5L90.0,586.2L89.3,589.8L88.9,592.2L88.7,593.4L87.5,592.6L85.1,591.1L81.5,588.9L76.6,585.9L72.3,582.7L68.6,579.3L65.3,575.7L62.6,571.9L60.4,568.5L58.7,565.4L57.5,562.6L56.9,560.1L56.5,557.6L56.5,555.2L56.8,552.7L57.4,550.3L57.1,546.9L56.1,542.6L54.3,537.4L51.6,531.1L49.3,525.3L47.2,519.9L45.4,514.8L44.0,510.2L42.9,506.7L42.1,504.3L41.8,503.2L42.7,503.4L44.6,503.8L47.4,504.5L51.1,505.4L55.1,506.1L59.3,506.7L63.8,507.0L68.5,507.3L72.7,507.1L76.6,506.5L79.9,505.6L82.8,504.2L85.5,502.1L88.0,499.2L90.3,495.5L92.4,491.0L94.2,487.7L95.7,485.5L96.9,484.4L97.8,484.5L99.6,483.4L102.3,481.1L105.8,477.8L110.3,473.3L114.4,468.7L118.2,464.1L121.6,459.5L124.7,454.8L127.2,450.7L129.1,447.3L130.3,444.6L130.9,442.5L131.3,440.9L131.6,439.8L131.7,439.3L131.6,438.3L131.5,436.5L131.3,433.7L130.9,429.9L131.3,427.3L132.4,425.8L134.2,425.4L136.7,426.0L139.2,425.8L141.8,424.6L144.5,422.4L147.3,419.4L150.1,416.7L153.2,414.4L156.3,412.4L159.7,410.9L162.4,409.1L164.5,407.2L166.1,405.1L167.0,402.8L169.0,400.4L172.1,398.0L176.1,395.5L181.2,393.0L185.0,391.1L187.6,389.8Z"},{"n":"台東縣","d":"M171.4,517.2L171.1,516.6L170.5,515.6L169.6,514.0L168.4,511.9L167.3,509.3L166.2,506.3L165.3,502.8L164.5,499.0L164.5,495.1L165.5,491.3L167.3,487.5L170.1,483.7L172.2,480.0L173.8,476.5L174.9,473.0L175.3,469.7L175.5,466.5L175.5,463.5L175.1,460.8L174.5,458.2L174.5,455.8L175.1,453.6L176.2,451.6L177.9,449.7L179.2,447.7L180.1,445.5L180.6,443.1L180.7,440.5L181.5,438.0L182.8,435.6L184.8,433.3L187.4,431.1L190.0,429.2L192.7,427.7L195.3,426.5L198.1,425.7L200.1,425.1L201.5,424.6L202.2,424.4L202.5,424.5L203.1,424.7L204.1,424.9L205.4,425.3L206.7,426.3L207.9,427.9L209.0,430.2L210.1,433.2L211.6,435.8L213.6,438.1L216.0,440.0L218.9,441.6L221.6,442.8L224.2,443.5L226.7,443.9L229.1,443.9L231.2,444.6L232.9,446.1L234.2,448.3L235.2,451.2L236.6,454.1L238.5,456.7L240.9,459.2L243.8,461.6L246.4,463.2L248.8,464.1L251.1,464.2L253.1,463.6L255.4,460.7L257.8,455.7L260.5,448.4L263.3,438.9L266.0,431.0L268.5,424.6L270.8,419.8L273.0,416.5L274.4,413.7L274.9,411.4L274.7,409.6L273.6,408.3L273.3,406.6L273.9,404.5L275.2,401.9L277.4,398.9L279.6,396.8L281.9,395.5L284.2,395.1L286.5,395.6L288.3,395.9L289.5,396.1L290.1,396.2L289.7,397.8L288.9,400.9L287.7,405.6L286.1,411.9L284.5,417.0L282.9,420.9L281.4,423.7L279.9,425.3L278.4,427.4L276.9,430.0L275.4,433.3L273.9,437.0L273.0,440.9L272.6,444.9L272.7,449.1L273.4,453.4L273.3,457.2L272.2,460.5L270.4,463.3L267.6,465.5L265.4,468.0L263.6,470.6L262.3,473.4L261.5,476.5L259.6,480.7L256.7,486.2L252.8,493.0L247.9,500.9L243.6,507.3L240.1,512.1L237.2,515.3L235.1,516.8L233.6,518.5L232.9,520.1L232.9,521.8L233.6,523.6L233.2,525.9L231.8,528.8L229.5,532.3L226.0,536.3L222.3,540.1L218.2,543.8L213.7,547.2L208.9,550.5L205.1,553.7L202.3,557.1L200.5,560.4L199.7,563.8L198.9,566.6L197.9,568.8L196.9,570.4L195.8,571.4L193.9,575.1L191.2,581.6L187.7,590.8L183.5,602.7L180.3,612.8L178.2,621.0L177.2,627.3L177.3,631.8L177.3,635.2L177.3,637.4L177.4,638.5L177.0,638.8L176.3,639.2L175.3,639.8L173.9,640.7L172.0,640.9L169.8,640.7L167.1,639.8L163.9,638.4L161.4,636.3L159.5,633.3L158.2,629.6L157.5,625.1L156.5,621.5L155.2,618.7L153.5,616.8L151.6,615.7L150.2,614.4L149.5,612.8L149.3,611.1L149.8,609.2L150.6,607.6L151.7,606.3L153.1,605.4L154.8,604.7L155.6,603.7L155.5,602.4L154.6,600.7L152.8,598.6L151.7,596.6L151.0,594.7L151.0,593.0L151.6,591.3L151.7,589.3L151.5,586.9L150.7,584.2L149.6,581.2L149.3,577.1L149.8,571.9L151.2,565.8L153.4,558.6L156.2,552.9L159.6,548.7L163.6,545.9L168.1,544.7L171.8,542.7L174.5,540.0L176.3,536.5L177.3,532.3L177.5,528.6L177.1,525.4L175.9,522.7L174.1,520.5L172.8,518.8L171.9,517.7Z"},{"n":"花蓮縣","d":"M281.8,205.1L282.3,205.5L283.4,206.1L285.0,207.1L287.2,208.4L290.4,209.5L294.6,210.2L299.9,210.7L306.3,210.9L310.9,210.7L313.8,210.0L315.0,208.8L314.5,207.2L315.1,206.5L317.1,206.7L320.2,207.8L324.5,209.9L328.5,211.6L332.1,212.9L335.3,213.8L338.1,214.4L340.2,214.9L341.6,215.2L342.3,215.3L341.9,216.0L341.2,217.4L340.2,219.5L338.8,222.3L336.9,225.1L334.5,227.8L331.7,230.6L328.4,233.4L325.8,236.4L323.9,239.7L322.8,243.2L322.3,246.9L321.4,250.3L320.1,253.4L318.4,256.0L316.3,258.3L315.1,261.1L314.7,264.4L315.2,268.0L316.6,272.2L317.1,276.3L317.0,280.3L316.0,284.2L314.3,288.1L312.9,292.0L311.7,295.9L310.8,299.8L310.2,303.8L308.6,311.1L306.1,321.7L302.6,335.8L298.1,353.2L294.7,367.3L292.3,378.1L290.9,385.7L290.6,389.9L290.3,393.1L290.1,395.2L290.1,396.2L289.5,396.1L288.3,395.9L286.5,395.6L284.2,395.1L281.9,395.5L279.6,396.8L277.4,398.9L275.2,401.9L273.9,404.5L273.3,406.6L273.6,408.3L274.7,409.6L274.9,411.4L274.4,413.7L273.0,416.5L270.8,419.8L268.5,424.6L266.0,431.0L263.3,438.9L260.5,448.4L257.8,455.7L255.4,460.7L253.1,463.6L251.1,464.2L248.8,464.1L246.4,463.2L243.8,461.6L240.9,459.2L238.5,456.7L236.6,454.1L235.2,451.2L234.2,448.3L232.9,446.1L231.2,444.6L229.1,443.9L226.7,443.9L224.2,443.5L221.6,442.8L218.9,441.6L216.0,440.0L213.6,438.1L211.6,435.8L210.1,433.2L209.0,430.2L207.9,427.9L206.7,426.3L205.4,425.3L204.1,424.9L203.1,424.7L202.5,424.5L202.2,424.4L202.4,424.1L202.9,423.4L203.6,422.3L204.6,420.9L204.6,419.4L203.6,417.8L201.7,416.2L198.8,414.4L197.1,412.5L196.5,410.4L197.2,408.2L199.1,405.8L200.3,403.6L201.0,401.6L201.0,399.9L200.5,398.4L200.1,397.3L199.8,396.5L199.7,396.1L200.3,395.1L201.6,392.9L203.5,389.7L206.0,385.5L208.8,382.2L212.0,379.8L215.5,378.3L219.4,377.8L222.3,376.6L224.3,374.9L225.4,372.5L225.5,369.6L226.3,367.2L227.7,365.3L229.9,364.1L232.7,363.4L235.1,361.5L237.2,358.4L238.9,354.0L240.2,348.4L240.7,343.4L240.5,339.0L239.6,335.2L237.9,331.9L236.9,329.3L236.6,327.3L237.0,326.0L238.1,325.4L239.3,323.8L240.8,321.2L242.3,317.6L244.1,313.1L245.5,308.6L246.7,303.9L247.6,299.2L248.2,294.4L248.4,290.5L248.3,287.4L247.8,285.2L247.0,283.9L246.6,282.1L246.7,279.8L247.3,277.1L248.4,273.9L249.8,270.7L251.4,267.6L253.2,264.4L255.4,261.3L256.4,258.7L256.4,256.6L255.2,255.0L253.0,253.9L251.4,252.6L250.4,251.0L250.1,249.1L250.3,246.9L251.2,245.1L252.8,243.4L255.1,242.0L258.1,240.8L260.2,239.6L261.6,238.4L262.1,237.2L261.8,236.0L261.5,235.1L261.4,234.5L261.3,234.2L261.7,233.5L262.6,232.1L263.9,229.9L265.7,227.0L267.6,224.3L269.8,221.8L272.2,219.4L274.7,217.2L276.8,214.9L278.5,212.7L279.8,210.6L280.6,208.4L281.2,206.8L281.6,205.7Z"},{"n":"新竹市","d":"M184.7,133.3L173.3,127.9L182.8,103.8L183.7,104.3L185.4,105.1L188.1,106.4L191.6,108.1L194.6,110.1L197.2,112.5L199.2,115.3L200.7,118.4L201.4,120.5L201.2,121.5L200.2,121.6L198.3,120.6L196.2,120.8L194.0,122.1L191.5,124.5L188.8,128.0L186.7,130.6L185.4,132.4Z"},{"n":"新竹縣","d":"M272.6,158.3L272.6,159.1L272.5,160.7L272.5,163.1L272.4,166.3L271.4,169.9L269.4,173.8L266.4,178.0L262.4,182.5L259.5,185.9L257.5,188.2L256.5,189.3L245.5,190.0L245.0,189.0L244.0,187.1L242.6,184.1L240.6,180.2L237.5,177.5L233.1,175.9L227.5,175.5L220.6,176.3L215.4,176.2L211.7,175.1L209.7,173.0L209.2,169.9L209.2,167.2L209.4,164.9L210.0,162.8L211.0,161.2L210.0,158.3L207.0,154.3L202.0,149.1L195.1,142.8L189.9,138.0L186.4,134.9L184.7,133.3L185.4,132.4L186.7,130.6L188.8,128.0L191.5,124.5L194.0,122.1L196.2,120.8L198.3,120.6L200.2,121.6L201.2,121.5L201.4,120.5L200.7,118.4L199.2,115.3L197.2,112.5L194.6,110.1L191.6,108.1L188.1,106.4L185.4,105.1L183.7,104.3L182.8,103.8L193.5,86.2L194.1,86.1L195.4,85.9L197.4,85.7L200.0,85.4L202.2,85.6L204.0,86.5L205.4,88.0L206.3,90.1L207.9,92.1L210.2,93.8L213.2,95.4L216.8,96.9L219.7,98.4L221.9,100.0L223.3,101.6L224.0,103.4L226.3,105.7L230.2,108.7L235.7,112.3L242.8,116.5L248.4,120.5L252.3,124.3L254.7,127.9L255.5,131.2L256.5,134.2L257.7,136.6L259.1,138.6L260.8,140.2L262.1,142.2L263.2,144.7L264.0,147.5L264.4,150.9L265.2,153.5L266.4,155.5L267.9,156.8L269.8,157.4L271.2,157.8L272.1,158.1Z"},{"n":"屏東縣","d":"M88.7,593.4L88.9,592.2L89.3,589.8L90.0,586.2L90.8,581.5L91.4,576.6L91.7,571.6L91.7,566.5L91.4,561.3L91.4,556.7L91.7,552.7L92.3,549.4L93.2,546.6L94.1,543.2L94.8,538.9L95.5,534.0L96.1,528.3L97.6,524.0L99.9,521.2L103.0,519.8L107.1,519.9L111.1,519.3L115.3,517.9L119.5,515.8L123.7,512.9L127.3,511.1L130.2,510.4L132.4,510.7L133.9,512.1L135.3,512.9L136.8,513.0L138.3,512.4L139.8,511.2L141.7,510.8L144.1,511.4L147.0,512.8L150.3,515.2L153.3,516.6L156.0,517.0L158.4,516.4L160.5,514.9L162.5,514.0L164.5,513.8L166.5,514.3L168.5,515.4L169.9,516.3L170.9,516.9L171.4,517.2L171.9,517.7L172.8,518.8L174.1,520.5L175.9,522.7L177.1,525.4L177.5,528.6L177.3,532.3L176.3,536.5L174.5,540.0L171.8,542.7L168.1,544.7L163.6,545.9L159.6,548.7L156.2,552.9L153.4,558.6L151.2,565.8L149.8,571.9L149.3,577.1L149.6,581.2L150.7,584.2L151.5,586.9L151.7,589.3L151.6,591.3L151.0,593.0L151.0,594.7L151.7,596.6L152.8,598.6L154.6,600.7L155.5,602.4L155.6,603.7L154.8,604.7L153.1,605.4L151.7,606.3L150.6,607.6L149.8,609.2L149.3,611.1L149.5,612.8L150.2,614.4L151.6,615.7L153.5,616.8L155.2,618.7L156.5,621.5L157.5,625.1L158.2,629.6L159.5,633.3L161.4,636.3L163.9,638.4L167.1,639.8L169.8,640.7L172.0,640.9L173.9,640.7L175.3,639.8L176.3,639.2L177.0,638.8L177.4,638.5L177.2,640.0L177.0,643.0L176.7,647.4L176.2,653.3L176.1,659.0L176.2,664.4L176.6,669.6L177.2,674.5L177.1,678.7L176.2,682.3L174.5,685.2L172.1,687.5L170.4,690.3L169.7,693.6L169.7,697.4L170.6,701.7L170.7,704.6L170.1,706L168.7,705.8L166.6,704.2L164.2,702.8L161.5,701.4L158.6,700.2L155.3,699.2L152.7,698.8L150.8,699.2L149.5,700.3L148.9,702.1L148.1,703.3L147.1,703.8L145.9,703.7L144.5,703.0L143.5,701.8L142.9,700.3L142.7,698.3L142.8,696.0L142.6,693.7L142.0,691.4L141.0,689.2L139.7,687.0L139.1,684.5L139.1,681.6L139.9,678.4L141.4,674.9L142.1,670.8L142.1,666.0L141.4,660.7L139.9,654.8L138.3,649.8L136.7,645.6L135.1,642.4L133.4,640.1L132.0,637.7L130.9,635.1L130.0,632.3L129.4,629.4L128.3,626.5L126.8,623.6L124.9,620.8L122.5,617.9L119.3,614.8L115.1,611.6L110.0,608.2L104.1,604.7L99.2,601.6L95.4,599.1L92.7,597.1L91.1,595.6L89.9,594.5L89.1,593.8Z"}],"outline":"M290.1,396.2L289.7,397.8L288.9,400.9L287.7,405.6L286.1,411.9L284.5,417.0L282.9,420.9L281.4,423.7L279.9,425.3L278.4,427.4L276.9,430.0L275.4,433.3L273.9,437.0L273.0,440.9L272.6,444.9L272.7,449.1L273.4,453.4L273.3,457.2L272.2,460.5L270.4,463.3L267.6,465.5L265.4,468.0L263.6,470.6L262.3,473.4L261.5,476.5L259.6,480.7L256.7,486.2L252.8,493.0L247.9,500.9L243.6,507.3L240.1,512.1L237.2,515.3L235.1,516.8L233.6,518.5L232.9,520.1L232.9,521.8L233.6,523.6L233.2,525.9L231.8,528.8L229.5,532.3L226.0,536.3L222.3,540.1L218.2,543.8L213.7,547.2L208.9,550.5L205.1,553.7L202.3,557.1L200.5,560.4L199.7,563.8L198.9,566.6L197.9,568.8L196.9,570.4L195.8,571.4L193.9,575.1L191.2,581.6L187.7,590.8L183.5,602.7L180.3,612.8L178.2,621.0L177.2,627.3L177.3,631.8L177.3,635.2L177.3,637.4L177.4,638.5L177.2,640.0L177.0,643.0L176.7,647.4L176.2,653.3L176.1,659.0L176.2,664.4L176.6,669.6L177.2,674.5L177.1,678.7L176.2,682.3L174.5,685.2L172.1,687.5L170.4,690.3L169.7,693.6L169.7,697.4L170.6,701.7L170.7,704.6L170.1,706L168.7,705.8L166.6,704.2L164.2,702.8L161.5,701.4L158.6,700.2L155.3,699.2L152.7,698.8L150.8,699.2L149.5,700.3L148.9,702.1L148.1,703.3L147.1,703.8L145.9,703.7L144.5,703.0L143.5,701.8L142.9,700.3L142.7,698.3L142.8,696.0L142.6,693.7L142.0,691.4L141.0,689.2L139.7,687.0L139.1,684.5L139.1,681.6L139.9,678.4L141.4,674.9L142.1,670.8L142.1,666.0L141.4,660.7L139.9,654.8L138.3,649.8L136.7,645.6L135.1,642.4L133.4,640.1L132.0,637.7L130.9,635.1L130.0,632.3L129.4,629.4L128.3,626.5L126.8,623.6L124.9,620.8L122.5,617.9L119.3,614.8L115.1,611.6L110.0,608.2L104.1,604.7L99.2,601.6L95.4,599.1L92.7,597.1L91.1,595.6L89.9,594.5L89.1,593.8L88.7,593.4L87.5,592.6L85.1,591.1L81.5,588.9L76.6,585.9L72.3,582.7L68.6,579.3L65.3,575.7L62.6,571.9L60.4,568.5L58.7,565.4L57.5,562.6L56.9,560.1L56.5,557.6L56.5,555.2L56.8,552.7L57.4,550.3L57.1,546.9L56.1,542.6L54.3,537.4L51.6,531.1L49.3,525.3L47.2,519.9L45.4,514.8L44.0,510.2L42.9,506.7L42.1,504.3L41.8,503.2L41.3,502.1L40.5,499.9L39.2,496.6L37.5,492.3L34.9,488.2L31.5,484.2L27.2,480.5L22.0,476.9L18.7,472.5L17.3,467.3L17.8,461.3L20.1,454.5L22.0,448.1L23.6,442.1L24.8,436.6L25.7,431.6L26.6,427.3L27.6,423.7L28.6,420.9L29.6,418.8L30.4,417.2L30.9,416.1L31.1,415.6L31.6,415.0L32.5,413.9L33.9,412.2L35.7,409.9L37.0,407.1L37.6,403.8L37.6,399.9L36.9,395.6L36.2,391.7L35.3,388.4L34.2,385.6L33.1,383.3L32.5,381.5L32.5,380.2L33.2,379.4L34.4,379.1L35.4,378.8L36.0,378.7L36.3,378.6L36.3,377.2L36.1,374.4L35.8,370.1L35.5,364.4L35.0,360.0L34.5,356.9L33.9,355.0L33.2,354.4L33.3,352.5L34.0,349.2L35.4,344.6L37.5,338.7L39.0,333.9L39.8,330.3L39.9,327.8L39.3,326.5L39.6,324.5L40.8,321.7L42.9,318.2L45.9,314.0L48.1,310.9L49.6,308.8L50.3,307.8L50.8,307.3L51.7,306.5L53.0,305.2L54.7,303.5L56.4,301.5L57.9,299.2L59.2,296.6L60.5,293.7L62.0,290.8L63.8,287.8L65.8,284.9L68.2,281.9L70.1,279.0L71.4,276.3L72.3,273.8L72.7,271.4L73.4,269.3L74.6,267.4L76.2,265.8L78.2,264.3L80.1,262.0L82.1,258.9L84.0,254.8L85.9,249.9L87.7,245.9L89.4,242.8L91.0,240.7L92.5,239.4L93.6,238.5L94.4,237.9L94.7,237.6L95.5,236.2L97.1,233.4L99.5,229.2L102.6,223.6L106.1,217.8L110.0,211.8L114.3,205.6L118.9,199.2L122.3,194.3L124.6,191.1L125.8,189.5L126.3,189.0L127.3,187.9L128.9,186.2L130.9,183.9L133.0,180.8L135.2,176.6L137.5,171.5L139.9,165.4L142.5,160.0L145.4,155.3L148.6,151.2L152.0,147.8L155.0,145.2L157.5,143.3L159.5,142.3L161.2,142.0L163.0,140.9L165.0,139.1L167.2,136.4L169.6,133.0L171.4,130.5L172.7,128.8L173.3,127.9L182.8,103.8L193.5,86.2L194.0,85.2L195.1,83.1L196.7,79.9L198.9,75.8L201.3,72.1L203.8,68.9L206.5,66.2L209.4,64.0L213.6,61.6L219.0,58.9L225.7,56.0L233.7,52.8L239.9,50.5L244.5,49.1L247.3,48.6L248.4,48.9L249.3,49.1L249.8,49.2L250.1,49.3L251.3,48.9L253.8,48.2L257.6,47.0L262.6,45.4L267.1,42.9L271.0,39.4L274.5,34.9L277.5,29.5L280.7,24.8L284.3,21.0L288.1,18.0L292.3,15.9L296.4,14.5L300.4,14L304.3,14.2L308.2,15.3L311.2,16.5L313.3,17.9L314.7,19.5L315.2,21.2L316.5,23.4L318.5,25.9L321.3,28.8L324.8,32.1L327.5,34.6L329.3,36.3L330.2,37.1L347.8,45.5L348.9,45.7L350.9,46.1L354.1,46.8L358.2,47.6L361.8,48.2L364.7,48.3L366.9,48.2L368.5,47.7L369.6,48.0L370.2,49.1L370.2,51.0L369.6,53.6L369.6,56.3L370.1,59.1L371.1,62.0L372.6,64.9L374.3,67.2L376.2,68.7L378.4,69.5L380.7,69.6L382.1,70.1L382.6,71.1L382.1,72.5L380.6,74.4L379.5,75.8L378.7,76.8L378.4,77.3L377.9,77.5L376.9,77.8L375.5,78.4L373.6,79.1L371.3,80.7L368.6,83.1L365.5,86.4L362.0,90.4L359.2,94.0L357,97.0L355.3,99.6L354.4,101.7L353.5,104.3L352.7,107.5L352.0,111.4L351.5,115.8L351.5,121.0L352.2,127.1L353.5,133.9L355.4,141.6L357.1,147.5L358.6,151.7L360.0,154.1L361.3,154.8L362.1,156.2L362.4,158.3L362.3,161.2L361.8,164.7L361.0,167.6L360.0,169.7L358.8,171.2L357.3,171.9L356.4,172.9L356.0,174.3L356.3,175.9L357.2,177.7L357.4,179.5L356.9,181.0L355.7,182.3L353.8,183.4L352.0,185.0L350.4,186.9L348.9,189.3L347.6,192.0L346.3,195.3L345.2,199.1L344.3,203.3L343.5,208.1L342.9,211.7L342.5,214.1L342.3,215.3L341.9,216.0L341.2,217.4L340.2,219.5L338.8,222.3L336.9,225.1L334.5,227.8L331.7,230.6L328.4,233.4L325.8,236.4L323.9,239.7L322.8,243.2L322.3,246.9L321.4,250.3L320.1,253.4L318.4,256.0L316.3,258.3L315.1,261.1L314.7,264.4L315.2,268.0L316.6,272.2L317.1,276.3L317.0,280.3L316.0,284.2L314.3,288.1L312.9,292.0L311.7,295.9L310.8,299.8L310.2,303.8L308.6,311.1L306.1,321.7L302.6,335.8L298.1,353.2L294.7,367.3L292.3,378.1L290.9,385.7L290.6,389.9L290.3,393.1L290.1,395.2Z"};
 
 /* ===== 小工具 ===== */
 const $ = s=>document.querySelector(s);
@@ -564,30 +929,110 @@ const store = {
 const esc = s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 let toastT=0;
 function toast(msg){ const t=$("#toast"); t.textContent=msg; t.classList.add("show"); clearTimeout(toastT); toastT=setTimeout(()=>t.classList.remove("show"),1900); }
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+const ease=t=>t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2;
 
 /* ===== 狀態（開機就會用到，全部宣告在最前面，避免 TDZ：還沒初始化就被讀取） ===== */
-let rolling=false, updating=false, lastId=null, curTab="roll", listTier=0, faceNow=1;
-let mode = store.get("wd_mode",0);                 // 0=骰子決定車程，1~4=指定級距
-let flt  = Object.assign({rain:false,easy:false,free:false,food:false,avoid:false}, store.get("wd_flt",{}));
+let rolling=false, updating=false, lastId=null, curTab="roll", listDir="all", pickedId=null;
+let reachIdx = store.get("wd_reach",1);             // REACHES 的 index
+let dir      = store.get("wd_dir","all");           // all / N / E / S
+let far      = store.get("wd_far",false);           // 不要太近
+let scene    = store.get("wd_scene","");            // 今天想怎麼玩（情境，單選）
+// 情境：一次代表一種玩法，只要有其中一項就算（OR）；細的條件才是「全部都要」（AND）
+const SCENES={
+  run:   {name:"放電跑跳", sub:"草地・溜滑梯・沙坑", ic:"grass",   any:["草","滑","沙"]},
+  animal:{name:"摸摸動物", sub:"餵食・近距離接觸",   ic:"bunny",   any:["動"]},
+  water: {name:"玩水玩沙", sub:"戲水池・海邊",       ic:"water",   any:["水","沙"]},
+  train: {name:"火車飛機", sub:"看火車・坐小火車",   ic:"train",   any:["車","機"]},
+  hands: {name:"動手做",   sub:"採果・DIY・摸蜆",    ic:"hands",   any:["手"]},
+  rain:  {name:"下雨也OK", sub:"室內・有屋頂",       ic:"umbrella",any:["雨"]},
+};
+let flt  = Object.assign({avoid:false,noresv:false}, store.get("wd_flt",{}));
 let data = Object.assign({edits:{},added:[],deleted:[]}, store.get("wd_data",{}));
-let hist = store.get("wd_hist",[]);                // [{id,t,name,min}]
+let hist = store.get("wd_hist",[]);                 // [{id,t,name,min}]
 let splashDoneR; const splashDone=new Promise(r=>{ splashDoneR=r; });
 
-/* ===== 車程分級（像高速公路的出口牌） ===== */
-const TIERS=[
-  null,
-  {k:1,name:"近郊",  range:"≤30 分",   faces:[1,2], c:"#3DAA6E", l:"#CDEFD9"},
-  {k:2,name:"小旅行",range:"30–60 分", faces:[3,4], c:"#3B8EDB", l:"#CFE5FA"},
-  {k:3,name:"遠一點",range:"60–90 分", faces:[5],   c:"#F29A3A", l:"#FDE3C4"},
-  {k:4,name:"出遠門",range:"90 分以上",faces:[6],   c:"#8A6BD1", l:"#E4DAF7"},
+/* ===== 出發點、地圖投影（麥卡托：經緯度 → 地圖座標，像查表換算） ===== */
+const CITY_LABELS=[["桃園",24.99,121.30],["台北",25.06,121.54],["基隆",25.12,121.72],["宜蘭",24.72,121.70],["苗栗",24.53,120.84],
+  ["台中",24.18,120.68],["彰化",24.05,120.50],["南投",23.92,120.85],["花蓮",23.85,121.45],["雲林",23.70,120.40],["嘉義",23.47,120.40],
+  ["台南",23.05,120.25],["高雄",22.75,120.45],["屏東",22.55,120.62],["台東",22.85,121.10],["新竹",24.78,120.96]];
+/* 出發點：每個人自己設定（手機定位／地圖上點／存成「家」），只存在這支手機裡，不會上傳 */
+const D2R=Math.PI/180;
+const proj=(lat,lng)=>[MAP.translate[0]+MAP.scale*lng*D2R, MAP.translate[1]-MAP.scale*Math.log(Math.tan(Math.PI/4+lat*D2R/2))];
+const unproj=(x,y)=>[(2*Math.atan(Math.exp((MAP.translate[1]-y)/MAP.scale))-Math.PI/2)/D2R, (x-MAP.translate[0])/MAP.scale/D2R];
+const REF={lat:24.893,lng:120.993};               // 內建名單的車程是從這裡（新竹縣新豐）量的
+let origin = store.get("wd_origin",null);           // {lat,lng,kind:"gps"|"home"|"map",label}
+let homeSpot = store.get("wd_home",null);           // 存起來的「家」
+let HP=[0,0];
+const setHP=()=>{ const o=origin||{lat:24.85,lng:121.0}; HP=proj(o.lat,o.lng); };
+setHP();
+const KM=MAP.scale/6371/Math.cos(24*D2R);         // 地圖上 1 公里 = 幾個單位（台灣範圍內差不多）
+function distKm(a,b){ const R=6371, dLa=(b.lat-a.lat)*D2R, dLo=(b.lng-a.lng)*D2R; const h=Math.sin(dLa/2)**2+Math.cos(a.lat*D2R)*Math.cos(b.lat*D2R)*Math.sin(dLo/2)**2; return 2*R*Math.asin(Math.sqrt(h)); }
+/* 車程估計：直線距離 → 大約分鐘；再乘上這個地點的「路況係數」（用原本從新豐量的車程反推，山路會比較大） */
+const estMin=km=>8+km*1.0;
+const round5=m=>Math.max(5,Math.round(m/5)*5);
+/* 中央山脈擋在中間：花東 ↔ 西部要繞北邊（蘇花）或南邊（南迴），不能用直線算 */
+const isEast=p=>p.lng>121.25 && p.lat<24.55;
+const GATES=[{lat:24.60,lng:121.85},{lat:22.35,lng:120.80}];
+function roadKm(a,b){
+  if(isEast(a)===isEast(b)) return distKm(a,b);
+  return Math.min(...GATES.map(g=>distKm(a,g)+distKm(g,b)))+35;   // 山路、蘇花多算一點
+}
+function minFrom(s){
+  if(s.manual || s.lat==null || !origin) return s.min;
+  if(distKm(origin,REF)<3) return s.min;
+  const ratio=Math.max(.8,Math.min(2.2, s.min/estMin(roadKm(REF,s))));
+  return round5(estMin(roadKm(origin,s))*ratio);
+}
+function nearestCity(lat,lng){ let best=null,bd=1e9; CITY_LABELS.forEach(([n,la,lo])=>{ const d=distKm({lat,lng},{lat:la,lng:lo}); if(d<bd){bd=d;best=n;} }); return best; }
+const originName=()=>!origin?"還沒設定出發點": origin.kind==="home"?"從家出發": origin.kind==="gps"?`從目前位置出發`:`從${origin.label||"地圖上的點"}出發`;
+
+/* 開多遠：分鐘 → 大約的擴散半徑（公里，只是示意） */
+const REACHES=[
+  {m:30, big:"30",  sm:"分鐘", name:"30 分鐘內", km:24},
+  {m:60, big:"1",   sm:"小時", name:"1 小時內",  km:52},
+  {m:90, big:"1.5", sm:"小時", name:"1.5 小時內",km:82},
+  {m:120,big:"2",   sm:"小時", name:"2 小時內",  km:112},
+  {m:180,big:"3",   sm:"小時", name:"3 小時內",  km:170},
+  {m:0,  big:"不限",sm:"全台", name:"全台都可以",km:0},
 ];
-const tierOf = m=> m<=30?1 : m<=60?2 : m<=90?3 : 4;
-const faceTier = f=> f<=2?1 : f<=4?2 : f===5?3 : 4;
+/* 各縣市大約幾分鐘開得到（決定地圖哪些縣市亮起來） */
+
+/* 方向：從家裡看出去的方位角（0°=正北，順時針） */
+const DIRS={
+  all:{name:"不限", sub:"都可以"},
+  N:  {name:"往北", sub:"北邊",      from:330, to:85},
+  E:  {name:"往東", sub:"東邊・山區", from:85,  to:160},
+  S:  {name:"往南", sub:"南邊",      from:160, to:250},
+  W:  {name:"往西", sub:"西邊・海邊", from:250, to:330},
+};
+/* 車程分組（名單、足跡、明信片的顏色） */
+const BUCKETS=[{max:30,name:"30 分鐘內",c:"#3DAA6E",l:"#CDEFD9"},{max:60,name:"1 小時內",c:"#3B8EDB",l:"#CFE5FA"},
+  {max:90,name:"1.5 小時內",c:"#F29A3A",l:"#FDE3C4"},{max:120,name:"2 小時內",c:"#E0607E",l:"#FAD6DF"},
+  {max:180,name:"3 小時內",c:"#2AA5A0",l:"#CDEFEC"},{max:9999,name:"3 小時以上",c:"#8A6BD1",l:"#E4DAF7"}];
+/* Q 版地圖每個縣市的顏色（相鄰的不同色） */
+const COUNTY_COLOR={"台北市":"#FFD1DC","新北市":"#D7EDB5","基隆市":"#FFE08A","桃園市":"#FFC9B5","新竹縣":"#D9CCF5","新竹市":"#FFE08A","苗栗縣":"#BFE6D6",
+  "台中市":"#FFE08A","彰化縣":"#D9CCF5","南投縣":"#FFC9B5","雲林縣":"#FFD1DC","嘉義縣":"#FFE08A","嘉義市":"#BFDDF7","台南市":"#D7EDB5","高雄市":"#D9CCF5",
+  "屏東縣":"#BFDDF7","台東縣":"#FFD1DC","花蓮縣":"#BFE6D6","宜蘭縣":"#BFDDF7"};
+const bucketOf=m=>BUCKETS.find(b=>m<=b.max);
 const TAGS=[
-  {ch:"雨",key:"rain",label:"雨天可去",ic:"umbrella"},
-  {ch:"走",key:"easy",label:"推車長輩好走",ic:"stroller"},
-  {ch:"免",key:"free",label:"免門票",ic:"ticket"},
-  {ch:"吃",key:"food",label:"附近有得吃",ic:"bowl"},
+  {ch:"草",key:"grass",label:"放電大草地",ic:"grass",g:"kid"},
+  {ch:"動",key:"animal",label:"餵小動物",ic:"bunny",g:"kid"},
+  {ch:"水",key:"water",label:"玩水",ic:"water",g:"kid"},
+  {ch:"車",key:"train",label:"看火車・坐小火車",ic:"train",g:"kid"},
+  {ch:"沙",key:"sand",label:"沙坑・玩沙",ic:"sand",g:"kid"},
+  {ch:"滑",key:"slide",label:"特色溜滑梯",ic:"slide",g:"kid"},
+  {ch:"手",key:"hands",label:"動手體驗",ic:"hands",g:"kid"},
+  {ch:"機",key:"plane",label:"看飛機",ic:"plane",g:"kid"},
+  {ch:"雨",key:"rain",label:"雨天可去",ic:"umbrella",g:"adult"},
+  {ch:"走",key:"easy",label:"推車長輩好走",ic:"stroller",g:"adult"},
+  {ch:"蔭",key:"shade",label:"有樹蔭不怕曬",ic:"tree",g:"adult"},
+  {ch:"停",key:"park",label:"好停車",ic:"parking",g:"adult"},
+  {ch:"奶",key:"nurse",label:"哺乳室・尿布台",ic:"bottle",g:"adult"},
+  {ch:"泉",key:"spring",label:"泡腳・溫泉",ic:"spring",g:"adult"},
+  {ch:"免",key:"free",label:"免門票",ic:"ticket",g:"adult"},
+  {ch:"吃",key:"food",label:"附近有得吃",ic:"bowl",g:"adult"},
+  {ch:"約",key:"resv",label:"要先預約",ic:"calendar",g:"ex"},
 ];
 
 /* ===== 自畫 SVG 圖示 ===== */
@@ -619,10 +1064,30 @@ function ui(n,s=20,c=INK){
     reset:`<path d="M5 12a7 7 0 1 0 2.1-5" ${L}/><path d="M6.5 3.5v4h4" ${L}/>`,
     box:`<path d="M3.5 8.5 12 4.5l8.5 4v9L12 21.5l-8.5-4z" fill="#E8D6B3" stroke="${c}" stroke-width="2" stroke-linejoin="round"/><path d="M3.5 8.5 12 12.5l8.5-4M12 12.5v9" ${L} stroke-width="2"/><path d="M15.5 2.5v5M13.5 4.5l2-2 2 2" ${L} stroke-width="1.8"/>`,
     boxIn:`<path d="M3.5 10.5 12 6.5l8.5 4v8L12 22.5l-8.5-4z" fill="#B8E39C" stroke="${c}" stroke-width="2" stroke-linejoin="round"/><path d="M3.5 10.5 12 14.5l8.5-4M12 14.5v8" ${L} stroke-width="2"/><path d="M12 1.5v6M9.5 5l2.5 2.5L14.5 5" ${L} stroke-width="1.8"/>`,
+    grass:`<path d="M1.5 21.5 Q12 10.5 22.5 21.5Z" fill="#8FCF6B" stroke="${c}" stroke-width="2" stroke-linejoin="round"/><path d="M6.5 18.5l.8-1.8.8 1.8M11 16.2l.8-1.8.8 1.8M15.5 18.2l.8-1.8.8 1.8" fill="none" stroke="${c}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M17.5 1.8l3.4 3.4-3.4 3.4-3.4-3.4z" fill="#FF7A59" stroke="${c}" stroke-width="1.7" stroke-linejoin="round"/><path d="M17.5 8.6c-1.5 2-3.5 3-5 5.5" fill="none" stroke="${c}" stroke-width="1.3" stroke-linecap="round" stroke-dasharray="1.6 1.6"/>`,
+    bunny:`<path d="M8.2 10.5C6.6 7 6.3 2.6 8 2.3c1.7-.3 2.6 3.6 2.6 7.4M15.8 10.5c1.6-3.5 1.9-7.9.2-8.2-1.7-.3-2.6 3.6-2.6 7.4" fill="#fff" stroke="${c}" stroke-width="1.8" stroke-linejoin="round"/><path d="M8.3 4.8c.2 1.3.6 2.8 1 3.9M15.7 4.8c-.2 1.3-.6 2.8-1 3.9" fill="none" stroke="#FF8FA3" stroke-width="1.4" stroke-linecap="round"/><ellipse cx="12" cy="15.3" rx="7" ry="6.2" fill="#fff" stroke="${c}" stroke-width="2"/><circle cx="9.4" cy="14.6" r="1.05" fill="${c}"/><circle cx="14.6" cy="14.6" r="1.05" fill="${c}"/><circle cx="7.6" cy="17" r="1.2" fill="#FFB3C1"/><circle cx="16.4" cy="17" r="1.2" fill="#FFB3C1"/><path d="M11 16.6h2l-1 1z" fill="#FF8FA3" stroke="${c}" stroke-width=".9" stroke-linejoin="round"/>`,
+    water:`<path d="M12 2.8C9 7 7 9.6 7 12.3a5 5 0 0 0 10 0c0-2.7-2-5.3-5-9.5z" fill="#9AD3F7" stroke="${c}" stroke-width="2" stroke-linejoin="round"/><path d="M10 12.8a2.2 2.2 0 0 0 2 2" fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/><path d="M2.5 20c1.6-1.3 3.2-1.3 4.8 0s3.2 1.3 4.7 0 3.2-1.3 4.7 0 3.2 1.3 4.8 0" fill="none" stroke="${c}" stroke-width="1.9" stroke-linecap="round"/>`,
+    train:`<rect x="5" y="3.5" width="14" height="14" rx="4" fill="#FF8FA3" stroke="${c}" stroke-width="2"/><rect x="7.5" y="6" width="9" height="5" rx="1.5" fill="#CDEBFF" stroke="${c}" stroke-width="1.6"/><circle cx="9" cy="14.2" r="1.2" fill="#FFD54A" stroke="${c}" stroke-width="1.2"/><circle cx="15" cy="14.2" r="1.2" fill="#FFD54A" stroke="${c}" stroke-width="1.2"/><path d="M8 17.5l-2 3.5M16 17.5l2 3.5M5.5 20.5h13" fill="none" stroke="${c}" stroke-width="1.9" stroke-linecap="round"/>`,
+    sand:`<path d="M5.5 9.5h13l-1.6 10.5a1.6 1.6 0 0 1-1.6 1.3H8.7a1.6 1.6 0 0 1-1.6-1.3z" fill="#FFD54A" stroke="${c}" stroke-width="2" stroke-linejoin="round"/><path d="M6.5 9.5c0-4 2.5-6.3 5.5-6.3s5.5 2.3 5.5 6.3" fill="none" stroke="${c}" stroke-width="1.8" stroke-linecap="round"/><path d="M5.5 13h13" stroke="${c}" stroke-width="1.6"/><circle cx="12" cy="16.8" r="1.4" fill="#FF7A59"/>`,
+    slide:`<path d="M4.5 20.5V6.5M8.5 20.5V6.5M4.5 10h4M4.5 14h4" fill="none" stroke="${c}" stroke-width="1.9" stroke-linecap="round"/><path d="M8.5 6.5c4 0 5 5 7.5 9.5 1 1.8 2.5 2.6 4.5 2.6v2.4c-3 0-5-1.2-6.5-3.8C12 13 11 9.5 8.5 9.5z" fill="#FF7A59" stroke="${c}" stroke-width="1.8" stroke-linejoin="round"/>`,
+    hands:`<path d="M7.5 12V6.2a1.4 1.4 0 0 1 2.8 0V11M10.3 10.5V4.6a1.4 1.4 0 0 1 2.8 0v5.9M13.1 10.5V5.6a1.4 1.4 0 0 1 2.8 0v6.4M15.9 12V8.5a1.4 1.4 0 0 1 2.8 0v5.3c0 4.3-2.6 7.2-6.6 7.2-2.6 0-4.3-1.3-5.6-3.4L4 13.6a1.4 1.4 0 0 1 2.3-1.5l1.2 1.6" fill="#FFE3C7" stroke="${c}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>`,
+    plane:`<path d="M21 4.2c-.8-.8-2.3-.6-3.4.5l-3.1 3.1-8.3-2.5-1.8 1.8 6.6 4-3 3.1-2.7-.4-1.5 1.5 3.3 1.8 1.8 3.3 1.5-1.5-.4-2.7 3.1-3 4 6.6 1.8-1.8-2.5-8.3 3.1-3.1c1.1-1.1 1.3-2.6.5-3.4z" fill="#CDEBFF" stroke="${c}" stroke-width="1.8" stroke-linejoin="round"/>`,
+    tree:`<circle cx="12" cy="9.5" r="6.5" fill="#8FCF6B" stroke="${c}" stroke-width="2"/><path d="M12 13.5v7.5M12 16.5l-2.5-2M12 15l2.5-2" fill="none" stroke="${c}" stroke-width="2" stroke-linecap="round"/><path d="M5 21h14" stroke="${c}" stroke-width="1.8" stroke-linecap="round"/>`,
+    parking:`<rect x="3.5" y="3.5" width="17" height="17" rx="4.5" fill="#6FA8F0" stroke="${c}" stroke-width="2"/><path d="M9.5 17V7.5h3.3a2.9 2.9 0 0 1 0 5.8H9.5" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>`,
+    bottle:`<path d="M9.5 3.5h5l-.8 3h-3.4z" fill="#FFB3C1" stroke="${c}" stroke-width="1.7" stroke-linejoin="round"/><rect x="8" y="6.5" width="8" height="2.5" rx="1" fill="#fff" stroke="${c}" stroke-width="1.7"/><path d="M8.5 9h7v9.5a2.5 2.5 0 0 1-2.5 2.5h-2a2.5 2.5 0 0 1-2.5-2.5z" fill="#fff" stroke="${c}" stroke-width="2" stroke-linejoin="round"/><path d="M8.6 14h6.8v4.5a2.4 2.4 0 0 1-2.4 2.4h-2a2.4 2.4 0 0 1-2.4-2.4z" fill="#FFF3C4"/><path d="M10.5 12h1.5M10.5 15h1.5" stroke="${c}" stroke-width="1.3" stroke-linecap="round"/>`,
+    spring:`<path d="M3.5 13.5h17c0 4-3.6 7-8.5 7s-8.5-3-8.5-7z" fill="#9AD3F7" stroke="${c}" stroke-width="2" stroke-linejoin="round"/><path d="M8 10.5c-1.2-1.5 1.2-2.5 0-4.5M12 10.5c-1.2-1.5 1.2-2.5 0-4.5M16 10.5c-1.2-1.5 1.2-2.5 0-4.5" fill="none" stroke="#FF7A59" stroke-width="1.9" stroke-linecap="round"/>`,
+    calendar:`<rect x="3.5" y="5" width="17" height="15.5" rx="3" fill="#fff" stroke="${c}" stroke-width="2"/><path d="M3.5 9.5h17" stroke="${c}" stroke-width="2"/><path d="M3.6 9.4V8a3 3 0 0 1 3-3h10.8a3 3 0 0 1 3 3v1.4z" fill="#FF8FA3"/><path d="M8 3v4M16 3v4" stroke="${c}" stroke-width="2" stroke-linecap="round"/><path d="M8.5 14.8l2.3 2.2 4.6-4.4" fill="none" stroke="#3FA34D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>`,
+    expand:`<path d="M14 4h6v6M10 20H4v-6M20 4l-6.5 6.5M4 20l6.5-6.5" fill="none" stroke="${c}" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/>`,
+    shrink:`<path d="M19.5 10.5h-6v-6M4.5 13.5h6v6M13.5 10.5L20 4M10.5 13.5L4 20" fill="none" stroke="${c}" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/>`,
+    plusc:`<circle cx="12" cy="12" r="9" fill="#fff" stroke="${c}" stroke-width="2"/><path d="M12 8v8M8 12h8" stroke="${c}" stroke-width="2.2" stroke-linecap="round"/>`,
+    compass:`<circle cx="12" cy="12" r="9" fill="#fff" stroke="${c}" stroke-width="2.1"/><path d="M12 5.5l2.6 6.5H9.4z" fill="#FF7A59" stroke="${c}" stroke-width="1.6" stroke-linejoin="round"/><path d="M12 18.5L9.4 12h5.2z" fill="#C9D8EA" stroke="${c}" stroke-width="1.6" stroke-linejoin="round"/>`,
+    map:`<path d="M3.5 6.5l5.5-2.5 6 2.5 5.5-2.5v13.5l-5.5 2.5-6-2.5-5.5 2.5z" fill="#FFF0B3" stroke="${c}" stroke-width="2" stroke-linejoin="round"/><path d="M9 4v13.5M15 6.5V20" ${L} stroke-width="1.8"/><circle cx="12" cy="11" r="2.2" fill="#FF7A59" stroke="${c}" stroke-width="1.6"/>`,
+    home:`<path d="M3.5 11.5 12 4l8.5 7.5" fill="none" stroke="${c}" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M6 10v10h12V10" fill="#FFF6E2" stroke="${c}" stroke-width="2" stroke-linejoin="round"/><path d="M5 10.5 12 4.5l7 6" fill="#FF8FA3" stroke="${c}" stroke-width="2" stroke-linejoin="round"/><rect x="10" y="14" width="4" height="6" rx="1" fill="#FFD54A" stroke="${c}" stroke-width="1.6"/>`,
     trash:`<path d="M5 7h14l-1.2 13H6.2z" fill="#FFE1D9" stroke="${c}" stroke-width="2" stroke-linejoin="round"/><path d="M9 7V4.5h6V7M3.5 7h17" ${L} stroke-width="2"/>`,
   };
   return `<svg class="ic" width="${s}" height="${s}" viewBox="0 0 24 24">${P[n]||""}</svg>`;
 }
+
 
 /* ===== 實心手繪骰子（圓角正面＋往右上擠出的厚度，全部不透明） ===== */
 const PIPS={1:[[50,50]],2:[[28,28],[72,72]],3:[[26,26],[50,50],[74,74]],4:[[28,28],[72,28],[28,72],[72,72]],
@@ -648,30 +1113,61 @@ function faceMini(n,s=18,bg="#fff"){
   return `<svg class="ic" width="${s}" height="${s}" viewBox="0 0 100 100"><rect x="5" y="5" width="90" height="90" rx="20" fill="${bg}" stroke="${INK}" stroke-width="8"/>${pipSet(n,9)}</svg>`;
 }
 
+
 /* ===== 風景素材 ===== */
 const cloudSvg=(w=110)=>`<svg width="${w}" height="${w*.5}" viewBox="0 0 110 55"><path d="M20 48a14 14 0 0 1 2-28 18 18 0 0 1 33-8 15 15 0 0 1 27 6 13 13 0 0 1 8 30z" fill="#fff" stroke="${INK}" stroke-width="3" stroke-linejoin="round"/></svg>`;
 const sunSvg=`<svg width="58" height="58" viewBox="0 0 58 58">${Array.from({length:8},(_,i)=>`<rect x="27" y="2" width="4" height="9" rx="2" fill="#FFB52E" transform="rotate(${i*45} 29 29)"/>`).join("")}<circle cx="29" cy="29" r="15" fill="#FFD54A" stroke="${INK}" stroke-width="3"/><path d="M23 30q3 3 6 0M29 30q3 3 6 0" fill="none" stroke="${INK}" stroke-width="2.2" stroke-linecap="round"/></svg>`;
 const hillsSvg=`<svg viewBox="0 0 400 120" preserveAspectRatio="none"><path d="M0 70 Q60 20 130 62 T260 50 T400 58 V120 H0Z" fill="#B8E39C" stroke="${INK}" stroke-width="3"/><path d="M0 96 Q90 52 190 90 T400 80 V120 H0Z" fill="#8FCF6B" stroke="${INK}" stroke-width="3"/>
   <g stroke="${INK}" stroke-width="2.5"><circle cx="60" cy="74" r="10" fill="#5FAF4A"/><path d="M60 84v8"/><circle cx="330" cy="70" r="12" fill="#5FAF4A"/><path d="M330 82v8"/><circle cx="350" cy="76" r="8" fill="#5FAF4A"/><path d="M350 84v6"/></g></svg>`;
 
+
+
 /* ===== 地點資料：內建名單＋使用者改的（像 FW 的 default table + NVM 覆寫） ===== */
-const BASE = BASE_RAW.map(([name,area,min,tg,note])=>({id:"b:"+name,name,area,min,tags:[...tg],note,off:false}));
+const BASE = BASE_RAW.map(([name,area,min,tg,note,lat,lng])=>({id:"b:"+name,name,area,min,tags:[...tg],note,off:false,lat,lng}));
 function spots(){
   const del=new Set(data.deleted);
-  return BASE.filter(s=>!del.has(s.id)).map(s=>data.edits[s.id]?Object.assign({},s,data.edits[s.id]):s).concat(data.added);
+  return BASE.filter(s=>!del.has(s.id)).map(s=>data.edits[s.id]?Object.assign({},s,data.edits[s.id]):s).concat(data.added.map(s=>({...s,manual:true})))
+    .map(s=>{ const m=minFrom(s); return m===s.min ? s : {...s, min:m, baseMin:s.min}; });
 }
 const saveData=()=>store.set("wd_data",data);
 const visitedRecently = id=>hist.some(h=>h.id===id && Date.now()-h.t < 30*864e5);
 const lastVisit = id=>hist.filter(h=>h.id===id).reduce((a,h)=>Math.max(a,h.t),0);
-function passes(s){
+function bearingOf(lat,lng){
+  const o=origin||REF, dx=(lng-o.lng)*Math.cos(o.lat*D2R), dy=lat-o.lat;
+  return (Math.atan2(dx,dy)/D2R+360)%360;
+}
+function dirOf(s){
+  if(s.dir) return s.dir;
+  if(s.lat==null) return "near";
+  const b=bearingOf(s.lat,s.lng);
+  for(const k of ["N","E","S","W"]){ const d=DIRS[k]; if(d.from<d.to ? (b>=d.from&&b<d.to) : (b>=d.from||b<d.to)) return k; }
+  return "N";
+}
+const dirName=d=>d==="near"?"附近":DIRS[d].name;
+function reachRange(){
+  const R=REACHES[reachIdx], max=R.m||9999;
+  const last=REACHES.length-1;
+  const min = far ? (reachIdx===0?15 : reachIdx===last?REACHES[last-1].m : REACHES[reachIdx-1].m) : 0;
+  return {min,max};
+}
+function passesTags(s){
   if(s.off) return false;
-  for(const t of TAGS) if(flt[t.key] && !s.tags.includes(t.ch)) return false;
+  for(const t of TAGS) if(t.g!=="ex" && flt[t.key] && !s.tags.includes(t.ch)) return false;
+  if(flt.noresv && s.tags.includes("約")) return false;
+  if(scene && SCENES[scene] && !SCENES[scene].any.some(ch=>s.tags.includes(ch))) return false;
   if(flt.avoid && visitedRecently(s.id)) return false;
   return true;
 }
-const poolOf = tier=>spots().filter(s=>tierOf(s.min)===tier && passes(s));
-</script>
-<script>
+function isCandidate(s){
+  if(!passesTags(s)) return false;
+  const {min,max}=reachRange();
+  if(s.min>max || s.min<min) return false;
+  if(dir!=="all" && s.min>20 && dirOf(s)!==dir) return false;
+  if(!origin) return true;   // 20 分鐘內的附近地點不分方向
+  return true;
+}
+const candidates=()=>spots().filter(isCandidate);
+
 /* ===== 音效 & 背景音樂 ===== */
 const Snd = (()=>{
   let ctx=null, sfxBus=null;
@@ -702,6 +1198,9 @@ const Snd = (()=>{
     s.connect(f); f.connect(g); g.connect(sfxBus); s.start(t); s.stop(t+d+.02);
   }
   const sfx={
+    tick(){ tone(1350,.035,{vol:.07,type:"square"}); },
+    blip(i=0){ tone(N(72+[0,2,4,7,9,12][i%6]),.09,{vol:.09}); },
+    beep(){ tone(N(79),.1,{vol:.08,type:"triangle"}); tone(N(84),.14,{vol:.08,type:"triangle",at:.12}); },
     pop(){ tone(520,.12,{to:900,vol:.16}); },
     toggle(on){ tone(on?660:440,.09,{vol:.12}); tone(on?990:330,.12,{vol:.1,at:.07}); },
     // 骰子在桌上咔啦咔啦：一串越來越慢的木頭碰撞聲
@@ -717,19 +1216,20 @@ const Snd = (()=>{
     oops(){ tone(330,.14,{vol:.12,type:"triangle"}); tone(262,.22,{at:.12,vol:.12,type:"triangle"}); },
   };
 
-  /* 背景音樂：輕快的出遊小曲，8 小節循環。
+  /* 背景音樂：活力流行小曲，8 小節循環。
      載入時用 OfflineAudioContext 先「錄」成 WAV 交給 <audio loop>，像 FW 用 DMA 循環 buffer 播音，CPU 忙也不會斷 */
-  const BPM=120, S16=60/BPM/4, LOOP=S16*16*8;
+  const BPM=124, S16=60/BPM/4, LOOP=S16*16*8;
   const MEL=[
-    67,0,71,74, 0,71,69,67,
-    69,0,71,72, 71,69,67,0,
-    72,0,76,74, 72,71,69,0,
-    71,74,72,69, 67,0,0,0,
-    67,71,74,79, 0,78,76,74,
-    72,0,74,76, 74,72,71,0,
-    69,72,71,69, 67,66,64,66,
-    67,0,62,0,  67,0,0,0 ];
-  const CH=[[43,59,62,67],[45,57,60,64],[48,60,64,67],[50,57,62,66],[43,59,62,67],[48,60,64,67],[45,57,60,64],[50,57,62,66]];
+    76,0,79,0, 81,79,76,0,
+    74,0,74,76, 79,0,0,0,
+    72,0,76,0, 79,81,79,76,
+    77,0,76,74, 72,0,0,0,
+    76,0,79,0, 84,0,83,81,
+    79,0,0,76, 74,0,76,79,
+    81,0,79,77, 76,0,74,0,
+    74,0,76,0, 79,0,0,0 ];
+  // C → G → Am → F，再 C → G → F → G：流行歌最常見、聽起來最有朝氣的和弦進行
+  const CH=[[48,60,64,67],[43,59,62,67],[45,57,60,64],[41,57,60,65],[48,60,64,67],[43,59,62,67],[41,57,60,65],[43,59,62,67]];
   const BGM_SR=32000, BGM_VOL=.4;
   let bgmEl=null, bgmReady=false, bgmWant=false, bgmPlaying=false;
   function encodeWav(f32,sr){
@@ -746,26 +1246,34 @@ const Snd = (()=>{
       const OAC=window.OfflineAudioContext||window.webkitOfflineAudioContext; if(!OAC) return;
       const oc=new OAC(1,Math.ceil((LOOP+TAIL)*sr),sr);
       const out=oc.createGain(); out.gain.value=BGM_VOL; out.connect(oc.destination);
-      const nb=oc.createBuffer(1,Math.floor(sr*.2),sr); const nd=nb.getChannelData(0); for(let i=0;i<nd.length;i++) nd[i]=Math.random()*2-1;
-      const env=(g,t,v,a,d)=>{g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(v,t+a);g.gain.exponentialRampToValueAtTime(.0001,t+d);};
-      // 口哨：正弦波＋一點顫音
-      const whistle=(f,t,v,d)=>{const o=oc.createOscillator(),lfo=oc.createOscillator(),lg=oc.createGain(),g=oc.createGain();
-        o.frequency.value=f*2;lfo.frequency.value=5.5;lg.gain.value=f*.012;lfo.connect(lg);lg.connect(o.frequency);
-        g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(v,t+.03);g.gain.setValueAtTime(v,t+d*.6);g.gain.exponentialRampToValueAtTime(.0001,t+d);
-        o.connect(g);g.connect(out);o.start(t);lfo.start(t);o.stop(t+d+.05);lfo.stop(t+d+.05);};
-      // 烏克麗麗：三角波短音，刷弦時每根弦錯開一點點
-      const uke=(f,t,v)=>{const o=oc.createOscillator(),g=oc.createGain();o.type="triangle";o.frequency.value=f;env(g,t,v,.004,.35);o.connect(g);g.connect(out);o.start(t);o.stop(t+.4);};
-      const strum=(ch,t,v,down)=>{ (down?ch:[...ch].reverse()).forEach((m,i)=>uke(N(m+12),t+i*.012,v)); };
-      const knock=(t,v)=>{const s2=oc.createBufferSource(),f=oc.createBiquadFilter(),g=oc.createGain();s2.buffer=nb;f.type="bandpass";f.frequency.value=1800;f.Q.value=2;
-        g.gain.setValueAtTime(v,t);g.gain.exponentialRampToValueAtTime(.0001,t+.04);s2.connect(f);f.connect(g);g.connect(out);s2.start(t);s2.stop(t+.05);};
-      const PAT=[1,0,0,0, 1,0,1,0, 0,0,1,0, 1,0,1,0];   // 刷弦節奏：下 下上 上 下上
+      const nb=oc.createBuffer(1,Math.floor(sr*.3),sr); const nd=nb.getChannelData(0); for(let i=0;i<nd.length;i++) nd[i]=Math.random()*2-1;
+      const noise=(t,v,d,type,freq,q=1)=>{const s2=oc.createBufferSource(),f=oc.createBiquadFilter(),g=oc.createGain();s2.buffer=nb;f.type=type;f.frequency.value=freq;f.Q.value=q;
+        g.gain.setValueAtTime(v,t);g.gain.exponentialRampToValueAtTime(.0001,t+d);s2.connect(f);f.connect(g);g.connect(out);s2.start(t);s2.stop(t+d+.02);};
+      // 大鼓：頻率從 150Hz 快速掉到 45Hz，像在打拍子的心跳
+      const kick=(t,v)=>{const o=oc.createOscillator(),g=oc.createGain();o.frequency.setValueAtTime(150,t);o.frequency.exponentialRampToValueAtTime(45,t+.12);
+        g.gain.setValueAtTime(v,t);g.gain.exponentialRampToValueAtTime(.0001,t+.28);o.connect(g);g.connect(out);o.start(t);o.stop(t+.3);};
+      const clap=(t,v)=>{ [0,.011,.022].forEach(o=>noise(t+o,v,.1,"bandpass",1500,1.3)); };
+      const hat=(t,v)=>noise(t,v,.04,"highpass",7500);
+      // 貝斯：鋸齒波過低通濾波，八分音符一直推，會有往前衝的感覺
+      const bass=(f,t,v,d)=>{const o=oc.createOscillator(),fl=oc.createBiquadFilter(),g=oc.createGain();o.type="sawtooth";o.frequency.value=f;fl.type="lowpass";fl.frequency.value=520;
+        g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(v,t+.008);g.gain.exponentialRampToValueAtTime(.0001,t+d);o.connect(fl);fl.connect(g);g.connect(out);o.start(t);o.stop(t+d+.02);};
+      // 和弦：反拍短促的「鏘」，兩個方波微微走音疊起來比較亮
+      const stab=(ch,t,v)=>{ ch.slice(1).forEach(m=>[-6,6].forEach(dt=>{const o=oc.createOscillator(),fl=oc.createBiquadFilter(),g=oc.createGain();o.type="square";o.frequency.value=N(m+12);o.detune.value=dt;
+        fl.type="lowpass";fl.frequency.setValueAtTime(3200,t);fl.frequency.exponentialRampToValueAtTime(700,t+.16);
+        g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(v,t+.005);g.gain.exponentialRampToValueAtTime(.0001,t+.18);o.connect(fl);fl.connect(g);g.connect(out);o.start(t);o.stop(t+.2);})); };
+      // 主旋律：三角波＋八度方波，像清亮的電子撥弦
+      const lead=(f,t,v,d)=>{ [["triangle",1,v],["square",2,v*.18]].forEach(([ty,mul,vv])=>{const o=oc.createOscillator(),g=oc.createGain();o.type=ty;o.frequency.value=f*mul;
+        g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(vv,t+.01);g.gain.setValueAtTime(vv*.8,t+Math.max(.02,d*.5));g.gain.exponentialRampToValueAtTime(.0001,t+d);o.connect(g);g.connect(out);o.start(t);o.stop(t+d+.03);}); };
       for(let st=0;st<128;st++){
         const t=st*S16, bar=Math.floor(st/16), x=st%16, ch=CH[bar];
-        if(x%2===0){const n=MEL[bar*8+x/2]; if(n){ let d=S16*2; let k=bar*8+x/2+1; while(k<(bar+1)*8 && !MEL[k]){ d+=S16*2; k++; } whistle(N(n),t,.07,Math.min(d,.9)); }}
-        if(PAT[x]) strum(ch,t,.045,x%4===0);
-        if(x===0||x===8) uke(N(ch[0]),t,.12);
-        if(x===4||x===12) knock(t,.06);
+        if(x%4===0) kick(t,.5);
+        if(x===4||x===12) clap(t,.13);
+        if(x%4===2) hat(t,.07); else if(x%2===1) hat(t,.025);
+        if(x%2===0) bass(N(ch[0]+(x%4===2?12:0)),t,.16,S16*1.7);
+        if(x%4===2) stab(ch,t,.018);
+        if(x%2===0){const n=MEL[bar*8+x/2]; if(n){ let d=S16*2; let k=bar*8+x/2+1; while(k<(bar+1)*8 && !MEL[k]){ d+=S16*2; k++; } lead(N(n),t,.075,Math.min(d,.8)); }}
       }
+      if(true){ const t=LOOP-S16*2; noise(t,.05,S16*2,"bandpass",4000,.7); }   // 每圈結尾一個小「刷」，接回開頭
       oc.startRendering().then(buf=>{
         const d=buf.getChannelData(0), L=Math.floor(LOOP*sr);
         const loop=new Float32Array(L*2);                 // 尾音疊回開頭 → 無縫循環
@@ -817,8 +1325,8 @@ function setSfx(v){ if(!v) Snd.play("toggle",false); Snd.setSfx(v); if(v) Snd.pl
 $("#bgmBtn").onclick=()=>setBgm(!Snd.bgmOn);
 $("#sfxBtn").onclick=()=>setSfx(!Snd.sfxOn);
 
-/* ===== 吉祥物「叭叭車」：小露營車。骰到幾點就在小路上往前開幾格 =====
-   戳一下會叭叭叫、講話；2.5 秒內戳 5 下 → 引擎過熱冒煙（冷卻 2 秒） */
+
+
 // 圓滾滾小露營車（面向右邊），face: normal / happy / hot
 function carSvg(face="normal"){
   const eyes = face==="happy" ? `<path d="M77 45q3.5-4.5 7 0M90 45q3.5-4.5 7 0" fill="none" stroke="${INK}" stroke-width="2.8" stroke-linecap="round"/>`
@@ -854,140 +1362,334 @@ function carSvg(face="normal"){
     ${wheel(32)}${wheel(84)}`;
 }
 
-const Car=(()=>{
-  const box=$("#carBox"), g=$("#car"), bub=$("#bubble"), track=$("#track");
-  let at=0, x=-120, taps=[], bubT=0, busy=false, driving=false;
-  const W=()=>track.getBoundingClientRect().width||390;
-  // 第 i 格的位置：0 = 家，1～6 = 里程牌（像查表：index → 座標）
-  const xOf=i=>{ const L=50, R=28; return L + i*(W()-L-R)/6; };
-  const place=px=>{ x=px; box.style.transform=`translateX(${px-50}px)`; };
-  function draw(face="normal"){ g.innerHTML=carSvg(face); }
-  function renderTrack(){
-    const houseSvg=`<svg viewBox="0 0 38 36"><path d="M4 17 L19 4 L34 17" fill="#FF8FA3" stroke="${INK}" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round"/><path d="M8 15v18h22V15" fill="#FFF6E2" stroke="${INK}" stroke-width="2.6" stroke-linejoin="round"/><rect x="16" y="22" width="7" height="11" rx="2" fill="#FFD54A" stroke="${INK}" stroke-width="2.2"/><path d="M5 17L19 5.5 33 17" fill="none" stroke="${INK}" stroke-width="2.6" stroke-linecap="round"/></svg>`;
-    track.innerHTML=`<div class="home" style="left:${xOf(0)}px">${houseSvg}</div>`+
-      [1,2,3,4,5,6].map(i=>`<div class="mile" id="mile${i}" style="left:${xOf(i)}px"><b style="background:${TIERS[faceTier(i)].c}">${i}</b><i></i></div>`).join("");
-    if(!driving && x>-100) place(xOf(at));
-  }
-  function mark(i){ $$(".mile").forEach(m=>m.classList.remove("here")); const m=$("#mile"+i); if(m){ m.classList.remove("pass"); void m.offsetWidth; m.classList.add("pass","here"); } }
-  function say(t,ms=1600){
-    bub.textContent=t; const w=bub.offsetWidth, sw=W();
-    const left=Math.max(8,Math.min(sw-w-8,x-w/2));
-    bub.style.left=left+"px"; bub.style.setProperty("--tx",Math.max(16,Math.min(w-16,x-left))+"px");
-    bub.classList.add("show"); clearTimeout(bubT); bubT=setTimeout(()=>bub.classList.remove("show"),ms);
-  }
-  const anim=(from,to,ms,hop)=>{
-    const kf = hop ? [{transform:`translateX(${from-50}px)`},{transform:`translate(${(from+to)/2-50}px,-12px)`,offset:.5},{transform:`translateX(${to-50}px)`}]
-                   : [{transform:`translateX(${from-50}px)`},{transform:`translateX(${to-50}px)`}];
-    const a=box.animate(kf,{duration:ms,easing:hop?"cubic-bezier(.4,0,.4,1)":"cubic-bezier(.5,0,.3,1)"});
-    return a.finished.then(()=>place(to)).catch(()=>place(to));
-  };
-  async function driveTo(i,ms){ driving=true; bub.classList.remove("show"); box.classList.add("moving"); await anim(x,xOf(i),ms,false); at=i; box.classList.remove("moving"); driving=false; }
-  // 一格一格跳著前進，每格叫一聲（音越來越高）
-  async function hopTo(n){
-    driving=true; bub.classList.remove("show"); box.classList.add("moving");
-    for(let i=at+1;i<=n;i++){ Snd.play("step",i); await anim(x,xOf(i),300,true); at=i; mark(i); }
-    box.classList.remove("moving"); driving=false;
-  }
-  async function home(){ if(at===0 && x===xOf(0)) return; $$(".mile").forEach(m=>m.classList.remove("here")); await driveTo(0,Math.min(700,250+at*80)); }
-  async function arrive(){ place(-120); Snd.play("vroom"); await driveTo(0,1100); say("叭叭！點骰子出發吧～",1800); }
-  async function leave(){
-    Snd.play("vroom"); await driveTo(7.5,900);       // 開出畫面右邊
-    place(-120); at=0; await driveTo(0,900);          // 從左邊繞回家
-  }
+
+/* ===== 吉祥物「叭叭車」：小露營車。戳一下會叭叭叫、講話；2.5 秒內戳 5 下 → 引擎過熱冒煙（冷卻 2 秒） ===== */
+const Van=(()=>{
+  const btn=$("#vanBtn"), g=$("#van"), bub=$("#bubble");
+  const LINES=["叭叭！今天去哪？","油加滿了，出發吧！","往南走走好不好？","帶阿公阿嬤一起去！","下雨也有地方去喔","記得帶水壺～","行李綁好了！","找個大草地放電吧"];
+  let taps=[], bubT=0, busy=false;
+  const draw=(f="normal")=>{ g.innerHTML=carSvg(f); };
+  function say(t,ms=1600){ bub.textContent=t; bub.classList.add("show"); clearTimeout(bubT); bubT=setTimeout(()=>bub.classList.remove("show"),ms); }
   function poke(){
-    if(busy||driving) return;
-    const now=Date.now(); taps=taps.filter(t=>now-t<2500); taps.push(now);
+    if(busy) return;
+    const now=Date.now(); taps=taps.filter(x=>now-x<2500); taps.push(now);
     if(taps.length>=5){
-      busy=true; taps=[]; draw("hot"); box.classList.remove("honk"); box.classList.add("hot"); Snd.play("steam"); say("引擎過熱了啦～",1900);
-      setTimeout(()=>{ box.classList.remove("hot"); draw(); busy=false; },2000); return;
+      busy=true; taps=[]; draw("hot"); btn.classList.remove("honk"); btn.classList.add("hot"); Snd.play("steam"); say("引擎過熱了啦～",1900);
+      setTimeout(()=>{ btn.classList.remove("hot"); draw(); busy=false; },2000); return;
     }
-    box.classList.remove("honk"); void box.offsetWidth; box.classList.add("honk");
+    btn.classList.remove("honk"); void btn.offsetWidth; btn.classList.add("honk");
     Snd.play("honk"); draw("happy"); say(LINES[Math.floor(Math.random()*LINES.length)]);
     setTimeout(()=>{ if(!busy) draw(); },900);
   }
-  const LINES=["叭叭！要去哪裡？","油加滿了，出發吧！","點骰子嘛～","帶阿公阿嬤一起去！","下雨也有地方去喔","記得帶水壺～","行李綁好了！","近的遠的我都可以"];
-  draw(); box.onclick=poke;
-  window.addEventListener("resize",()=>renderTrack());
-  return {say, leave, hopTo, home, arrive, renderTrack, draw, get at(){return at;}};
+  draw(); btn.onclick=poke;
+  return {say,draw};
 })();
 
-/* ===== 首頁 ===== */
-function renderSigns(hit){
-  $("#signs").classList.toggle("locked",!!mode);
-  $("#signs").innerHTML=[1,2,3,4].map(k=>{
-    const t=TIERS[k];
-    return `<button class="sign ${mode===k?"on":""} ${hit===k?"won":""}" data-k="${k}">
-      ${mode===k?`<span class="pin">指定</span>`:""}
-      <span class="pl" style="background:${t.c}"><span class="in"><span class="ex">${t.faces.join("・")} 點</span><b>${t.name}</b><small>${t.range}</small></span></span></button>`;
-  }).join("");
-  $$("#signs .sign").forEach(b=>b.onclick=()=>{ if(rolling) return; const k=+b.dataset.k; mode = mode===k?0:k; store.set("wd_mode",mode); Snd.play("toggle",!!mode); renderHome(); });
-  $("#signTip").textContent = mode ? "再點一次路牌，就交回給骰子決定" : "骰到幾點就去哪一區・點路牌可以直接指定";
+/* ===== 台灣地圖：縣市亮起來、從家裡擴散的圓、方向扇形、地點小點 ===== */
+const Map2=(()=>{
+  const svg=$("#map"), cam=$("#cam"), card=$("#mapCard");
+  let cw=360, ch=420, view={x:HP[0],y:HP[1]+40,k:1}, ringR=0, raf=0;
+  // 縣市底圖
+  $("#counties").innerHTML=MAP.counties.map(c=>`<path class="county" data-n="${c.n}" d="${c.d}" fill="${COUNTY_COLOR[c.n]||"#DDEFD6"}" stroke="#fff" stroke-width="2" vector-effect="non-scaling-stroke" stroke-linejoin="round"/>`).join("");
+  $("#landClipPath").setAttribute("d",MAP.outline);
+  ["#landShadow","#dimmer","#landStroke"].forEach(q=>$(q).setAttribute("d",MAP.outline));
+  $("#twBase").innerHTML=MAP.counties.map(c=>`<path d="${c.d}" fill="${COUNTY_COLOR[c.n]||"#DDEFD6"}" stroke="#fff" stroke-width="1.5" vector-effect="non-scaling-stroke" stroke-linejoin="round"/>`).join("")+`<path d="${MAP.outline}" fill="none" stroke="${INK}" stroke-width="2.5" vector-effect="non-scaling-stroke" stroke-linejoin="round"/>`;
+  $("#labels").innerHTML=CITY_LABELS.map(([n,la,lo])=>{ const [x,y]=proj(la,lo); return `<g class="lbl" data-x="${x}" data-y="${y}"><text text-anchor="middle" font-size="12.5" fill="${INK}" stroke="#fff" stroke-width="3.5" stroke-linejoin="round" paint-order="stroke">${n}</text></g>`; }).join("");
+  $("#home").innerHTML=`<g transform="translate(-13,-24)"><path d="M3 12 L13 3 L23 12" fill="#FF8FA3" stroke="${INK}" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/><path d="M6 11v12h14V11" fill="#FFF6E2" stroke="${INK}" stroke-width="2.4" stroke-linejoin="round"/><rect x="11" y="16" width="5" height="7" rx="1.5" fill="#FFD54A" stroke="${INK}" stroke-width="2"/></g><circle r="4" fill="${INK}"/>`;
+  $("#pin").innerHTML=`<g class="pinIn"><path d="M0 0 C-3 -8 -12 -14 -12 -24 A12 12 0 0 1 12 -24 C12 -14 3 -8 0 0Z" fill="#FF7A59" stroke="${INK}" stroke-width="2.6" stroke-linejoin="round"/><circle cy="-24" r="4.5" fill="#fff" stroke="${INK}" stroke-width="2"/></g>`;
+  $("#mapVan").innerHTML=`<g transform="translate(-27,-38) scale(.5)">${carSvg("happy")}</g>`;
+  function placeOrigin(){ ["#maskCirc","#rippleRing"].forEach(q=>{ $(q).setAttribute("cx",HP[0]); $(q).setAttribute("cy",HP[1]); }); $("#home").style.display=origin?"":"none"; }
+  placeOrigin();
+
+  function size(){ const r=card.getBoundingClientRect(); cw=r.width||360; ch=r.height||420; svg.setAttribute("viewBox",`0 0 ${cw} ${ch}`); }
+  // 讓「不受縮放影響」的東西（小點、標籤、家、圖釘、小車）維持固定大小
+  function applyView(){
+    const {x,y,k}=view;
+    cam.setAttribute("transform",`translate(${cw/2-k*x},${ch/2-k*y}) scale(${k})`);
+    const inv=1/k;
+    $$("#labels .lbl").forEach(l=>l.setAttribute("transform",`translate(${l.dataset.x},${l.dataset.y}) scale(${inv})`));
+    $$("#dots .dg").forEach(d=>d.setAttribute("transform",`translate(${d.dataset.x},${d.dataset.y}) scale(${inv})`));
+    $("#home").setAttribute("transform",`translate(${HP[0]},${HP[1]}) scale(${inv})`);
+    const pin=$("#pin"); if(pin.dataset.x) pin.setAttribute("transform",`translate(${pin.dataset.x},${pin.dataset.y}) scale(${inv})`);
+    const v=$("#mapVan"); if(v.dataset.x) v.setAttribute("transform",`translate(${v.dataset.x},${v.dataset.y}) scale(${inv*(+v.dataset.flip||1)},${inv})`);
+    $("#rippleRing").setAttribute("stroke-width",2.5*inv); $("#rippleRing").setAttribute("stroke-dasharray",`${7*inv} ${5*inv}`);
+    $("#maskCirc").setAttribute("r",ringR); $("#rippleRing").setAttribute("r",ringR);
+    $("#landShadow").setAttribute("transform",`translate(${4*inv},${6*inv})`);
+  }
+  // 依「開多遠＋方向」算鏡頭：看得到整個擴散範圍
+  function targetView(){
+    const R=REACHES[reachIdx];
+    if(!R.km || !origin){ const k=Math.min(cw/400,ch/720)*0.98; return {x:200,y:360,k,r:0}; }
+    const r=R.km*KM; let x=HP[0], y=HP[1];
+    if(dir!=="all"){ const d=DIRS[dir], mid=(d.from<d.to? (d.from+d.to)/2 : ((d.from+d.to+360)/2)%360)*D2R; x+=Math.sin(mid)*r*.42; y-=Math.cos(mid)*r*.42; }
+    const half=r*1.12+18;
+    const k=Math.min(cw/(2*half), ch/(2*half), 6);
+    return {x,y,k,r};
+  }
+  function animateTo(ms=850){
+    cancelAnimationFrame(raf);
+    const a={...view,r:ringR}, b=targetView(), t0=performance.now();
+    const step=now=>{
+      const t=Math.min(1,(now-t0)/ms), e=ease(t);
+      view={x:a.x+(b.x-a.x)*e, y:a.y+(b.y-a.y)*e, k:a.k*Math.pow(b.k/a.k,e)};
+      ringR=a.r+(b.r-a.r)*e;
+      applyView();
+      if(t<1) raf=requestAnimationFrame(step);
+    };
+    raf=requestAnimationFrame(step);
+  }
+  // 擴散範圍以外蓋一層淡白；選了方向，只有那個扇形是亮的
+  function paintCounties(){
+    const all=!REACHES[reachIdx].km || !origin;
+    $("#dimmer").style.display=$("#rippleRing").style.display = all?"none":"";
+  }
+  function paintWedge(){
+    if(dir==="all"){ $("#wedgeClipPath").setAttribute("d",""); $("#maskG").removeAttribute("clip-path"); return; }
+    const d=DIRS[dir], R=1500, a1=d.from*D2R, a2=(d.to<d.from?d.to+360:d.to)*D2R;
+    const p=a=>`${HP[0]+Math.sin(a)*R} ${HP[1]-Math.cos(a)*R}`;
+    $("#wedgeClipPath").setAttribute("d",`M${HP[0]} ${HP[1]} L${p(a1)} A${R} ${R} 0 ${(a2-a1)>Math.PI?1:0} 1 ${p(a2)} Z`);
+    $("#maskG").setAttribute("clip-path","url(#wedgeClip)");
+  }
+  function paintDots(){
+    // 只畫符合條件的點（不符合的灰點拿掉，地圖比較乾淨）
+    const all=spots().filter(s=>s.lat!=null && isCandidate(s));
+    $("#dots").innerHTML=all.map(s=>{ const [x,y]=proj(s.lat,s.lng);
+      return `<g class="dg" data-id="${esc(s.id)}" data-x="${x}" data-y="${y}"><circle class="dot on" r="5.5" fill="#FF7A59" stroke="#fff" stroke-width="2"/></g>`; }).join("");
+    applyView();
+  }
+  // 地點在哪個縣市：用 SVG 的 isPointInFill 判斷點在不在縣市形狀裡（結果記起來，不用每次算）
+  const cCache={};
+  function countyOf(s){
+    if(s.id in cCache) return cCache[s.id];
+    const [x,y]=proj(s.lat,s.lng); let hit=null;
+    for(const p of $$("#counties .county")){ try{ if(p.isPointInFill(new DOMPoint(x,y))){ hit=p.dataset.n; break; } }catch(e){} }
+    if(!hit){ let best=1e9; for(const p of $$("#counties .county")){ const b=p.getBBox(), dx=b.x+b.width/2-x, dy=b.y+b.height/2-y, d=dx*dx+dy*dy; if(d<best){ best=d; hit=p.dataset.n; } } }
+    return cCache[s.id]=hit;
+  }
+  function litCounty(n){ $$("#counties .county").forEach(p=>p.classList.toggle("lit",p.dataset.n===n)); }
+  function countyCenter(n){ const p=$(`#counties .county[data-n="${n}"]`); if(!p) return [0,0]; const b=p.getBBox(); return [b.x+b.width/2,b.y+b.height/2]; }
+  function hidePick(){ litCounty(null); $("#pin").style.display="none"; $("#mapVan").style.display="none"; delete $("#pin").dataset.x; delete $("#mapVan").dataset.x; }
+  function flash(id,on){ const g=$(`#dots .dg[data-id="${CSS.escape(id)}"] circle`); if(g) g.classList.toggle("flash",on); }
+  // 小動畫：數值補間（給圖釘落下、小車開過去用）
+  function tween(ms,fn){ return new Promise(res=>{ const t0=performance.now(); const st=now=>{ const t=Math.min(1,(now-t0)/ms); fn(t); if(t<1) requestAnimationFrame(st); else res(); }; requestAnimationFrame(st); }); }
+  async function dropPin(s){
+    const [x,y]=proj(s.lat,s.lng), pin=$("#pin"), inn=pin.querySelector(".pinIn");
+    pin.dataset.x=x; pin.dataset.y=y; pin.style.display=""; applyView();
+    await tween(380,t=>{ const b=t<.6? -60*(1-t/.6)*(1-t/.6) : -10*Math.sin((t-.6)/.4*Math.PI); inn.setAttribute("transform",`translate(0,${b})`); });
+    inn.removeAttribute("transform");
+  }
+  async function drive(s){
+    const [x,y]=proj(s.lat,s.lng), v=$("#mapVan");
+    v.dataset.flip = x<HP[0] ? -1 : 1; v.style.display="";
+    await tween(650,t=>{ const e=ease(t); v.dataset.x=HP[0]+(x-HP[0])*e; v.dataset.y=HP[1]+(y-HP[1])*e - Math.sin(t*Math.PI)*8/view.k; applyView(); });
+  }
+  function refresh(anim=true){ size(); placeOrigin(); paintCounties(); paintWedge(); paintDots(); anim?animateTo():(()=>{ const b=targetView(); view={x:b.x,y:b.y,k:b.k}; ringR=b.r; applyView(); })(); }
+  window.addEventListener("resize",()=>{ size(); const b=targetView(); view={x:b.x,y:b.y,k:b.k}; ringR=b.r; applyView(); });
+  let tapCb=null;
+  svg.addEventListener("click",e=>{
+    if(!tapCb) return;
+    const r=svg.getBoundingClientRect(), sx=e.clientX-r.left, sy=e.clientY-r.top;
+    const mx=(sx-(cw/2-view.k*view.x))/view.k, my=(sy-(ch/2-view.k*view.y))/view.k;
+    const [lat,lng]=unproj(mx,my); const cb=tapCb; tapCb=null; card.classList.remove("tapping"); cb(lat,lng);
+  });
+  const waitTap=cb=>{ tapCb=cb; card.classList.add("tapping"); };
+  const cancelTap=()=>{ tapCb=null; card.classList.remove("tapping"); };
+  function snap(){ size(); const b=targetView(); view={x:b.x,y:b.y,k:b.k}; ringR=b.r; applyView(); }
+  // 地圖放大／縮小：卡片高度用 CSS 動畫，動畫期間每一格重新對焦
+  function setBig(on){
+    if(card.classList.contains("big")===!!on) return Promise.resolve();
+    card.classList.toggle("big",!!on);
+    $("#zoomBtn").innerHTML=ui(on?"shrink":"expand",18);
+    $("#zoomBtn").setAttribute("aria-label",on?"縮小地圖":"放大地圖");
+    return new Promise(res=>{ const t0=performance.now(); const f=now=>{ snap(); if(now-t0<520) requestAnimationFrame(f); else res(); }; requestAnimationFrame(f); });
+  }
+  return {refresh,animateTo,paintDots,hidePick,flash,dropPin,drive,size,waitTap,cancelTap,setBig,snap,countyOf,litCounty,countyCenter};
+})();
+
+/* ===== 控制面板 ===== */
+function renderReach(){
+  $("#reachSeg").style.gridTemplateColumns=`repeat(${REACHES.length},1fr)`;
+  $("#reachSeg").innerHTML=REACHES.map((r,i)=>`<button data-i="${i}" class="${reachIdx===i?"on":""}">${r.big}<small>${r.sm}</small></button>`).join("");
+  $$("#reachSeg button").forEach(b=>b.onclick=()=>{ if(rolling) return; reachIdx=+b.dataset.i; store.set("wd_reach",reachIdx); Snd.play("pop"); Map2.hidePick(); renderHome(); });
+  $("#reachTag").innerHTML=`可以開到：<b>${REACHES[reachIdx].name}</b>`;
+}
+function renderDir(){
+  const arrow=d=>d==="all"?ui("compass",15):`<svg class="ic" width="15" height="15" viewBox="0 0 24 24"><g transform="rotate(${({N:0,E:100,S:200,W:290})[d]} 12 12)"><path d="M12 3 L18 12 H14 V21 H10 V12 H6 Z" fill="#FF7A59" stroke="${INK}" stroke-width="2" stroke-linejoin="round"/></g></svg>`;
+  $("#dirSeg").innerHTML=Object.entries(DIRS).map(([k,d])=>`<button data-d="${k}" class="${dir===k?"on":""}">${arrow(k)}${d.name}</button>`).join("");
+  $$("#dirSeg button").forEach(b=>b.onclick=()=>{ if(rolling) return; dir=b.dataset.d; store.set("wd_dir",dir); Snd.play("pop"); Map2.hidePick(); renderHome(); });
+}
+function tagIcons(s,sz,max=4){ const t=TAGS.filter(x=>s.tags.includes(x.ch)); return t.slice(0,max).map(x=>ui(x.ic,sz)).join("")+(t.length>max?`<b class="more">+${t.length-max}</b>`:""); }
+const CK=on=>`<span class="ck">${on?`<svg width="10" height="10" viewBox="0 0 12 12"><path d="M2 6.3l2.6 2.6L10 3.4" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>`:""}</span>`;
+// 細節條件的完整清單（[key, icon, 名稱]）
+const EXTRA=()=>[
+  ["adult","大人在意（全部都要有）",TAGS.filter(t=>t.g==="adult").map(t=>[t.key,t.ic,t.label])],
+  ["kid","更細的玩法（全部都要有）",TAGS.filter(t=>t.g==="kid").map(t=>[t.key,t.ic,t.label])],
+  ["ex","排除",[["noresv","calendar","不要需預約的"],["avoid","clock","避開 30 天內去過"],["far","car",`不要太近（${reachRange().min||15} 分鐘以上）`]]],
+];
+const isOn=k=>k==="far"?far:!!flt[k];
+function toggleCond(k){ if(k==="far"){ far=!far; store.set("wd_far",far); } else { flt[k]=!flt[k]; store.set("wd_flt",flt); } Snd.play("toggle",isOn(k)); Map2.hidePick(); }
+function countWith(fn){ const s0=scene; const r=fn(); scene=s0; return r; }
+function renderScenes(){
+  const n=k=>countWith(()=>{ scene=k; return candidates().length; });
+  $("#scenes").innerHTML=Object.entries(SCENES).map(([k,s])=>{ const c=n(k); return `<button class="scene ${scene===k?"on":""} ${c?"":"zero"}" data-s="${k}">
+      <span class="si">${ui(s.ic,30)}</span><b>${s.name}</b><small>${s.sub}</small><i>${c}</i></button>`; }).join("");
+  $$("#scenes .scene").forEach(b=>b.onclick=()=>{ if(rolling) return; const k=b.dataset.s; scene = scene===k ? "" : k; store.set("wd_scene",scene); Snd.play("toggle",!!scene); Map2.hidePick(); renderHome(false); });
 }
 function renderChips(){
-  const list=TAGS.map(t=>[t.key,t.ic,t.label]).concat([["avoid","clock","避開 30 天內去過"]]);
-  $("#chips").innerHTML=list.map(([k,ic,l])=>`<button class="ltag ${flt[k]?"on":""}" data-k="${k}">${ui(ic,19)}${l}</button>`).join("");
-  $$("#chips .ltag").forEach(b=>b.onclick=()=>{ const k=b.dataset.k; flt[k]=!flt[k]; store.set("wd_flt",flt); Snd.play("toggle",flt[k]); renderHome(); });
-  $("#modeLine").innerHTML = mode
-    ? `${ui("pin",18)}車程：指定「${TIERS[mode].name}」<button id="modeReset">交給骰子</button>`
-    : `${ui("dice",18)}車程：交給骰子決定`;
-  if(mode) $("#modeReset").onclick=()=>{ mode=0; store.set("wd_mode",0); Snd.play("toggle",false); renderHome(); };
+  const on=EXTRA().flatMap(g=>g[2]).filter(([k])=>isOn(k));
+  $("#chips").innerHTML=(on.length
+      ? `<div class="sumTags">${on.map(([k,ic,l])=>`<button class="sumTag" data-k="${k}">${ui(ic,15)}${l.replace(/（.*?）/,"")}<span class="x">×</span></button>`).join("")}</div>`
+      : `<div class="sumNone">沒有特別要求</div>`)
+    +`<button class="addCond" id="addCond">${ui("plusc",16)}${on.length?"調整條件":"加條件"}<small>停車、哺乳室、樹蔭…</small></button>`;
+  $$("#chips .sumTag").forEach(b=>b.onclick=()=>{ if(rolling) return; toggleCond(b.dataset.k); renderHome(false); });
+  $("#addCond").onclick=()=>{ if(rolling) return; Snd.play("pop"); showConds(); };
 }
+function showConds(){
+  const paint=()=>{
+    $("#condBody").innerHTML=EXTRA().map(([g,title,list])=>`<div class="chipGrp"><div class="chipTitle">${title}</div><div class="tags">${
+      list.map(([k,ic,l])=>`<button class="ltag ${isOn(k)?"on":""}" data-k="${k}">${CK(isOn(k))}${ui(ic,17)}${l}</button>`).join("")}</div></div>`).join("");
+    $$("#condBody .ltag").forEach(b=>b.onclick=()=>{ toggleCond(b.dataset.k); paint(); renderHome(false); });
+    const n=candidates().length;
+    $("#condDone").innerHTML=n?`好了，有 ${n} 個地點`:`沒有符合的地點，拿掉一些試試`;
+    $("#condClr").style.visibility=EXTRA().flatMap(g=>g[2]).some(([k])=>isOn(k))?"visible":"hidden";
+  };
+  openSheet(`<div class="sheetBody form condSheet"><h2>講究一下</h2><div class="note2">勾越多，選擇越少；不確定就先不要勾</div>
+    <div id="condBody"></div>
+    <div class="condFoot"><button class="btn" id="condClr">全部清掉</button><button class="btn yellow" id="condDone"></button></div></div>`);
+  paint();
+  $("#condDone").onclick=closeSheet;
+  $("#condClr").onclick=()=>{ EXTRA().flatMap(g=>g[2]).forEach(([k])=>{ if(k==="far") far=false; else flt[k]=false; }); store.set("wd_far",far); store.set("wd_flt",flt); Snd.play("pop"); paint(); renderHome(false); };
+}
+let poolOpen=false;
 function renderPool(){
-  const n = mode ? poolOf(mode).length : [1,2,3,4].reduce((a,k)=>a+poolOf(k).length,0);
-  $("#poolInfo").innerHTML = `${mode?TIERS[mode].name+"裡":"目前"}有 <b>${n}</b> 個地點可以骰`;
+  const list=candidates().sort((a,b)=>a.min-b.min||a.name.localeCompare(b.name,"zh-Hant"));
+  $("#poolInfo").innerHTML=`符合條件的地點有 <b>${list.length}</b> 個 <span class="more">${poolOpen?"收起 ▲":"看清單 ▼"}</span>`;
+  $("#poolList").hidden=!poolOpen;
+  if(!poolOpen) return;
+  $("#poolList").innerHTML = list.length ? list.map(s=>{ const b=bucketOf(s.min); return `<button class="pl" data-id="${esc(s.id)}">
+      <span class="m" style="background:${b.c}">${s.min}<small>分</small></span>
+      <span class="tx"><b>${esc(s.name)}</b><small>${esc(s.area)}・${s.min<=20?"附近":dirName(dirOf(s))}</small></span>
+      <span class="tg">${tagIcons(s,16)}</span></button>`; }).join("")
+    : `<div class="empty" style="padding:14px">沒有符合的地點，開遠一點或拿掉一些條件試試</div>`;
+  $$("#poolList .pl").forEach(r=>r.onclick=()=>{ const s=spots().find(x=>x.id===r.dataset.id); if(s){ Snd.play("pop"); showResult(s); } });
 }
-function renderHome(hit){ renderSigns(hit); renderChips(); renderPool(); }
-function renderAll(){ renderHome(); if(curTab==="list") renderList(); if(curTab==="trail") renderTrail(); }
-function setDie(n){ faceNow=n; $("#die").innerHTML=dieSvg(n); }
+$("#poolInfo").onclick=()=>{ poolOpen=!poolOpen; Snd.play("pop"); renderPool(); if(poolOpen) setTimeout(()=>$("#poolList").scrollIntoView({behavior:"smooth",block:"end"}),60); };
+function renderHome(moveCam=true){ renderReach(); renderDir(); renderScenes(); renderChips(); renderPool(); moveCam?Map2.refresh(true):Map2.paintDots(); }
+function renderAll(){ renderHome(false); if(curTab==="list") renderList(); if(curTab==="trail") renderTrail(); }
 
-/* ===== 骰！ ===== */
-function roll(){
+
+/* ===== 設定出發點 ===== */
+function setOrigin(o,msg){
+  origin=o; store.set("wd_origin",o); setHP(); Map2.hidePick(); renderHome(); renderOriginTag();
+  if(msg){ toast(msg); Snd.play("tada"); }
+}
+function renderOriginTag(){ $("#fromTag").innerHTML=ui("pin",16)+originName()+`<span class="chg">${origin?"更改":"點我設定"}</span>`; $("#mapCard").classList.toggle("noOrigin",!origin); }
+function locate(){
+  if(!navigator.geolocation){ toast("這支手機不能定位，改用地圖點選吧"); return; }
+  toast("定位中…");
+  navigator.geolocation.getCurrentPosition(p=>{
+    const lat=p.coords.latitude, lng=p.coords.longitude;
+    if(lat<21.8||lat>25.4||lng<119.9||lng>122.1){ toast("你好像不在台灣本島，改用地圖點選吧"); return; }
+    setOrigin({lat,lng,kind:"gps",label:nearestCity(lat,lng)+"附近"},`出發點：目前位置（${nearestCity(lat,lng)}附近）`);
+  },err=>{ toast(err.code===1?"沒有定位權限，可以到設定打開，或改用地圖點選":"定位失敗，改用地圖點選吧"); },{enableHighAccuracy:false,timeout:12000,maximumAge:300000});
+}
+function showOrigin(){
+  const near=origin?`${nearestCity(origin.lat,origin.lng)}附近`:"";
+  openSheet(`<div class="sheetBody form">
+    <h2>從哪裡出發？</h2>
+    <div class="note2" style="font-size:14px;line-height:1.6">${origin?`現在：${originName()}（${near}）`:"先設定出發點，地圖才知道要從哪裡擴散。"}<br>位置只存在這支手機裡，不會傳到任何地方。</div>
+    <div style="display:grid;gap:10px;margin-top:12px">
+      <button class="btn yellow" id="oGps">${ui("pin",20)}用我現在的位置</button>
+      <button class="btn" id="oMap">${ui("map",20)}在地圖上點一下</button>
+      ${homeSpot?`<button class="btn green" id="oHome">${ui("home",20)}從家出發（${nearestCity(homeSpot.lat,homeSpot.lng)}附近）</button>`:""}
+      ${origin && origin.kind!=="home"?`<button class="btn" id="oSave">${ui("home",20)}把現在的出發點存成「家」</button>`:""}
+    </div>
+  </div>`);
+  $("#oGps").onclick=()=>{ closeSheet(); locate(); };
+  $("#oMap").onclick=()=>{ closeSheet(); setTab("roll"); Map2.setBig(true); window.scrollTo({top:0,behavior:"smooth"}); reachIdx=4; Map2.refresh(true); renderReach();
+    toast("在地圖上點一下你要出發的地方"); Van.say("點地圖選出發點～",2500);
+    Map2.waitTap((lat,lng)=>{ if(lat<21.8||lat>25.4||lng<119.9||lng>122.1){ toast("請點台灣本島上的地方"); return; } reachIdx=store.get("wd_reach",1); setOrigin({lat,lng,kind:"map",label:nearestCity(lat,lng)+"附近"},`出發點：${nearestCity(lat,lng)}附近`); }); };
+  if($("#oHome")) $("#oHome").onclick=()=>{ closeSheet(); setOrigin({...homeSpot,kind:"home"},"從家出發！"); };
+  if($("#oSave")) $("#oSave").onclick=()=>{ homeSpot={lat:origin.lat,lng:origin.lng}; store.set("wd_home",homeSpot); origin={...origin,kind:"home"}; store.set("wd_origin",origin); renderOriginTag(); closeSheet(); toast("存好了，之後可以直接「從家出發」"); Snd.play("tada"); };
+}
+$("#fromTag").onclick=()=>{ Snd.play("pop"); showOrigin(); };
+
+/* 隨機決定開多遠：在幾個距離之間跳來跳去，最後停在一個（取代原本的骰子） */
+async function randomReach(){
   if(rolling) return;
-  const tiers = mode? [mode] : [1,2,3,4];
-  const okT = tiers.filter(k=>poolOf(k).length>0);
-  if(!okT.length){ Snd.play("oops"); toast(mode?"這一區沒有符合條件的地點，拿掉一些條件試試":"沒有符合條件的地點，拿掉一些條件試試"); shake(); return; }
-  const faces = okT.flatMap(k=>TIERS[k].faces);
-  const face = faces[Math.floor(Math.random()*faces.length)];
-  const tier = faceTier(face);
-  let pool = poolOf(tier); if(pool.length>1) pool=pool.filter(s=>s.id!==lastId);
-  const spot = pool[Math.floor(Math.random()*pool.length)];
-  lastId = spot.id;
+  if(!origin){ Snd.play("pop"); showOrigin(); return; } rolling=true; Map2.hidePick();
+  $("#rndBtn").classList.add("spin"); Van.say("這次開多遠呢～",1200);
+  let i=reachIdx, final=Math.floor(Math.random()*REACHES.length);
+  const steps=7+Math.floor(Math.random()*3);
+  for(let k=0;k<steps;k++){
+    i = k===steps-1 ? final : (i+1+Math.floor(Math.random()*(REACHES.length-1)))%REACHES.length;
+    reachIdx=i; renderReach(); Map2.refresh(false); Snd.play("blip",k%6);
+    $("#rndDie").innerHTML=dieSvg(1+Math.floor(Math.random()*6));
+    await sleep(60+k*k*4);
+  }
+  store.set("wd_reach",reachIdx); $("#rndBtn").classList.remove("spin"); $("#rndDie").innerHTML=dieSvg(Math.min(6,reachIdx+1));
+  renderHome(); Snd.play("tada"); Van.say(`這次：${REACHES[reachIdx].name}！`,1600);
+  rolling=false;
+}
+$("#rndBtn").onclick=randomReach;
 
-  rolling=true; renderSigns(); $("#tapHint").classList.add("off");
-  rollAnim(face,tier,spot);
+/* 幫我挑一個：候選地點輪流閃 → 停在一個 → 圖釘落下 → 小車開過去 → 明信片 */
+async function pick(){
+  if(rolling) return;
+  if(!origin){ Snd.play("pop"); showOrigin(); return; }
+  const pool=candidates();
+  if(!pool.length){ Snd.play("oops"); toast("沒有符合條件的地點，開遠一點或拿掉一些條件試試"); $("#goBtn").animate([{transform:"translateX(0)"},{transform:"translateX(-9px)"},{transform:"translateX(9px)"},{transform:"none"}],{duration:300}); return; }
+  let p2=pool.length>1?pool.filter(s=>s.id!==lastId):pool;
+  const spot=p2[Math.floor(Math.random()*p2.length)]; lastId=spot.id;
+  rolling=true; $("#goBtn").disabled=true; Map2.hidePick();
+  window.scrollTo({top:0,behavior:"smooth"});
+  await Map2.setBig(true);
+  Van.say("我找找看…",1400);
+  const onMap=pool.filter(s=>s.lat!=null);
+  $("#mapCard").classList.add("picking");
+  // 跑馬燈：有地點的縣市繞著出發點一個一個亮，越跑越慢，最後停在挑中的那個縣市
+  const byC={}; onMap.forEach(s=>{ const c=Map2.countyOf(s); (byC[c]=byC[c]||[]).push(s); });
+  const target=spot.lat!=null?Map2.countyOf(spot):null;
+  let cs=Object.keys(byC);
+  const ang=n=>{ const [x,y]=Map2.countyCenter(n); return Math.atan2(x-HP[0],-(y-HP[1])); };
+  cs.sort((a,b)=>ang(a)-ang(b));
+  const lightDots=(n,on)=>(byC[n]||[]).forEach(s=>Map2.flash(s.id,on));
+  if(cs.length>1 && target){
+    const ti=cs.indexOf(target), L=cs.length;
+    let loops=Math.max(1,Math.ceil((14-ti)/L)); while(loops*L+ti>30 && loops>1) loops--;
+    const total=loops*L+ti; let prev=null;
+    for(let k=0;k<=total;k++){
+      const n=cs[k%L];
+      if(prev) lightDots(prev,false);
+      Map2.litCounty(n); lightDots(n,true); prev=n;
+      Snd.play("blip",k);
+      const p=k/total; await sleep(45+Math.pow(p,2.4)*260);
+    }
+    lightDots(prev,false);
+    await sleep(120);
+  } else {
+    // 只有一個縣市：在這個縣市裡的地點之間跳
+    if(target) Map2.litCounty(target);
+    const pool2=target?byC[target]:onMap; let prev=null; const steps=Math.min(14,Math.max(6,pool2.length*2));
+    for(let k=0;k<steps && pool2.length>1;k++){
+      const s=k===steps-1?spot:pool2[Math.floor(Math.random()*pool2.length)];
+      if(prev) Map2.flash(prev,false); Map2.flash(s.id,true); prev=s.id; Snd.play("blip",k);
+      await sleep(60+Math.pow(k/steps,2.2)*240);
+    }
+    if(prev) Map2.flash(prev,false);
+  }
+  $("#mapCard").classList.remove("picking");
+  if(spot.lat!=null){ Map2.flash(spot.id,true); Snd.play("pop"); await Map2.dropPin(spot); Snd.play("beep"); await Map2.drive(spot); }
+  Snd.play("tada"); Van.say(`去${spot.name.replace(/（.*?）/,"").slice(0,8)}！`,1800);
+  await sleep(150);
+  rolling=false; $("#goBtn").disabled=false;
+  if(sheetOpen()) toast(`挑到：${spot.name}`); else showResult(spot);
 }
-async function rollAnim(face,tier,spot){
-  const wrap=$("#dieWrap"), sh=$("#dieShadow");
-  const back=Car.home();                                  // 車子先開回家（跟骰子同時）
-  $("#dieIdle").style.animation="none";
-  // 骰子原地往上拋、翻滾、落地彈兩下（只用 transform，桌面 App 也順）
-  const A=wrap.animate([
-    {transform:"translate(0,0) rotate(0)"},
-    {transform:"translate(-6px,-130px) rotate(-280deg) scale(1.05)",offset:.3},
-    {transform:"translate(0,0) rotate(-560deg) scale(1.1,.88)",offset:.52},
-    {transform:"translate(4px,-40px) rotate(-660deg)",offset:.68},
-    {transform:"translate(0,0) rotate(-715deg) scale(1.04,.96)",offset:.84},
-    {transform:"translate(0,-6px) rotate(-722deg)",offset:.92},
-    {transform:"translate(0,0) rotate(-720deg)"}],{duration:1400,easing:"cubic-bezier(.3,.5,.4,1)"});
-  sh.animate([{transform:"scale(1)",opacity:1},{transform:"scale(.45)",opacity:.35,offset:.3},{transform:"scale(1.1)",opacity:1,offset:.52},{transform:"scale(.75)",offset:.68},{transform:"scale(1)"}],{duration:1400});
-  // 翻滾中每 70ms 換一面，像真的在轉
-  const spin=setInterval(()=>setDie(1+Math.floor(Math.random()*6)),70);
-  Snd.play("rattle");
-  setTimeout(()=>Snd.play("land"),730);
-  setTimeout(()=>{ clearInterval(spin); setDie(face); },1100);
-  try{ await A.finished; }catch(e){}
-  $("#dieIdle").style.animation="";
-  wrap.animate([{transform:"scale(1)"},{transform:"scale(1.15)"},{transform:"scale(1)"}],{duration:380,easing:"cubic-bezier(.2,1.6,.4,1)"});
-  await back;
-  await new Promise(r=>setTimeout(r,250));
-  await Car.hopTo(face);                                  // 骰到幾點，車子就往前開幾格
-  renderSigns(tier);
-  const sg=$(`#signs .sign[data-k="${tier}"]`); if(sg) sg.classList.add("hit");
-  Snd.play("tada"); Car.say(`第 ${face} 格，${TIERS[tier].name}！`,1500);
-  setTimeout(()=>{ rolling=false; $("#tapHint").classList.remove("off"); if(sheetOpen()) toast(`骰到：${spot.name}`); else showResult(spot,face); },700);
-}
-function shake(){ $("#dieWrap").animate([{transform:"translateX(0)"},{transform:"translateX(-10px) rotate(-6deg)"},{transform:"translateX(10px) rotate(6deg)"},{transform:"translateX(-5px)"},{transform:"none"}],{duration:360}); }
-$("#dieWrap").onclick=roll;
+$("#goBtn").onclick=pick;
+$("#zoomBtn").innerHTML=ui("expand",18);
+$("#zoomBtn").onclick=e=>{ e.stopPropagation(); if(rolling) return; Snd.play("pop"); Map2.setBig(!$("#mapCard").classList.contains("big")); };
+// 回頭改條件時，地圖自動縮回小的，把畫面讓給條件
+$(".panel").addEventListener("click",e=>{ if(!rolling && e.target.closest("button")) Map2.setBig(false); });
 
 /* ===== 彈出視窗 ===== */
 function openSheet(html){
@@ -1005,53 +1707,58 @@ const WD="日一二三四五六";
 const fmtDate = t=>{ const d=new Date(t); return `${d.getMonth()+1}/${d.getDate()}（${WD[d.getDay()]}）`; };
 function stickers(s){ return TAGS.filter(t=>s.tags.includes(t.ch)).map(t=>`<span class="stkr">${ui(t.ic,18)}${t.label}</span>`).join(""); }
 
-/* 明信片上的小風景（依車程級距換顏色） */
-function viewSvg(t){
-  return `<svg viewBox="0 0 400 132" preserveAspectRatio="xMidYMid slice">
-    <rect width="400" height="132" fill="${t.l}"/>
-    <circle cx="60" cy="40" r="18" fill="#FFD54A" stroke="${INK}" stroke-width="3"/>
-    <g transform="translate(110 22) scale(.6)">${cloudSvg(110).replace(/<\/?svg[^>]*>/g,"")}</g>
-    <path d="M0 92 Q70 50 150 86 T300 70 T400 80 V132 H0Z" fill="${t.c}" opacity=".55" stroke="${INK}" stroke-width="3"/>
-    <path d="M0 112 Q120 84 230 108 T400 100 V132 H0Z" fill="#8FCF6B" stroke="${INK}" stroke-width="3"/>
-    <path d="M150 132 Q200 104 250 132" fill="#5B6170" stroke="${INK}" stroke-width="3"/>
-  </svg>`;
+
+
+/* 明信片上的小地圖：從家裡到目的地的虛線 */
+function viewSvg(s,b){
+  if(s.lat==null) return `<svg viewBox="0 0 400 132" preserveAspectRatio="xMidYMid slice"><rect width="400" height="132" fill="${b.l}"/><circle cx="60" cy="40" r="18" fill="#FFD54A" stroke="${INK}" stroke-width="3"/><path d="M0 112 Q120 84 230 108 T400 100 V132 H0Z" fill="#8FCF6B" stroke="${INK}" stroke-width="3"/></svg>`;
+  const [x,y]=proj(s.lat,s.lng), [hx,hy]=HP;
+  let x0=Math.min(x,hx), x1=Math.max(x,hx), y0=Math.min(y,hy), y1=Math.max(y,hy);
+  const pad=Math.max(14,(x1-x0+y1-y0)*.25); x0-=pad; x1+=pad; y0-=pad; y1+=pad;
+  let w=x1-x0, h=y1-y0; const A=400/132;
+  if(w/h<A){ const nw=h*A; x0-=(nw-w)/2; w=nw; } else { const nh=w/A; y0-=(nh-h)/2; h=nh; }
+  const u=w/400;
+  return `<svg viewBox="${x0} ${y0} ${w} ${h}" preserveAspectRatio="xMidYMid slice"><rect x="${x0}" y="${y0}" width="${w}" height="${h}" fill="#CDEAF9"/><use href="#twBase"/>
+    <path d="M${hx} ${hy} Q${(hx+x)/2+ (y-hy)*.15} ${(hy+y)/2-(x-hx)*.15} ${x} ${y}" fill="none" stroke="${b.c}" stroke-width="${3.5*u}" stroke-dasharray="${8*u} ${6*u}" stroke-linecap="round"/>
+    <circle cx="${hx}" cy="${hy}" r="${6*u}" fill="#FFD54A" stroke="${INK}" stroke-width="${2.2*u}"/>
+    <g transform="translate(${x} ${y}) scale(${u})"><path d="M0 0 C-3 -8 -12 -14 -12 -24 A12 12 0 0 1 12 -24 C12 -14 3 -8 0 0Z" fill="#FF7A59" stroke="${INK}" stroke-width="2.6"/><circle cy="-24" r="4.5" fill="#fff" stroke="${INK}" stroke-width="2"/></g></svg>`;
 }
 function postmark(){
   const d=new Date(), ds=`${d.getFullYear()}.${d.getMonth()+1}.${d.getDate()}`;
   return `<svg class="pm" viewBox="0 0 84 84"><circle cx="42" cy="42" r="36" fill="none" stroke="${INK}" stroke-width="2.5"/><circle cx="42" cy="42" r="28" fill="none" stroke="${INK}" stroke-width="1.5"/>
-    <text x="42" y="36" text-anchor="middle" font-size="10" fill="${INK}" font-family="inherit">新豐出發</text><text x="42" y="52" text-anchor="middle" font-size="9.5" fill="${INK}" font-family="inherit">${ds}</text>
+    <text x="42" y="36" text-anchor="middle" font-size="10" fill="${INK}" font-family="inherit">出發囉！</text><text x="42" y="52" text-anchor="middle" font-size="9.5" fill="${INK}" font-family="inherit">${ds}</text>
     <path d="M-30 30 q8-5 16 0 t16 0M-30 42 q8-5 16 0 t16 0M-30 54 q8-5 16 0 t16 0" fill="none" stroke="${INK}" stroke-width="2" transform="translate(-6 0)"/></svg>`;
 }
-function showResult(s,face){
-  const k=tierOf(s.min), t=TIERS[k], lv=lastVisit(s.id);
-  face = face || t.faces[0];
+
+function showResult(s){
+  const b=bucketOf(s.min), lv=lastVisit(s.id), d=dirOf(s);
   openSheet(`<div class="pc">
-    <div class="view">${viewSvg(t)}
-      <div class="stamp"><div class="si" style="background:${t.c}">${faceMini(face,28)}<span>${t.name}</span></div></div>
+    <div class="view">${viewSvg(s,b)}
+      <div class="stamp"><div class="si" style="background:${b.c}"><span style="font-size:20px;line-height:1">${s.min}</span><span>分鐘</span></div></div>
       ${postmark()}
     </div>
     <div class="sheetBody">
       <div class="to">TO：</div>
       <h2>${esc(s.name)}</h2>
-      <div class="addr">${ui("pin",18)}${esc(s.area||"—")}</div>
-      <div class="addr">${ui("car",18)}從家裡開車約 ${s.min} 分鐘</div>
+      <div class="addr">${ui("pin",18)}${esc(s.area||"—")}・${s.min<=20?"出發點附近":dirName(d)}</div>
+      <div class="addr">${ui("car",18)}從出發點開車約 ${s.min} 分鐘${s.baseMin?"（估計）":""}</div>
       <div class="stk">${stickers(s)||`<span class="stkr">${ui("spark",18)}出發就對了</span>`}</div>
       ${s.note?`<div class="msg">${esc(s.note)}</div>`:""}
       ${lv?`<div class="last">${ui("clock",14)} 上次去：${fmtDate(lv)}</div>`:""}
       <div class="acts">
         <a class="btn navy wide" href="${mapUrl(s)}" target="_blank" rel="noopener">${ui("nav",22)}Google 地圖導航</a>
-        <button class="btn yellow" id="goBtn">${ui("flag",20)}就去這！</button>
-        <button class="btn" id="againBtn">${ui("again",20)}再骰一次</button>
+        <button class="btn yellow" id="goHere">${ui("flag",20)}就去這！</button>
+        <button class="btn" id="againBtn">${ui("again",20)}再挑一個</button>
       </div>
       <button class="linkBtn" id="editFromRes">編輯這個地點</button>
       <div class="est">車程是估計值，出發前看一下導航喔</div>
     </div></div>`);
-  $("#goBtn").onclick=()=>{
+  $("#goHere").onclick=()=>{
     hist.push({id:s.id,t:Date.now(),name:s.name,min:s.min}); if(hist.length>500) hist=hist.slice(-500); store.set("wd_hist",hist);
     Snd.play("cheer"); confetti(); toast("出發囉！足跡記下來了");
-    setTimeout(()=>{ closeSheet(); renderAll(); setTimeout(()=>{ if(curTab==="roll") Car.leave(); },250); },700);
+    setTimeout(()=>{ closeSheet(); renderAll(); },700);
   };
-  $("#againBtn").onclick=()=>{ closeSheet(); setTimeout(roll,250); };
+  $("#againBtn").onclick=()=>{ closeSheet(); setTimeout(pick,250); };
   $("#editFromRes").onclick=()=>{ Snd.play("pop"); editSpot(s.id); };
 }
 
@@ -1069,10 +1776,11 @@ function confetti(){
   box.innerHTML=h; setTimeout(()=>{ box.innerHTML=""; },2600);
 }
 
+
 /* ===== 資料匯出／匯入（換網址、換手機搬家用） =====
    localStorage 依網址分開存（像每塊板子各有一顆 EEPROM），換網址就讀不到舊資料，
    所以把要搬的 key 打包成一段代碼：WD1: + base64(JSON)。 */
-const SYNC_KEYS=["wd_data","wd_hist","wd_mode","wd_flt","wd_sfx","wd_bgm"];
+const SYNC_KEYS=["wd_data","wd_hist","wd_reach","wd_dir","wd_far","wd_scene","wd_flt","wd_sfx","wd_bgm"];
 const b64e=str=>btoa(unescape(encodeURIComponent(str)));
 const b64d=str=>decodeURIComponent(escape(atob(str)));
 function makeExportCode(){
@@ -1136,36 +1844,40 @@ function applyImport(d){
     d.wd_hist.forEach(h=>{ if(h && h.id && h.t && !seen.has(h.id+"@"+h.t)){ hist.push(h); seen.add(h.id+"@"+h.t); } });
     hist.sort((a,b)=>a.t-b.t); if(hist.length>500) hist=hist.slice(-500); store.set("wd_hist",hist);
   }
-  if(d.wd_mode!==undefined){ mode=+d.wd_mode||0; store.set("wd_mode",mode); }
-  if(d.wd_flt) { flt=Object.assign({rain:false,easy:false,free:false,food:false,avoid:false},d.wd_flt); store.set("wd_flt",flt); }
+  if(d.wd_reach!==undefined){ reachIdx=Math.max(0,Math.min(REACHES.length-1,+d.wd_reach||0)); store.set("wd_reach",reachIdx); }
+  if(d.wd_dir && DIRS[d.wd_dir]){ dir=d.wd_dir; store.set("wd_dir",dir); }
+  if(typeof d.wd_far==="boolean"){ far=d.wd_far; store.set("wd_far",far); }
+  if(typeof d.wd_scene==="string"){ scene=d.wd_scene; store.set("wd_scene",scene); }
+  if(d.wd_flt) { flt=Object.assign({avoid:false,noresv:false},d.wd_flt); store.set("wd_flt",flt); }
   if(typeof d.wd_sfx==="boolean") Snd.setSfx(d.wd_sfx);
   if(typeof d.wd_bgm==="boolean" && d.wd_bgm!==Snd.bgmOn) Snd.setBgm(d.wd_bgm);
   paintSndBtns(); renderAll(); Snd.play("tada"); confetti(); toast("匯入完成！");
 }
 
+
+
 /* ===== 名單頁（票根） ===== */
-function renderTierTabs(){
-  const all=spots();
-  const opts=[[0,"全部",all.length]].concat([1,2,3,4].map(k=>[k,TIERS[k].name,all.filter(s=>tierOf(s.min)===k).length]));
-  $("#tierTabs").innerHTML=opts.map(([k,n,c])=>`<button data-k="${k}" class="${listTier===k?"on":""}" style="${listTier===k?`background:${k?TIERS[k].c:INK}`:""}">${n} ${c}</button>`).join("");
-  $$("#tierTabs button").forEach(b=>b.onclick=()=>{ listTier=+b.dataset.k; Snd.play("pop"); renderList(); });
+function renderDirTabs(){
+  const all=spots(), cnt=k=>k==="all"?all.length: all.filter(s=> k==="near"? s.min<=20 : (s.min>20 && dirOf(s)===k)).length;
+  const opts=[["all","全部"],["near","附近"],["N","往北"],["E","往東"],["S","往南"],["W","往西"]];
+  $("#tierTabs").innerHTML=opts.map(([k,n])=>`<button data-k="${k}" class="${listDir===k?"on":""}" style="${listDir===k?`background:${INK}`:""}">${n} ${cnt(k)}</button>`).join("");
+  $$("#tierTabs button").forEach(b=>b.onclick=()=>{ listDir=b.dataset.k; Snd.play("pop"); renderList(); });
 }
 function renderList(){
   $("#listTitle").innerHTML=`${ui("ticketL",28)}口袋名單<small>${spots().length} 個地點</small>`;
-  renderTierTabs();
+  renderDirTabs();
   const q=$("#q").value.trim().toLowerCase();
-  const all=spots().filter(s=>!q || (s.name+s.area+(s.note||"")).toLowerCase().includes(q));
+  const all=spots().filter(s=>(!q || (s.name+s.area+(s.note||"")).toLowerCase().includes(q))
+    && (listDir==="all" || (listDir==="near"? s.min<=20 : (s.min>20 && dirOf(s)===listDir))));
   let h="";
-  for(const k of [1,2,3,4]){
-    if(listTier && listTier!==k) continue;
-    const arr=all.filter(s=>tierOf(s.min)===k).sort((a,b)=>a.min-b.min||a.name.localeCompare(b.name,"zh-Hant"));
+  for(const b of BUCKETS){
+    const lo=BUCKETS[BUCKETS.indexOf(b)-1]; const arr=all.filter(s=>s.min<=b.max && (!lo || s.min>lo.max)).sort((a,c)=>a.min-c.min||a.name.localeCompare(c.name,"zh-Hant"));
     if(!arr.length) continue;
-    const t=TIERS[k];
-    h+=`<div class="grpH"><i style="background:${t.c}">${t.faces.join("・")} 點</i>${t.name}<small>${t.range}・${arr.length} 個</small></div>`+
+    h+=`<div class="grpH"><i style="background:${b.c}">${b.name}</i><small>${arr.length} 個</small></div>`+
       arr.map(s=>`<button class="tk ${s.off?"off":""}" data-id="${esc(s.id)}">
-        <span class="stub" style="background:${t.c}">${s.min}<small>分鐘</small></span>
-        <span class="tx"><div class="nm">${esc(s.name)}${s.off?`<span class="badge gray">不骰</span>`:""}${visitedRecently(s.id)?`<span class="badge">最近去過</span>`:""}</div><div class="ar">${esc(s.area)}${s.note?"・"+esc(s.note):""}</div></span>
-        <span class="tg">${TAGS.filter(x=>s.tags.includes(x.ch)).map(x=>ui(x.ic,17)).join("")}</span></button>`).join("");
+        <span class="stub" style="background:${b.c}">${s.min}<small>分鐘</small></span>
+        <span class="tx"><div class="nm">${esc(s.name)}${s.off?`<span class="badge gray">不挑</span>`:""}${visitedRecently(s.id)?`<span class="badge">最近去過</span>`:""}</div><div class="ar">${esc(s.area)}・${s.min<=20?"附近":dirName(dirOf(s))}${s.note?"・"+esc(s.note):""}</div></span>
+        <span class="tg">${tagIcons(s,17)}</span></button>`).join("");
   }
   $("#list").innerHTML = h || `<div class="empty">找不到地點<br>按右下角的 ＋ 加一個吧！</div>`;
   $$("#list .tk").forEach(r=>r.onclick=()=>{ Snd.play("pop"); editSpot(r.dataset.id); });
@@ -1182,9 +1894,9 @@ function renderTrail(){
   const all=spots(), byId=Object.fromEntries(all.map(s=>[s.id,s]));
   const recent=[...hist].sort((a,b)=>b.t-a.t).slice(0,40);
   $("#trail").innerHTML = recent.length ? recent.map(h=>{
-    const s=byId[h.id], name=s?s.name:(h.name||"（已刪除的地點）"), min=s?s.min:(h.min||0), t=TIERS[tierOf(min||1)];
-    return `<div class="stop" style="--c:${t.c}"><div class="d">${fmtDate(h.t)}・${t.name}</div><div class="n">${esc(name)}</div></div>`;
-  }).join("") : `<div class="empty" style="margin-left:-26px">${ui("car",40)}<br>還沒有足跡<br>骰到喜歡的地點，按「就去這！」就會記在這裡</div>`;
+    const s=byId[h.id], name=s?s.name:(h.name||"（已刪除的地點）"), min=s?s.min:(h.min||0), b=bucketOf(min||1);
+    return `<div class="stop" style="--c:${b.c}"><div class="d">${fmtDate(h.t)}・約 ${min} 分鐘</div><div class="n">${esc(name)}</div></div>`;
+  }).join("") : `<div class="empty" style="margin-left:-26px">${ui("car",40)}<br>還沒有足跡<br>挑到喜歡的地點，按「就去這！」就會記在這裡</div>`;
   $("#settings").innerHTML=`
     <button class="set" id="sBgm">${ui("note",20)}背景音樂<span class="r">${Snd.bgmOn?"開":"關"}</span></button>
     <button class="set" id="sSfx">${ui("speaker",20)}音效<span class="r">${Snd.sfxOn?"開":"關"}</span></button>
@@ -1207,26 +1919,30 @@ function renderTrail(){
 function editSpot(id){
   const s = id ? spots().find(x=>x.id===id) : {id:null,name:"",area:"",min:30,tags:[],note:"",off:false};
   if(!s) return;
-  const f={...s,tags:[...s.tags]};
+  const f={...s,tags:[...s.tags]}; f.d = s.min<=20 && !s.dir ? "near" : dirOf(s);
   const isBase = !!f.id && f.id.startsWith("b:");
   openSheet(`<div class="sheetBody form">
     <h2>${id?"編輯地點":"新增地點"}</h2>
     <label>名稱</label><input type="text" id="fName" maxlength="40" value="${esc(f.name)}" placeholder="例如：南寮漁港">
     <label>地區</label><input type="text" id="fArea" maxlength="20" value="${esc(f.area)}" placeholder="例如：新竹市">
-    <label>從家裡開車大約幾分鐘</label>
+    <label>從出發點開車大約幾分鐘${s.baseMin?"（目前是估計的，改了就照你的）":""}</label>
     <div class="minRow"><button id="mMinus">−</button><output id="fMin"></output><button id="mPlus">＋</button><span class="tl" id="fTier"></span></div>
+    <label>在哪個方向</label><div class="seg dirSeg" id="fDir" style="grid-template-columns:repeat(5,1fr)"></div>
     <label>貼上標籤</label><div class="tags" id="fTags"></div>
     <label>一句話備註</label><textarea id="fNote" maxlength="80" placeholder="例如：有大草皮、記得帶防曬">${esc(f.note||"")}</textarea>
-    <div class="sw"><span class="t">${ui("eyeoff",20)}先不要骰到這裡</span><button id="fOff" class="${f.off?"on":""}" aria-label="不要骰到"></button></div>
+    <div class="sw"><span class="t">${ui("eyeoff",20)}先不要挑到這裡</span><button id="fOff" class="${f.off?"on":""}" aria-label="不要挑到"></button></div>
     <div class="formActs">
       ${id?`<button class="btn danger" id="fDel">刪除</button>`:""}
       <button class="btn green" id="fSave">${ui("check",20)}儲存</button>
     </div>
   </div>`);
-  const paintMin=()=>{ const t=TIERS[tierOf(f.min)]; $("#fMin").textContent=f.min+" 分"; $("#fTier").textContent=t.name; $("#fTier").style.background=t.c; };
-  const paintTags=()=>{ $("#fTags").innerHTML=TAGS.map(t=>`<button class="ltag ${f.tags.includes(t.ch)?"on":""}" data-ch="${t.ch}">${ui(t.ic,19)}${t.label}</button>`).join("");
+  const paintMin=()=>{ const b=bucketOf(f.min); $("#fMin").textContent=f.min+" 分"; $("#fTier").textContent=b.name; $("#fTier").style.background=b.c; };
+  const paintDir=()=>{ $("#fDir").innerHTML=[["near","附近"],["N","往北"],["E","往東"],["S","往南"],["W","往西"]].map(([k,n])=>`<button data-d="${k}" class="${f.d===k?"on":""}">${n}</button>`).join("");
+    $$("#fDir button").forEach(b=>b.onclick=()=>{ f.d=b.dataset.d; Snd.play("pop"); paintDir(); }); };
+  const ck=on=>`<span class="ck">${on?`<svg width="12" height="12" viewBox="0 0 12 12"><path d="M2 6.3l2.6 2.6L10 3.4" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>`:""}</span>`;
+  const paintTags=()=>{ $("#fTags").innerHTML=TAGS.map(t=>`<button class="ltag ${f.tags.includes(t.ch)?"on":""}" data-ch="${t.ch}">${ck(f.tags.includes(t.ch))}${ui(t.ic,19)}${t.label}</button>`).join("");
     $$("#fTags .ltag").forEach(b=>b.onclick=()=>{ const c=b.dataset.ch; f.tags=f.tags.includes(c)?f.tags.filter(x=>x!==c):f.tags.concat(c); Snd.play("toggle",f.tags.includes(c)); paintTags(); }); };
-  paintMin(); paintTags();
+  paintMin(); paintDir(); paintTags();
   const step=d=>{ f.min=Math.max(5,Math.min(300,f.min+d)); Snd.play("pop"); paintMin(); };
   $("#mMinus").onclick=()=>step(-5); $("#mPlus").onclick=()=>step(5);
   $("#fOff").onclick=e=>{ f.off=!f.off; e.currentTarget.classList.toggle("on",f.off); Snd.play("toggle",!f.off); };
@@ -1234,6 +1950,12 @@ function editSpot(id){
     f.name=$("#fName").value.trim(); f.area=$("#fArea").value.trim(); f.note=$("#fNote").value.trim();
     if(!f.name){ toast("名稱要填喔"); $("#fName").focus(); return; }
     const out={name:f.name,area:f.area,min:f.min,tags:f.tags,note:f.note,off:f.off};
+    if(isBase && f.min!==s.min) out.manual=true;                 // 自己改過車程 → 之後都照這個
+    if(isBase && f.min===s.min && s.baseMin){ out.min=s.baseMin; }  // 沒改 → 維持估計
+    // 方向：跟地圖算出來的一樣就不另外存（內建地點有座標）
+    const auto = s.lat!=null ? dirOf({...s,dir:undefined}) : null;
+    if(f.d!=="near" && f.d!==auto) out.dir=f.d; else if(f.d==="near" && s.lat==null) out.dir=undefined;
+    if(s.lat!=null){ out.lat=s.lat; out.lng=s.lng; }
     if(!id){ data.added.push(Object.assign({id:"u:"+Date.now().toString(36)+Math.random().toString(36).slice(2,6)},out)); toast("新增好了！"); }
     else if(isBase){ data.edits[id]=out; toast("改好了！"); }
     else { const i=data.added.findIndex(x=>x.id===id); if(i>=0) data.added[i]=Object.assign({id},out); toast("改好了！"); }
@@ -1255,14 +1977,15 @@ function setTab(t){
   curTab=t;
   $$("#nav button").forEach(b=>b.classList.toggle("on",b.dataset.tab===t));
   $("#tabRoll").hidden=t!=="roll"; $("#tabList").hidden=t!=="list"; $("#tabTrail").hidden=t!=="trail";
-  if(t==="list") renderList(); if(t==="trail") renderTrail(); if(t==="roll") Car.renderTrack();
+  if(t==="list") renderList(); if(t==="trail") renderTrail(); if(t==="roll") Map2.refresh(false);
   window.scrollTo(0,0);
 }
 $$("#nav button").forEach(b=>b.onclick=()=>{ if(curTab===b.dataset.tab) return; Snd.play("pop"); setTab(b.dataset.tab); });
 
 /* ===== 版本 & 改版紀錄 ===== */
-const APP_VERSION="1.1.0";
+const APP_VERSION="2.0.0";
 const CHANGELOG=[
+  ["2.0.0","11/11","台灣地圖大改版！",["首頁變成台灣地圖：從你現在的位置（或自己點、或存好的家）往外擴散，看得到今天開得到哪裡","選「今天想怎麼玩」：放電跑跳、摸摸動物、玩水玩沙、火車飛機、動手做、下雨也OK","「講究一下」可以再加停車、哺乳室、樹蔭、溫泉、不要預約等條件","按「幫我挑一個」：地圖放大，縣市跑馬燈一個一個亮，停在挑中的地方","地點擴充到全台 341 個，新配色、新的活力背景音樂"]],
   ["1.1.0","11/08","搬新家＋小露營車！",["直接點骰子就會骰，骰到幾點，小露營車就在小路上往前開幾格","叭叭車換成圓滾滾的小露營車","App 搬到新網址；足跡頁多了「匯出資料／匯入資料」，可以把舊資料搬過來"]],
   ["1.0.0","11/05","假日骰骰上線！",["骰到幾點就去哪一區：1・2 點近郊、3・4 點小旅行、5 點遠一點、6 點出遠門","點路牌可以直接指定車程，再貼上雨天、好走、免門票、有得吃等條件","內建 140 個從新豐出發的地點，可以自己新增、編輯、刪除","結果是一張明信片，一鍵 Google 地圖導航；按「就去這！」會記到出遊足跡"]],
 ];
@@ -1284,6 +2007,7 @@ $("#verBtn").onclick=()=>{ Snd.play("pop"); showLog(); };
   if(!seen || verNum(APP_VERSION)>verNum(seen)) store.set("wd_seen_ver",APP_VERSION);   // 只往前記：舊快取頁不會把紀錄倒回去
 })();
 
+
 /* ===== 自動檢查更新（像 FW 的 OTA：問伺服器 version.json，比手上新就重新載入） ===== */
 async function checkUpdate(){
   if(updating || !/(github\.io|web\.app|firebaseapp\.com)$/.test(location.hostname)) return;   // 只在正式網址檢查，本機測試不檢查
@@ -1304,28 +2028,34 @@ checkUpdate();
 document.addEventListener("visibilitychange",()=>{ if(document.visibilityState==="visible"){ checkUpdate(); try{ document.getAnimations().forEach(a=>{ if(a.playState!=="finished"){ a.pause(); a.play(); } }); }catch(e){} } });
 window.addEventListener("pageshow",e=>{ if(e.persisted) checkUpdate(); });
 
+
+
 /* ===== 首次繪製 ===== */
 (function(){
   const d=new Date(), wd=d.getDay(), h=d.getHours();
-  $("#greet").textContent = (wd===0||wd===6) ? (h<12?"週末早安！今天去哪玩？":"週末午後，出門走走吧") : (h<17?"先骰好，假日直接出發":"下班了～骰一個近的走走");
+  $("#greet").textContent = (wd===0||wd===6) ? (h<12?"週末早安！今天開多遠？":"週末午後，出門走走吧") : (h<17?"先挑好，假日直接出發":"下班了～找個近的走走");
 })();
-$("#sun").innerHTML=sunSvg; $("#cl1").innerHTML=cloudSvg(96); $("#cl2").innerHTML=cloudSvg(70); $("#cl3").innerHTML=cloudSvg(56);
-$("#hills").innerHTML=hillsSvg;
-$("#hCond").innerHTML=ui("check",22)+"行前檢查";
+$("#cl1").innerHTML=cloudSvg(90); $("#cl2").innerHTML=cloudSvg(60);
+$("#hReach").innerHTML=ui("car",20)+"開多遠、往哪邊";
+$("#hScene").insertAdjacentHTML("afterbegin",ui("map",20)+"今天想怎麼玩？");
+$("#hCond").innerHTML=ui("check",20)+"講究一下";
+renderOriginTag();
+$("#goBtn").innerHTML=`<svg viewBox="0 0 110 80">${carSvg("happy")}</svg>幫我挑一個！`;
+$("#rndDie").innerHTML=dieSvg(Math.min(6,reachIdx+1));
 $("#searchIc").innerHTML=ui("search",20);
 $("#addBtn").innerHTML=ui("plus",28);
-const NAV=[["roll","dice","骰子"],["list","ticketL","名單"],["trail","foot","足跡"]];
+const NAV=[["roll","map","挑地點"],["list","ticketL","名單"],["trail","foot","足跡"]];
 $$("#nav button").forEach((b,i)=>b.innerHTML=ui(NAV[i][1],24)+NAV[i][2]);
-setDie(1); paintSndBtns(); renderHome();
-$("#tapHintIn").innerHTML=ui("dice",16)+"點骰子，骰一下！";
-Car.renderTrack(); splashDone.then(()=>setTimeout(()=>{ if(!rolling) Car.arrive(); },250));
+paintSndBtns(); renderReach(); renderDir(); renderScenes(); renderChips(); renderPool(); Map2.refresh(false);
 $("#footCount").textContent=`口袋名單 ${spots().length} 個地點`;
 
-/* ===== 開機畫面：天空 → 小路畫出來 → 骰子掉下來彈跳 → 字一個個跳出 → 骰子和標題飛到首頁位置（FLIP） ===== */
+/* ===== 開機畫面：天空 → 台灣浮出來 → 從家裡一圈圈擴散 → 字一個個跳出 → 標題飛到首頁（FLIP） ===== */
 (function(){
   const sp=$("#splash"); if(!sp){ splashDoneR(); return; }
-  $("#spC1").innerHTML=cloudSvg(100); $("#spC2").innerHTML=cloudSvg(76);
-  $("#spDrop").innerHTML=`<svg viewBox="0 0 120 120">${dieSvg(1)}</svg>`;
+  const o=`transform-box:view-box;transform-origin:${HP[0]}px ${HP[1]}px`;   // 從出發點（沒設定就從北台灣）擴散
+  $("#spMap").innerHTML=`<svg viewBox="0 0 400 720"><use href="#twBase"/>
+    <circle class="sp-ring" stroke-width="7" cx="${HP[0]}" cy="${HP[1]}" r="260" style="${o}"/><circle class="sp-ring r2" stroke-width="7" cx="${HP[0]}" cy="${HP[1]}" r="260" style="${o}"/><circle class="sp-ring r3" stroke-width="7" cx="${HP[0]}" cy="${HP[1]}" r="260" style="${o}"/>
+    <circle cx="${HP[0]}" cy="${HP[1]}" r="9" fill="#FFD54A" stroke="${INK}" stroke-width="3"/></svg>`;
   const tt=$("#spTitle");
   tt.innerHTML=[..."假日骰骰"].map((c,i)=>`<span style="--i:${i}">${c}</span>`).join("");
   const centerTitle=()=>{ tt.style.left=Math.round((window.innerWidth-tt.getBoundingClientRect().width)/2)+"px"; };
@@ -1335,24 +2065,18 @@ $("#footCount").textContent=`口袋名單 ${spots().length} 個地點`;
   function exit(){
     if(out) return; out=true;
     const reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const finish=()=>{ sp.remove(); document.body.classList.remove("sp-flying"); setTimeout(()=>document.body.classList.remove("enter"),1000); splashDoneR(); };
+    const finish=()=>{ sp.remove(); document.body.classList.remove("sp-flying"); setTimeout(()=>document.body.classList.remove("enter"),1100); splashDoneR(); };
     document.body.classList.remove("booting");
     if(reduce){ document.body.classList.add("enter"); sp.classList.add("sp-fade"); setTimeout(finish,520); return; }
     window.scrollTo(0,0);
     document.body.classList.add("sp-flying","enter");
-    // FLIP：先量起點（開機畫面）和終點（首頁），再用 transform 補間過去
-    const fly=(el,target,scale)=>{
-      const a=el.getBoundingClientRect(), b=target.getBoundingClientRect();
-      const sc=scale?b.width/a.width:1;
-      el.style.transition="transform .75s cubic-bezier(.6,0,.15,1)";
-      el.style.transform=`translate(${b.left-a.left}px,${b.top-a.top}px) scale(${sc})`;
-    };
+    Map2.refresh(false);
     centerTitle();
     tt.querySelectorAll("span").forEach(s=>{ s.style.animation="none"; s.style.opacity="1"; });
-    $("#spDrop").style.animation="none"; $("#spDrop").style.opacity="1";
     requestAnimationFrame(()=>{
-      fly($("#spDie"),$("#dieWrap"),true);
-      fly(tt,$("#h1t"),true);
+      const a=tt.getBoundingClientRect(), b=$("#h1t").getBoundingClientRect();
+      tt.style.transition="transform .75s cubic-bezier(.6,0,.15,1)";
+      tt.style.transform=`translate(${b.left-a.left}px,${b.top-a.top}px) scale(${b.width/a.width})`;
       sp.classList.add("sp-exit");
       setTimeout(finish,800);
     });
@@ -1362,6 +2086,7 @@ $("#footCount").textContent=`口袋名單 ${spots().length} 個地點`;
   fontsOk.then(()=>{ centerTitle(); const wait=Math.max(0,2400-(performance.now()-t0)); setTimeout(exit,wait); });
   setTimeout(exit,4000);   // 保險：最多 4 秒
 })();
+splashDone.then(()=>setTimeout(()=>{ if(!origin){ Van.say("先告訴我從哪裡出發～",2400); } else Van.say("今天想開多遠？",1800); },900));
 </script>
 </body>
 </html>
