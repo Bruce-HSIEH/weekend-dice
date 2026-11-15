@@ -37,10 +37,11 @@
           <path id="landShadow" fill="#2B3A55" opacity=".16"/>
           <g id="counties"></g>
           <path id="dimmer" fill="#F4F8FB" fill-opacity=".7" mask="url(#litMask)"/>
-          <path id="landStroke" fill="none" stroke="#2B3A55" stroke-width="3.2" stroke-linejoin="round" vector-effect="non-scaling-stroke"/>
+          <path id="landStroke" fill="none" stroke="#2B3A55" stroke-width="3.2" stroke-linejoin="round"/>
           <circle id="rippleRing" fill="none" stroke="#FF7A59"/>
-          <g id="labels"></g>
           <g id="dots"></g>
+          <g id="names" style="display:none"></g>
+          <g id="labels"></g>
           <g id="home"></g>
           <g id="pin" style="display:none"></g>
           <g id="mapVan" style="display:none"></g>
@@ -49,6 +50,8 @@
       <div class="tag" id="fromTag"></div>
       <div class="tag reachTag" id="reachTag"></div>
       <button class="zoomBtn" id="zoomBtn" aria-label="放大地圖"></button>
+      <button class="dotInfo" id="dotInfo" hidden></button>
+      <div class="mapHint" id="mapHint" hidden>兩指放大看名字・點地點可以自己選</div>
     </div>
 
 
@@ -57,6 +60,8 @@
         <h3 id="hReach"></h3>
         <div class="reachRow"><div class="seg" id="reachSeg"></div><button class="rndBtn" id="rndBtn" aria-label="隨機決定開多遠"><svg viewBox="0 0 120 120" id="rndDie"></svg></button></div>
         <div class="seg dirSeg" id="dirSeg"></div>
+        <button class="cntyBtn" id="cntyBtn"></button>
+        <div class="cntyBox" id="cntyBox" hidden></div>
       </div>
       <div class="sec">
         <h3 id="hScene"><small>選一個，或都不選</small></h3>

@@ -19,7 +19,12 @@ let rolling=false, updating=false, lastId=null, curTab="roll", listDir="all", pi
 let reachIdx = store.get("wd_reach",1);             // REACHES 的 index
 let dir      = store.get("wd_dir","all");           // all / N / E / S
 let far      = store.get("wd_far",false);           // 不要太近
-let scene    = store.get("wd_scene","");            // 今天想怎麼玩（情境，單選）
+let scene    = store.get("wd_scene","");
+let cnty     = store.get("wd_cnty",[]);             // 指定縣市（可多選；有選就不看車程和方向）
+if(!Array.isArray(cnty)) cnty=[];
+const REGIONS=[["北部",["基隆市","台北市","新北市","桃園市","新竹市","新竹縣","宜蘭縣"]],["中部",["苗栗縣","台中市","彰化縣","南投縣","雲林縣"]],
+  ["南部",["嘉義市","嘉義縣","台南市","高雄市","屏東縣"]],["東部",["花蓮縣","台東縣"]]];
+let cntyOpen = false;            // 今天想怎麼玩（情境，單選）
 // 情境：一次代表一種玩法，只要有其中一項就算（OR）；細的條件才是「全部都要」（AND）
 const SCENES={
   run:   {name:"放電跑跳", sub:"草地・溜滑梯・沙坑", ic:"grass",   any:["草","滑","沙"]},
@@ -157,8 +162,20 @@ function passesTags(s){
   if(flt.avoid && visitedRecently(s.id)) return false;
   return true;
 }
+// 地點在哪個縣市：用 SVG 的 isPointInFill 判斷點在不在縣市形狀裡（結果記起來）
+const cCache={};
+function countyOf(s){
+  if(s.lat==null) return null;
+  if(s.id in cCache) return cCache[s.id];
+  const paths=$$("#counties .county"); if(!paths.length) return null;
+  const [x,y]=proj(s.lat,s.lng); let hit=null;
+  for(const p of paths){ try{ if(p.isPointInFill(new DOMPoint(x,y))){ hit=p.dataset.n; break; } }catch(e){} }
+  if(!hit){ let best=1e9; for(const p of paths){ const b=p.getBBox(), dx=b.x+b.width/2-x, dy=b.y+b.height/2-y, d=dx*dx+dy*dy; if(d<best){ best=d; hit=p.dataset.n; } } }
+  return cCache[s.id]=hit;
+}
 function isCandidate(s){
   if(!passesTags(s)) return false;
+  if(cnty.length) return cnty.includes(countyOf(s));   // 指定縣市模式：只看縣市
   const {min,max}=reachRange();
   if(s.min>max || s.min<min) return false;
   if(dir!=="all" && s.min>20 && dirOf(s)!==dir) return false;
@@ -196,8 +213,12 @@ const Van=(()=>{
 const Map2=(()=>{
   const svg=$("#map"), cam=$("#cam"), card=$("#mapCard");
   let cw=360, ch=420, view={x:HP[0],y:HP[1]+40,k:1}, ringR=0, raf=0;
+  // 元素清單先記起來（畫點時更新），不要每一格都重新查 DOM
+  let DG=[], NM=[], LB=[];
+  function cacheEls(){ DG=[...$$("#dots .dg")]; NM=[...$$("#names .nm")]; LB=[...$$("#labels .lbl")]; }
+  const $home=$("#home"), $pin=$("#pin"), $van=$("#mapVan"), $ring=$("#rippleRing"), $mask=$("#maskCirc"), $shadow=$("#landShadow"), $names=$("#names"), $labels=$("#labels"), $counties=$("#counties"), $landStroke=$("#landStroke");
   // 縣市底圖
-  $("#counties").innerHTML=MAP.counties.map(c=>`<path class="county" data-n="${c.n}" d="${c.d}" fill="${COUNTY_COLOR[c.n]||"#DDEFD6"}" stroke="#fff" stroke-width="2" vector-effect="non-scaling-stroke" stroke-linejoin="round"/>`).join("");
+  $("#counties").innerHTML=MAP.counties.map(c=>`<path class="county" data-n="${c.n}" d="${c.d}" fill="${COUNTY_COLOR[c.n]||"#DDEFD6"}" stroke="#fff" stroke-linejoin="round"/>`).join("");
   $("#landClipPath").setAttribute("d",MAP.outline);
   ["#landShadow","#dimmer","#landStroke"].forEach(q=>$(q).setAttribute("d",MAP.outline));
   $("#twBase").innerHTML=MAP.counties.map(c=>`<path d="${c.d}" fill="${COUNTY_COLOR[c.n]||"#DDEFD6"}" stroke="#fff" stroke-width="1.5" vector-effect="non-scaling-stroke" stroke-linejoin="round"/>`).join("")+`<path d="${MAP.outline}" fill="none" stroke="${INK}" stroke-width="2.5" vector-effect="non-scaling-stroke" stroke-linejoin="round"/>`;
@@ -210,21 +231,51 @@ const Map2=(()=>{
 
   function size(){ const r=card.getBoundingClientRect(); cw=r.width||360; ch=r.height||420; svg.setAttribute("viewBox",`0 0 ${cw} ${ch}`); }
   // 讓「不受縮放影響」的東西（小點、標籤、家、圖釘、小車）維持固定大小
+  const tf=(el,x,y,s,extra="")=>el.setAttribute("transform",`translate(${x},${y}) scale(${s})${extra}`);
   function applyView(){
     const {x,y,k}=view;
     cam.setAttribute("transform",`translate(${cw/2-k*x},${ch/2-k*y}) scale(${k})`);
-    const inv=1/k;
-    $$("#labels .lbl").forEach(l=>l.setAttribute("transform",`translate(${l.dataset.x},${l.dataset.y}) scale(${inv})`));
-    $$("#dots .dg").forEach(d=>d.setAttribute("transform",`translate(${d.dataset.x},${d.dataset.y}) scale(${inv})`));
-    $("#home").setAttribute("transform",`translate(${HP[0]},${HP[1]}) scale(${inv})`);
-    const pin=$("#pin"); if(pin.dataset.x) pin.setAttribute("transform",`translate(${pin.dataset.x},${pin.dataset.y}) scale(${inv})`);
-    const v=$("#mapVan"); if(v.dataset.x) v.setAttribute("transform",`translate(${v.dataset.x},${v.dataset.y}) scale(${inv*(+v.dataset.flip||1)},${inv})`);
-    $("#rippleRing").setAttribute("stroke-width",2.5*inv); $("#rippleRing").setAttribute("stroke-dasharray",`${7*inv} ${5*inv}`);
-    $("#maskCirc").setAttribute("r",ringR); $("#rippleRing").setAttribute("r",ringR);
-    $("#landShadow").setAttribute("transform",`translate(${4*inv},${6*inv})`);
+    const inv=1/k, big=card.classList.contains("big"), chosen=card.classList.contains("chosen"), picking=card.classList.contains("picking");
+    LB.forEach(l=>tf(l,l.dataset.x,l.dataset.y,inv));
+    // 點的大小：小地圖、點很多時都縮小，避免全部疊成一團
+    const many=DG.length>150?.75:DG.length>60?.88:1, ds=(big?.78:.6)*many;
+    if(chosen){
+      // 挑中之後只剩一個點：只更新那一個，鏡頭拉近時才不會卡
+      const d=DG.find(d=>d.classList.contains("pick")); if(d) tf(d,d.dataset.x,d.dataset.y,inv*ds);
+      const n=NM.find(n=>n.classList.contains("pick")); if(n) tf(n,n.dataset.x,n.dataset.y,inv, +n.dataset.y<HP[1]?" translate(0,-62)":"");   // 小車從下面來，名字放到圖釘上方
+    } else {
+      DG.forEach(d=>tf(d,d.dataset.x,d.dataset.y,inv*ds));
+      // 名字標籤：放大地圖、畫面裡的點不太多時才標；彼此會撞到的就跳過（先到先放，像簡單的碰撞檢查）
+      let show=false;
+      if(big && !picking){
+        const scr=n=>[(+n.dataset.x-x)*k+cw/2, (+n.dataset.y-y)*k+ch/2];
+        let vis=0; NM.forEach(n=>{ const [sx,sy]=scr(n); if(sx>-20&&sx<cw+20&&sy>-20&&sy<ch+20) vis++; });
+        show=vis>0 && vis<=90;
+        if(show){ const placed=[]; NM.forEach(n=>{
+          const [sx,sy]=scr(n), w=(n.textContent.length*11+6), r=[sx-w/2, sy+5, sx+w/2, sy+19];
+          const ok = r[0]>2 && r[2]<cw-2 && sy>0 && sy<ch-12 && !placed.some(p=>r[0]<p[2]&&r[2]>p[0]&&r[1]<p[3]&&r[3]>p[1]);
+          n.style.display=ok?"":"none"; if(ok){ placed.push(r); tf(n,n.dataset.x,n.dataset.y,inv); } }); }
+      }
+      $names.style.display=show?"":"none";
+      $labels.style.opacity=show?"0":"";
+    }
+    tf($home,HP[0],HP[1],inv);
+    if($pin.dataset.x) tf($pin,$pin.dataset.x,$pin.dataset.y,inv);
+    if($van.dataset.x) $van.setAttribute("transform",`translate(${$van.dataset.x},${$van.dataset.y}) scale(${inv*(+$van.dataset.flip||1)},${inv})`);
+    $ring.setAttribute("stroke-width",2.5*inv); $ring.setAttribute("stroke-dasharray",`${7*inv} ${5*inv}`);
+    $mask.setAttribute("r",ringR); $ring.setAttribute("r",ringR);
+    $shadow.setAttribute("transform",`translate(${4*inv},${6*inv})`);
+    // 線寬自己跟著縮放算（不用 vector-effect:non-scaling-stroke，iPhone 上那個每一格都很耗）
+    $counties.setAttribute("stroke-width",2*inv); $landStroke.setAttribute("stroke-width",3.2*inv);
   }
+
   // 依「開多遠＋方向」算鏡頭：看得到整個擴散範圍
   function targetView(){
+    if(cnty.length){
+      let x0=1e9,y0=1e9,x1=-1e9,y1=-1e9;
+      $$("#counties .county").forEach(p=>{ if(!cnty.includes(p.dataset.n)) return; const b=p.getBBox(); x0=Math.min(x0,b.x); y0=Math.min(y0,b.y); x1=Math.max(x1,b.x+b.width); y1=Math.max(y1,b.y+b.height); });
+      if(x1>x0){ const pad=26, k=Math.min(cw/(x1-x0+pad*2), ch/(y1-y0+pad*2), 6); return {x:(x0+x1)/2,y:(y0+y1)/2,k,r:0}; }
+    }
     const R=REACHES[reachIdx];
     if(!R.km || !origin){ const k=Math.min(cw/400,ch/720)*0.98; return {x:200,y:360,k,r:0}; }
     const r=R.km*KM; let x=HP[0], y=HP[1];
@@ -247,7 +298,8 @@ const Map2=(()=>{
   }
   // 擴散範圍以外蓋一層淡白；選了方向，只有那個扇形是亮的
   function paintCounties(){
-    const all=!REACHES[reachIdx].km || !origin;
+    $$("#counties .county").forEach(p=>p.classList.toggle("off",!!cnty.length && !cnty.includes(p.dataset.n)));
+    const all=!REACHES[reachIdx].km || !origin || !!cnty.length;
     $("#dimmer").style.display=$("#rippleRing").style.display = all?"none":"";
   }
   function paintWedge(){
@@ -262,20 +314,19 @@ const Map2=(()=>{
     const all=spots().filter(s=>s.lat!=null && isCandidate(s));
     $("#dots").innerHTML=all.map(s=>{ const [x,y]=proj(s.lat,s.lng);
       return `<g class="dg" data-id="${esc(s.id)}" data-x="${x}" data-y="${y}"><circle class="dot on" r="5.5" fill="#FF7A59" stroke="#fff" stroke-width="2"/></g>`; }).join("");
+    // 地點名稱（放大到點夠少時才顯示）
+    $("#names").innerHTML=all.map(s=>{ const [x,y]=proj(s.lat,s.lng), nm=s.name.replace(/（.*?）/g,"").replace(/＋.*/,"");
+      return `<g class="nm" data-id="${esc(s.id)}" data-x="${x}" data-y="${y}"><text y="15" text-anchor="middle">${esc(nm.length>9?nm.slice(0,8)+"…":nm)}</text></g>`; }).join("");
+    cacheEls(); hideInfo();
     applyView();
-  }
-  // 地點在哪個縣市：用 SVG 的 isPointInFill 判斷點在不在縣市形狀裡（結果記起來，不用每次算）
-  const cCache={};
-  function countyOf(s){
-    if(s.id in cCache) return cCache[s.id];
-    const [x,y]=proj(s.lat,s.lng); let hit=null;
-    for(const p of $$("#counties .county")){ try{ if(p.isPointInFill(new DOMPoint(x,y))){ hit=p.dataset.n; break; } }catch(e){} }
-    if(!hit){ let best=1e9; for(const p of $$("#counties .county")){ const b=p.getBBox(), dx=b.x+b.width/2-x, dy=b.y+b.height/2-y, d=dx*dx+dy*dy; if(d<best){ best=d; hit=p.dataset.n; } } }
-    return cCache[s.id]=hit;
   }
   function litCounty(n){ $$("#counties .county").forEach(p=>p.classList.toggle("lit",p.dataset.n===n)); }
   function countyCenter(n){ const p=$(`#counties .county[data-n="${n}"]`); if(!p) return [0,0]; const b=p.getBBox(); return [b.x+b.width/2,b.y+b.height/2]; }
-  function hidePick(){ litCounty(null); $("#pin").style.display="none"; $("#mapVan").style.display="none"; delete $("#pin").dataset.x; delete $("#mapVan").dataset.x; }
+  // 挑中之後：只留挑中的那個點（和名字），其他點都藏起來
+  function choose(id){ card.classList.add("chosen");
+    $$("#dots .dg").forEach(d=>d.classList.toggle("pick",d.dataset.id===id));
+    $$("#names .nm").forEach(n=>n.classList.toggle("pick",n.dataset.id===id)); }
+  function hidePick(){ card.classList.remove("chosen"); $$("#dots .dg.pick,#names .nm.pick").forEach(d=>d.classList.remove("pick")); litCounty(null); $("#pin").style.display="none"; $("#mapVan").style.display="none"; delete $("#pin").dataset.x; delete $("#mapVan").dataset.x; }
   function flash(id,on){ const g=$(`#dots .dg[data-id="${CSS.escape(id)}"] circle`); if(g) g.classList.toggle("flash",on); }
   // 小動畫：數值補間（給圖釘落下、小車開過去用）
   function tween(ms,fn){ return new Promise(res=>{ const t0=performance.now(); const st=now=>{ const t=Math.min(1,(now-t0)/ms); fn(t); if(t<1) requestAnimationFrame(st); else res(); }; requestAnimationFrame(st); }); }
@@ -285,13 +336,93 @@ const Map2=(()=>{
     await tween(380,t=>{ const b=t<.6? -60*(1-t/.6)*(1-t/.6) : -10*Math.sin((t-.6)/.4*Math.PI); inn.setAttribute("transform",`translate(0,${b})`); });
     inn.removeAttribute("transform");
   }
+  // 小車開過去：鏡頭同時跟著小車拉近，最後停在目的地附近（約 12 公里見方）
   async function drive(s){
     const [x,y]=proj(s.lat,s.lng), v=$("#mapVan");
     v.dataset.flip = x<HP[0] ? -1 : 1; v.style.display="";
-    await tween(650,t=>{ const e=ease(t); v.dataset.x=HP[0]+(x-HP[0])*e; v.dataset.y=HP[1]+(y-HP[1])*e - Math.sin(t*Math.PI)*8/view.k; applyView(); });
+    const [, y2]=proj(s.lat+0.06,s.lng), unit=Math.abs(y-y2)||1;      // 約 6.7 公里在地圖上的長度
+    const a={...view}, kEnd=Math.max(a.k, Math.min(40, Math.min(cw,ch)/(unit*7)));
+    // 小車停在目的地前一點點（螢幕上約 30px），讓橘色的點和圖釘露出來
+    const L=Math.hypot(x-HP[0],y-HP[1])||1, back=Math.min(.5, 48/kEnd/L), ex=x-(x-HP[0])*back, ey=y-(y-HP[1])*back;
+    await tween(1400,t=>{ const e=ease(t);
+      const cx=HP[0]+(ex-HP[0])*e, cy=HP[1]+(ey-HP[1])*e;
+      v.dataset.x=cx; v.dataset.y=cy - Math.sin(t*Math.PI)*8/view.k;
+      // 鏡頭：中心一路往小車靠，縮放用等比（log）插值，最後停在目的地上
+      const c=ease(Math.min(1,t*1.05)), tx=cx+(x-cx)*c, ty=cy+(y-cy)*c;
+      view={ x:a.x+(tx-a.x)*c, y:a.y+(ty-a.y)*c, k:Math.exp(Math.log(a.k)+(Math.log(kEnd)-Math.log(a.k))*c) };
+      applyView(); });
   }
-  function refresh(anim=true){ size(); placeOrigin(); paintCounties(); paintWedge(); paintDots(); anim?animateTo():(()=>{ const b=targetView(); view={x:b.x,y:b.y,k:b.k}; ringR=b.r; applyView(); })(); }
+  function refresh(anim=true){ userCam=false; size(); placeOrigin(); paintCounties(); paintWedge(); paintDots(); anim?animateTo():(()=>{ const b=targetView(); view={x:b.x,y:b.y,k:b.k}; ringR=b.r; applyView(); })(); }
   window.addEventListener("resize",()=>{ size(); const b=targetView(); view={x:b.x,y:b.y,k:b.k}; ringR=b.r; applyView(); });
+  /* ===== 手指縮放、拖曳地圖；點一下地點看名字 =====
+     兩指：以兩指中點為中心縮放；一指：拖曳。像處理觸控 IC 的多點座標，自己算位移和距離變化 */
+  const pts=new Map(); let g0=null, moved=false, userCam=false;
+  const local=e=>{ const r=svg.getBoundingClientRect(); return [e.clientX-r.left, e.clientY-r.top]; };
+  const toMap=([sx,sy])=>[(sx-(cw/2-view.k*view.x))/view.k, (sy-(ch/2-view.k*view.y))/view.k];
+  const clampK=k=>Math.max(.35, Math.min(40, k));
+  function gestureStart(){
+    const ps=[...pts.values()];
+    if(ps.length===1) g0={mode:"pan", p:ps[0], v:{...view}};
+    else { const [a,b]=ps, mid=[(a[0]+b[0])/2,(a[1]+b[1])/2]; g0={mode:"pinch", d:Math.hypot(a[0]-b[0],a[1]-b[1])||1, mid, anchor:toMap(mid), v:{...view}}; }
+  }
+  svg.addEventListener("pointerdown",e=>{
+    if(rolling || tapCb) return;
+    pts.set(e.pointerId,local(e)); moved=false;
+    if(pts.size===2 && !card.classList.contains("big")){ setBig(true); showHint(); }   // 小地圖上兩指一張開 → 直接變大地圖
+    if(pts.size<=2){ cancelAnimationFrame(raf); gestureStart(); }
+    if(card.classList.contains("big") || pts.size===2) try{ svg.setPointerCapture(e.pointerId); }catch(_){}
+  });
+  svg.addEventListener("pointermove",e=>{
+    if(!pts.has(e.pointerId) || !g0) return;
+    pts.set(e.pointerId,local(e));
+    const big=card.classList.contains("big");
+    if(g0.mode==="pan"){
+      const p=pts.get(e.pointerId), dx=p[0]-g0.p[0], dy=p[1]-g0.p[1];
+      if(Math.hypot(dx,dy)>6) moved=true;
+      if(!big || !moved) return;                    // 小地圖一指滑動留給捲動頁面
+      view={x:g0.v.x-dx/view.k, y:g0.v.y-dy/view.k, k:view.k};
+    } else {
+      const [a,b]=[...pts.values()], d=Math.hypot(a[0]-b[0],a[1]-b[1]), mid=[(a[0]+b[0])/2,(a[1]+b[1])/2];
+      const k=clampK(g0.v.k*d/g0.d); moved=true;
+      view={k, x:g0.anchor[0]-(mid[0]-cw/2)/k, y:g0.anchor[1]-(mid[1]-ch/2)/k};
+    }
+    userCam=true; applyView(); e.preventDefault();
+  });
+  const end=e=>{
+    if(!pts.has(e.pointerId)) return;
+    const wasPinch=g0&&g0.mode==="pinch";
+    pts.delete(e.pointerId);
+    if(pts.size>0){ gestureStart(); return; }
+    g0=null;
+    if(e.type==="pointerup" && !moved && !wasPinch && !rolling) onTap(local(e));
+  };
+  svg.addEventListener("pointerup",end); svg.addEventListener("pointercancel",end);
+  svg.addEventListener("wheel",e=>{ if(rolling) return; e.preventDefault(); cancelAnimationFrame(raf);
+    const p=local(e), an=toMap(p), k=clampK(view.k*Math.pow(1.0018,-e.deltaY));
+    view={k, x:an[0]-(p[0]-cw/2)/k, y:an[1]-(p[1]-ch/2)/k}; userCam=true; applyView(); },{passive:false});
+  // 第一次放大地圖時提示：可以自己點地點來選（前 3 次）
+  function showHint(){
+    const n=store.get("wd_hint",0); if(n>=3) return; store.set("wd_hint",n+1);
+    const h=$("#mapHint"); h.hidden=false; h.classList.remove("out"); clearTimeout(h._t);
+    h._t=setTimeout(()=>{ h.classList.add("out"); setTimeout(()=>h.hidden=true,400); },3800);
+  }
+  // 點一下：小地圖 → 放大；大地圖 → 找最近的點（手指 24px 內）顯示名字
+  function onTap(p){
+    if(tapCb) return;
+    if(!card.classList.contains("big")){ Snd.play("pop"); setBig(true); showHint(); return; }
+    let best=null, bd=28*28;
+    $$("#dots .dg").forEach(d=>{ const sx=(+d.dataset.x-view.x)*view.k+cw/2, sy=(+d.dataset.y-view.y)*view.k+ch/2, dd=(sx-p[0])**2+(sy-p[1])**2; if(dd<bd){ bd=dd; best=d.dataset.id; } });
+    if(best) showInfo(best); else hideInfo();
+  }
+  function showInfo(id){
+    const s=spots().find(x=>x.id===id); if(!s) return;
+    $$("#dots .dg").forEach(d=>d.classList.toggle("sel",d.dataset.id===id));
+    const b=bucketOf(s.min);
+    $("#dotInfo").innerHTML=`<span class="m" style="background:${b.c}">${s.min}<small>分</small></span><span class="tx"><b>${esc(s.name)}</b><small>${esc(s.area)}・${esc(s.note||"")}</small></span><span class="go">${ui("flag",16)}選這個</span>`;
+    $("#dotInfo").hidden=false; $("#dotInfo").onclick=()=>{ pickManual(s); };
+    Snd.play("tick");
+  }
+  function hideInfo(){ $("#dotInfo").hidden=true; $$("#dots .dg.sel").forEach(d=>d.classList.remove("sel")); }
   let tapCb=null;
   svg.addEventListener("click",e=>{
     if(!tapCb) return;
@@ -305,25 +436,26 @@ const Map2=(()=>{
   // 地圖放大／縮小：卡片高度用 CSS 動畫，動畫期間每一格重新對焦
   function setBig(on){
     if(card.classList.contains("big")===!!on) return Promise.resolve();
-    card.classList.toggle("big",!!on);
+    card.classList.toggle("big",!!on); if(!on) hideInfo();
     $("#zoomBtn").innerHTML=ui(on?"shrink":"expand",18);
     $("#zoomBtn").setAttribute("aria-label",on?"縮小地圖":"放大地圖");
-    return new Promise(res=>{ const t0=performance.now(); const f=now=>{ snap(); if(now-t0<520) requestAnimationFrame(f); else res(); }; requestAnimationFrame(f); });
+    return new Promise(res=>{ const t0=performance.now(); const f=now=>{ if(pts.size){ size(); applyView(); } else snap(); if(now-t0<520) requestAnimationFrame(f); else res(); }; requestAnimationFrame(f); });
   }
-  return {refresh,animateTo,paintDots,hidePick,flash,dropPin,drive,size,waitTap,cancelTap,setBig,snap,countyOf,litCounty,countyCenter};
+  return {choose,refresh,animateTo,paintDots,hidePick,flash,dropPin,drive,size,waitTap,cancelTap,setBig,snap,litCounty,countyCenter,hideInfo};
 })();
 
 /* ===== 控制面板 ===== */
 function renderReach(){
   $("#reachSeg").style.gridTemplateColumns=`repeat(${REACHES.length},1fr)`;
   $("#reachSeg").innerHTML=REACHES.map((r,i)=>`<button data-i="${i}" class="${reachIdx===i?"on":""}">${r.big}<small>${r.sm}</small></button>`).join("");
-  $$("#reachSeg button").forEach(b=>b.onclick=()=>{ if(rolling) return; reachIdx=+b.dataset.i; store.set("wd_reach",reachIdx); Snd.play("pop"); Map2.hidePick(); renderHome(); });
-  $("#reachTag").innerHTML=`可以開到：<b>${REACHES[reachIdx].name}</b>`;
+  $$("#reachSeg button").forEach(b=>b.onclick=()=>{ if(rolling) return; reachIdx=+b.dataset.i; store.set("wd_reach",reachIdx); leaveCnty(); Snd.play("pop"); Map2.hidePick(); renderHome(); });
+  $("#reachTag").innerHTML= cnty.length ? `指定：<b>${cnty.length>2?cnty.slice(0,2).join("、")+` 等 ${cnty.length} 個`:cnty.join("、")}</b>` : `可以開到：<b>${REACHES[reachIdx].name}</b>`;
+  $(".panel").classList.toggle("cntyMode",!!cnty.length);
 }
 function renderDir(){
   const arrow=d=>d==="all"?ui("compass",15):`<svg class="ic" width="15" height="15" viewBox="0 0 24 24"><g transform="rotate(${({N:0,E:100,S:200,W:290})[d]} 12 12)"><path d="M12 3 L18 12 H14 V21 H10 V12 H6 Z" fill="#FF7A59" stroke="${INK}" stroke-width="2" stroke-linejoin="round"/></g></svg>`;
   $("#dirSeg").innerHTML=Object.entries(DIRS).map(([k,d])=>`<button data-d="${k}" class="${dir===k?"on":""}">${arrow(k)}${d.name}</button>`).join("");
-  $$("#dirSeg button").forEach(b=>b.onclick=()=>{ if(rolling) return; dir=b.dataset.d; store.set("wd_dir",dir); Snd.play("pop"); Map2.hidePick(); renderHome(); });
+  $$("#dirSeg button").forEach(b=>b.onclick=()=>{ if(rolling) return; dir=b.dataset.d; store.set("wd_dir",dir); leaveCnty(); Snd.play("pop"); Map2.hidePick(); renderHome(); });
 }
 function tagIcons(s,sz,max=4){ const t=TAGS.filter(x=>s.tags.includes(x.ch)); return t.slice(0,max).map(x=>ui(x.ic,sz)).join("")+(t.length>max?`<b class="more">+${t.length-max}</b>`:""); }
 const CK=on=>`<span class="ck">${on?`<svg width="10" height="10" viewBox="0 0 12 12"><path d="M2 6.3l2.6 2.6L10 3.4" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>`:""}</span>`;
@@ -336,6 +468,20 @@ const EXTRA=()=>[
 const isOn=k=>k==="far"?far:!!flt[k];
 function toggleCond(k){ if(k==="far"){ far=!far; store.set("wd_far",far); } else { flt[k]=!flt[k]; store.set("wd_flt",flt); } Snd.play("toggle",isOn(k)); Map2.hidePick(); }
 function countWith(fn){ const s0=scene; const r=fn(); scene=s0; return r; }
+function leaveCnty(){ if(cnty.length){ cnty=[]; store.set("wd_cnty",cnty); toast("改回用車程挑"); } }
+function renderCnty(){
+  const n=cnty.length;
+  $("#cntyBtn").innerHTML=`${ui("pin",17)}<span>指定縣市</span><b>${n?(n>2?cnty.slice(0,2).join("、")+` 等 ${n} 個`:cnty.join("、")):"不指定"}</b><span class="arr">${cntyOpen?"▲":"▼"}</span>`;
+  $("#cntyBtn").classList.toggle("on",!!n);
+  $("#cntyBox").hidden=!cntyOpen;
+  if(!cntyOpen) return;
+  const cnt={}; spots().forEach(s=>{ if(s.lat!=null && passesTags(s)){ const c=countyOf(s); cnt[c]=(cnt[c]||0)+1; } });
+  $("#cntyBox").innerHTML=REGIONS.map(([r,list])=>`<div class="cRow"><span class="cReg">${r}</span><div class="cList">${
+    list.map(c=>`<button class="cChip ${cnty.includes(c)?"on":""} ${cnt[c]?"":"zero"}" data-c="${c}">${/^(新竹|嘉義)/.test(c)?c:c.replace(/[縣市]$/,"")}<i>${cnt[c]||0}</i></button>`).join("")}</div></div>`).join("")
+    +`<div class="cFoot"><span>可以多選；選了就不看車程和方向</span>${n?`<button class="cClr" id="cClr">清除</button>`:""}</div>`;
+  $$("#cntyBox .cChip").forEach(b=>b.onclick=()=>{ if(rolling) return; const c=b.dataset.c; cnty=cnty.includes(c)?cnty.filter(x=>x!==c):[...cnty,c]; store.set("wd_cnty",cnty); Snd.play("toggle",cnty.includes(c)); Map2.hidePick(); renderHome(); });
+  if($("#cClr")) $("#cClr").onclick=()=>{ cnty=[]; store.set("wd_cnty",cnty); Snd.play("pop"); Map2.hidePick(); renderHome(); };
+}
 function renderScenes(){
   const n=k=>countWith(()=>{ scene=k; return candidates().length; });
   $("#scenes").innerHTML=Object.entries(SCENES).map(([k,s])=>{ const c=n(k); return `<button class="scene ${scene===k?"on":""} ${c?"":"zero"}" data-s="${k}">
@@ -370,7 +516,8 @@ function showConds(){
 let poolOpen=false;
 function renderPool(){
   const list=candidates().sort((a,b)=>a.min-b.min||a.name.localeCompare(b.name,"zh-Hant"));
-  $("#poolInfo").innerHTML=`符合條件的地點有 <b>${list.length}</b> 個 <span class="more">${poolOpen?"收起 ▲":"看清單 ▼"}</span>`;
+  $("#poolInfo").innerHTML=`<b>${list.length}</b><small>個地點 ${poolOpen?"▲":"▼"}</small>`;
+  $("#poolInfo").setAttribute("aria-label",`符合條件的地點有 ${list.length} 個，${poolOpen?"收起":"看清單"}`);
   $("#poolList").hidden=!poolOpen;
   if(!poolOpen) return;
   $("#poolList").innerHTML = list.length ? list.map(s=>{ const b=bucketOf(s.min); return `<button class="pl" data-id="${esc(s.id)}">
@@ -381,7 +528,7 @@ function renderPool(){
   $$("#poolList .pl").forEach(r=>r.onclick=()=>{ const s=spots().find(x=>x.id===r.dataset.id); if(s){ Snd.play("pop"); showResult(s); } });
 }
 $("#poolInfo").onclick=()=>{ poolOpen=!poolOpen; Snd.play("pop"); renderPool(); if(poolOpen) setTimeout(()=>$("#poolList").scrollIntoView({behavior:"smooth",block:"end"}),60); };
-function renderHome(moveCam=true){ renderReach(); renderDir(); renderScenes(); renderChips(); renderPool(); moveCam?Map2.refresh(true):Map2.paintDots(); }
+function renderHome(moveCam=true){ renderReach(); renderDir(); renderCnty(); renderScenes(); renderChips(); renderPool(); moveCam?Map2.refresh(true):Map2.paintDots(); }
 function renderAll(){ renderHome(false); if(curTab==="list") renderList(); if(curTab==="trail") renderTrail(); }
 
 
@@ -443,20 +590,20 @@ $("#rndBtn").onclick=randomReach;
 /* 幫我挑一個：候選地點輪流閃 → 停在一個 → 圖釘落下 → 小車開過去 → 明信片 */
 async function pick(){
   if(rolling) return;
-  if(!origin){ Snd.play("pop"); showOrigin(); return; }
+  if(!origin && !cnty.length){ Snd.play("pop"); showOrigin(); return; }
   const pool=candidates();
   if(!pool.length){ Snd.play("oops"); toast("沒有符合條件的地點，開遠一點或拿掉一些條件試試"); $("#goBtn").animate([{transform:"translateX(0)"},{transform:"translateX(-9px)"},{transform:"translateX(9px)"},{transform:"none"}],{duration:300}); return; }
   let p2=pool.length>1?pool.filter(s=>s.id!==lastId):pool;
   const spot=p2[Math.floor(Math.random()*p2.length)]; lastId=spot.id;
   rolling=true; $("#goBtn").disabled=true; Map2.hidePick();
   window.scrollTo({top:0,behavior:"smooth"});
-  await Map2.setBig(true);
+  Map2.hideInfo(); await Map2.setBig(true); Map2.animateTo(400);
   Van.say("我找找看…",1400);
   const onMap=pool.filter(s=>s.lat!=null);
   $("#mapCard").classList.add("picking");
   // 跑馬燈：有地點的縣市繞著出發點一個一個亮，越跑越慢，最後停在挑中的那個縣市
-  const byC={}; onMap.forEach(s=>{ const c=Map2.countyOf(s); (byC[c]=byC[c]||[]).push(s); });
-  const target=spot.lat!=null?Map2.countyOf(spot):null;
+  const byC={}; onMap.forEach(s=>{ const c=countyOf(s); (byC[c]=byC[c]||[]).push(s); });
+  const target=spot.lat!=null?countyOf(spot):null;
   let cs=Object.keys(byC);
   const ang=n=>{ const [x,y]=Map2.countyCenter(n); return Math.atan2(x-HP[0],-(y-HP[1])); };
   cs.sort((a,b)=>ang(a)-ang(b));
@@ -486,13 +633,25 @@ async function pick(){
     if(prev) Map2.flash(prev,false);
   }
   $("#mapCard").classList.remove("picking");
-  if(spot.lat!=null){ Map2.flash(spot.id,true); Snd.play("pop"); await Map2.dropPin(spot); Snd.play("beep"); await Map2.drive(spot); }
+  await goTo(spot);
+}
+// 挑中（不管是抽的還是自己在地圖上點的）之後：只留那個點 → 圖釘 → 小車開過去、鏡頭拉近 → 明信片
+async function goTo(spot){
+  rolling=true; $("#goBtn").disabled=true; lastId=spot.id;
+  if(spot.lat!=null){ Map2.choose(spot.id); Snd.play("pop"); await Map2.dropPin(spot); Snd.play("beep"); await Map2.drive(spot); }
   Snd.play("tada"); Van.say(`去${spot.name.replace(/（.*?）/,"").slice(0,8)}！`,1800);
   await sleep(150);
   rolling=false; $("#goBtn").disabled=false;
   if(sheetOpen()) toast(`挑到：${spot.name}`); else showResult(spot);
 }
+// 自己在地圖上點選
+async function pickManual(s){
+  if(rolling) return;
+  Map2.hideInfo(); Map2.hidePick(); Van.say("就決定是你了！",1400);
+  await goTo(s);
+}
 $("#goBtn").onclick=pick;
+$("#cntyBtn").onclick=()=>{ if(rolling) return; cntyOpen=!cntyOpen; Snd.play("pop"); renderCnty(); };
 $("#zoomBtn").innerHTML=ui("expand",18);
 $("#zoomBtn").onclick=e=>{ e.stopPropagation(); if(rolling) return; Snd.play("pop"); Map2.setBig(!$("#mapCard").classList.contains("big")); };
 // 回頭改條件時，地圖自動縮回小的，把畫面讓給條件
@@ -685,7 +844,7 @@ $$("#nav button").forEach(b=>b.onclick=()=>{ if(curTab===b.dataset.tab) return; 
   $("#greet").textContent = (wd===0||wd===6) ? (h<12?"週末早安！今天開多遠？":"週末午後，出門走走吧") : (h<17?"先挑好，假日直接出發":"下班了～找個近的走走");
 })();
 $("#cl1").innerHTML=cloudSvg(90); $("#cl2").innerHTML=cloudSvg(60);
-$("#hReach").innerHTML=ui("car",20)+"開多遠、往哪邊";
+$("#hReach").innerHTML=ui("car",20)+"去哪裡玩";
 $("#hScene").insertAdjacentHTML("afterbegin",ui("map",20)+"今天想怎麼玩？");
 $("#hCond").innerHTML=ui("check",20)+"講究一下";
 renderOriginTag();
@@ -695,7 +854,7 @@ $("#searchIc").innerHTML=ui("search",20);
 $("#addBtn").innerHTML=ui("plus",28);
 const NAV=[["roll","map","挑地點"],["list","ticketL","名單"],["trail","foot","足跡"]];
 $$("#nav button").forEach((b,i)=>b.innerHTML=ui(NAV[i][1],24)+NAV[i][2]);
-paintSndBtns(); renderReach(); renderDir(); renderScenes(); renderChips(); renderPool(); Map2.refresh(false);
+paintSndBtns(); renderReach(); renderDir(); renderCnty(); renderScenes(); renderChips(); renderPool(); Map2.refresh(false);
 $("#footCount").textContent=`口袋名單 ${spots().length} 個地點`;
 
 /* ===== 開機畫面：天空 → 台灣浮出來 → 從家裡一圈圈擴散 → 字一個個跳出 → 標題飛到首頁（FLIP） ===== */

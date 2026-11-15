@@ -84,3 +84,74 @@ body{background-image:radial-gradient(rgba(43,58,85,.07) 1.2px,transparent 1.2px
 .mapCard .county{transition:fill .45s ease,opacity .2s}
 .mapCard.picking .county{transition:fill .25s ease,opacity .2s}
 .mapCard .county.lit+.county{}
+
+/* ===== 指定縣市 ===== */
+.cntyBtn{display:flex;align-items:center;gap:6px;width:100%;margin-top:9px;border:2px solid var(--ink);border-radius:12px;background:#fff;padding:7px 10px;font-size:13.5px;text-align:left}
+.cntyBtn b{font-weight:400;color:var(--ink2);margin-left:auto;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:55%}
+.cntyBtn .arr{font-size:10px;color:var(--ink2)}
+.cntyBtn.on{background:#E3F5F1;box-shadow:0 3px 0 var(--ink)}
+.cntyBtn.on b{color:var(--pri-d)}
+.cntyBox{margin-top:8px;border:1.5px dashed var(--kraft);border-radius:14px;padding:8px}
+.cRow{display:flex;gap:6px;align-items:flex-start}
+.cRow+.cRow{margin-top:6px}
+.cReg{flex:none;width:30px;font-size:11px;color:var(--ink2);padding-top:6px}
+.cList{display:flex;flex-wrap:wrap;gap:5px}
+.cChip{border:2px solid var(--ink);border-radius:999px;background:#fff;padding:2px 9px;font-size:13px;display:inline-flex;align-items:center;gap:4px}
+.cChip i{font-style:normal;font-size:10px;color:var(--ink2)}
+.cChip.on{background:var(--pri);color:#fff;border-color:var(--ink)}
+.cChip.on i{color:#E2F6F2}
+.cChip.zero:not(.on){opacity:.4}
+.cFoot{display:flex;align-items:center;justify-content:space-between;margin-top:8px;font-size:11px;color:var(--ink2)}
+.cClr{border:0;background:none;text-decoration:underline;font-size:12px;color:var(--ink)}
+.panel.cntyMode #reachSeg,.panel.cntyMode .rndBtn,.panel.cntyMode #dirSeg{opacity:.38}
+.mapCard .county.off{opacity:.3}
+
+/* ===== 下方「幫我挑一個」：一條貼底的列（左邊地點數、右邊大按鈕），不再浮在內容上 ===== */
+.goRow{position:sticky;display:flex;gap:8px;align-items:stretch;margin:14px 0 0;padding:14px 14px 10px;border-radius:0;
+  background:linear-gradient(180deg,rgba(246,243,238,0) 0,#F6F3EE 14px);-webkit-backdrop-filter:none;backdrop-filter:none}
+.goRow .pool{flex:none;width:68px;margin:0;padding:4px 0;border:2px solid var(--ink);border-radius:18px;background:#fff;box-shadow:0 4px 0 var(--ink);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.1;color:var(--ink)}
+.goRow .pool b{border:0;padding:0;background:none;font-size:20px;color:var(--pri-d)}
+.goRow .pool small{font-size:10px;color:var(--ink2);white-space:nowrap}
+.goRow .pool:active{transform:translateY(3px);box-shadow:0 1px 0 var(--ink)}
+.goRow .goBtn{flex:1;width:auto;margin:0}
+body #toast{bottom:calc(env(safe-area-inset-bottom) + var(--nav-h) + 96px)}
+.goRow{bottom:calc(env(safe-area-inset-bottom) + var(--nav-h) + 2px);padding-bottom:16px}
+
+/* ===== 縮放地圖：名字標籤、點一下的小卡 ===== */
+.mapCard>svg{touch-action:pan-y}
+.mapCard.big>svg{touch-action:none}
+#names text{font-size:11px;fill:var(--ink);paint-order:stroke;stroke:#fff;stroke-width:3px;stroke-linejoin:round;pointer-events:none}
+.dg.sel circle{fill:var(--pri)!important}
+.dotInfo{position:absolute;left:10px;right:10px;bottom:46px;display:flex;align-items:center;gap:8px;background:#fff;border:2px solid var(--ink);border-radius:14px;padding:6px 10px 6px 6px;box-shadow:0 3px 0 var(--ink);text-align:left;animation:pop .2s ease-out}
+.dotInfo[hidden]{display:none}
+.dotInfo .m{flex:none;width:38px;height:34px;border-radius:9px;border:2px solid var(--ink);color:#fff;display:grid;place-items:center;font-size:14px;line-height:1}
+.dotInfo .m small{font-size:9px;display:block}
+.dotInfo .tx{flex:1;min-width:0}
+.dotInfo .tx b{display:block;font-weight:400;font-size:14.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dotInfo .tx small{display:block;font-size:11px;color:var(--ink2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dotInfo .go{flex:none;font-size:13px;color:var(--pri-d)}
+@keyframes pop{from{transform:translateY(6px);opacity:0}to{transform:none;opacity:1}}
+
+/* 挑中之後只留那一個點 */
+.mapCard.chosen #dots .dg:not(.pick){display:none}
+.mapCard.chosen #names{display:inline!important}
+.mapCard.chosen #names .nm{display:none!important}
+.mapCard.chosen #names .nm.pick{display:inline!important}
+.mapCard.chosen #names .nm.pick text{font-size:13px;font-weight:700}
+.mapCard.chosen #labels{opacity:1!important}
+.mapCard.chosen .county.lit{fill:#FFD6C8!important;transition:none!important}
+/* 跑馬燈時：縣市名字放最上面、清楚顯示；地點名字先收起來 */
+.mapCard.picking #names{display:none!important}
+.mapCard.picking #labels{opacity:1!important}
+.mapCard.picking #labels text{font-weight:700}
+
+/* 挑中、鏡頭拉近時：把最吃效能的圖層先關掉（範圍外的半透明遮罩用了 mask，每一格都要重算；陰影也是一整張台灣） */
+.mapCard.chosen #dimmer,.mapCard.chosen #landShadow,.mapCard.chosen #rippleRing{display:none}
+.mapCard.chosen .county{transition:none!important}
+
+/* 自己選：小卡的「選這個」、第一次放大的提示 */
+.dotInfo .go{display:flex;align-items:center;gap:3px;background:var(--pri);color:#fff;border:2px solid var(--ink);border-radius:10px;padding:5px 8px;font-size:13px;white-space:nowrap}
+.mapHint{position:absolute;left:50%;top:12px;transform:translateX(-50%);background:rgba(43,58,85,.86);color:#fff;font-size:12.5px;padding:6px 12px;border-radius:999px;white-space:nowrap;pointer-events:none;transition:opacity .4s}
+.mapHint[hidden]{display:none}
+.mapHint.out{opacity:0}

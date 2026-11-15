@@ -44,17 +44,18 @@ SHEET=seg("/* ===== 彈出視窗 ===== */","/* 明信片上的小風景")
 PM=seg("function postmark(){","function showResult").replace(">新豐出發<",">出發囉！<")
 CONF=seg("/* 紙花","/* ===== 資料匯出")
 EXP=seg("/* ===== 資料匯出","/* ===== 名單頁")
-EXP=EXP.replace('const SYNC_KEYS=["wd_data","wd_hist","wd_mode","wd_flt","wd_sfx","wd_bgm"];','const SYNC_KEYS=["wd_data","wd_hist","wd_reach","wd_dir","wd_far","wd_scene","wd_flt","wd_sfx","wd_bgm"];')
+EXP=EXP.replace('const SYNC_KEYS=["wd_data","wd_hist","wd_mode","wd_flt","wd_sfx","wd_bgm"];','const SYNC_KEYS=["wd_data","wd_hist","wd_reach","wd_dir","wd_far","wd_scene","wd_cnty","wd_flt","wd_sfx","wd_bgm"];')
 old_mode='  if(d.wd_mode!==undefined){ mode=+d.wd_mode||0; store.set("wd_mode",mode); }\n'
 assert old_mode in EXP
 EXP=EXP.replace(old_mode,'''  if(d.wd_reach!==undefined){ reachIdx=Math.max(0,Math.min(REACHES.length-1,+d.wd_reach||0)); store.set("wd_reach",reachIdx); }
   if(d.wd_dir && DIRS[d.wd_dir]){ dir=d.wd_dir; store.set("wd_dir",dir); }
   if(typeof d.wd_far==="boolean"){ far=d.wd_far; store.set("wd_far",far); }
   if(typeof d.wd_scene==="string"){ scene=d.wd_scene; store.set("wd_scene",scene); }
+  if(Array.isArray(d.wd_cnty)){ cnty=d.wd_cnty; store.set("wd_cnty",cnty); }
 ''')
 EXP=EXP.replace('flt=Object.assign({rain:false,easy:false,free:false,food:false,avoid:false},d.wd_flt)','flt=Object.assign({avoid:false,noresv:false},d.wd_flt)')
 VER=seg("/* ===== 版本 & 改版紀錄 ===== */","/* ===== 自動檢查更新")
-VER=VER.replace('const APP_VERSION="1.1.0";','const APP_VERSION="2.0.0";').replace('const CHANGELOG=[\n','const CHANGELOG=[\n  ["2.0.0","11/11","台灣地圖大改版！",["首頁變成台灣地圖：從你現在的位置（或自己點、或存好的家）往外擴散，看得到今天開得到哪裡","選「今天想怎麼玩」：放電跑跳、摸摸動物、玩水玩沙、火車飛機、動手做、下雨也OK","「講究一下」可以再加停車、哺乳室、樹蔭、溫泉、不要預約等條件","按「幫我挑一個」：地圖放大，縣市跑馬燈一個一個亮，停在挑中的地方","地點擴充到全台 341 個，新配色、新的活力背景音樂"]],\n',1)
+VER=VER.replace('const APP_VERSION="1.1.0";','const APP_VERSION="2.1.0";').replace('const CHANGELOG=[\n','const CHANGELOG=[\n  ["2.1.0","11/15","可以自己在地圖上挑！",["地圖可以用手指放大縮小、拖曳，放大後會標出地點名字","點地圖上的地點，按「選這個」就能自己決定去哪","可以直接指定想去的縣市（可多選）","挑中後只留那個點，小車開過去時鏡頭會拉近，動畫更順","地圖上的點變小、不再疊成一團，下方按鈕列更清爽"]],\n  ["2.0.0","11/11","台灣地圖大改版！",["首頁變成台灣地圖：從你現在的位置（或自己點、或存好的家）往外擴散，看得到今天開得到哪裡","選「今天想怎麼玩」：放電跑跳、摸摸動物、玩水玩沙、火車飛機、動手做、下雨也OK","「講究一下」可以再加停車、哺乳室、樹蔭、溫泉、不要預約等條件","按「幫我挑一個」：地圖放大，縣市跑馬燈一個一個亮，停在挑中的地方","地點擴充到全台 341 個，新配色、新的活力背景音樂"]],\n',1)
 UPD=seg("/* ===== 自動檢查更新","/* ===== 首次繪製")
 js=open("main.js").read()
 spots=open("spots_v3.js").read()
