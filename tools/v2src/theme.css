@@ -155,3 +155,145 @@ body #toast{bottom:calc(env(safe-area-inset-bottom) + var(--nav-h) + 96px)}
 .mapHint{position:absolute;left:50%;top:12px;transform:translateX(-50%);background:rgba(43,58,85,.86);color:#fff;font-size:12.5px;padding:6px 12px;border-radius:999px;white-space:nowrap;pointer-events:none;transition:opacity .4s}
 .mapHint[hidden]{display:none}
 .mapHint.out{opacity:0}
+
+/* ===================== v3 大按鈕介面 ===================== */
+#tabRoll .zoomBtn{display:none}
+#tabRoll[data-view="home"] footer,#tabRoll[data-view="ask"] footer{margin-top:24px}
+#tabRoll[data-view="map"] footer{display:none}
+/* 首頁兩扇門 */
+.homeView{display:flex;flex-direction:column;gap:14px;padding:14px 16px 0}
+.door{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;min-height:200px;border:3px solid var(--ink);border-radius:28px;box-shadow:0 6px 0 var(--ink);padding:18px 12px;transition:transform .12s}
+.door:active{transform:translateY(4px);box-shadow:0 2px 0 var(--ink)}
+.door .dIl svg{width:96px;height:96px}
+.door b{font-weight:400;font-size:30px;letter-spacing:.06em;color:var(--ink);white-space:nowrap}
+.door small{font-size:15px;color:var(--ink2)}
+.dMap{background:#DDF3EE}
+.dDice{background:#FFE6DC}
+.again3{display:flex;align-items:center;gap:10px;border:2.5px solid var(--ink);border-radius:20px;background:#fff;padding:12px 14px;box-shadow:0 4px 0 var(--ink);text-align:left}
+.again3[hidden]{display:none}
+.again3 span{flex:1;min-width:0}
+.again3 b{display:block;font-weight:400;font-size:19px}
+.again3 small{display:block;font-size:13px;color:var(--ink2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.again3 i{font-style:normal;font-size:26px;color:var(--ink2)}
+.homeFoot{display:flex;gap:8px}
+.homeFoot button{flex:1;display:flex;align-items:center;justify-content:center;gap:5px;border:2px solid var(--ink);border-radius:16px;background:#fff;padding:10px 6px;font-size:15px;white-space:nowrap;overflow:hidden}
+.homeFoot button span{font-size:12px;color:var(--pri-d);text-decoration:underline}
+/* 幫我決定 */
+.askView{padding:10px 16px 0}
+.askHead{display:flex;align-items:center;justify-content:space-between}
+.askBack{border:0;background:none;font-size:18px;color:var(--ink);padding:8px 4px}
+.askDots{display:flex;gap:6px}
+.askDots i{width:12px;height:12px;border-radius:50%;border:2px solid var(--ink);background:#fff}
+.askDots i.on{background:var(--pri)}
+.askQ{font-weight:400;font-size:30px;text-align:center;margin:6px 0 14px;color:var(--ink)}
+.askGrid{display:grid;gap:12px}
+.askGrid.s1{grid-template-columns:1fr 1fr}
+.big3row{position:relative;display:flex;align-items:center;gap:14px;border:3px solid var(--ink);border-radius:24px;background:#fff;padding:16px 16px;min-height:96px;box-shadow:0 5px 0 var(--ink);text-align:left}
+.big3row:active,.tile3:active{transform:translateY(3px);box-shadow:0 2px 0 var(--ink)}
+.big3row .ic{flex:none;width:64px;height:64px;border-radius:50%;background:#F1EEE7;display:grid;place-items:center}
+.big3row .tx b{display:block;font-weight:400;font-size:26px;color:var(--ink)}
+.big3row .tx small{display:block;font-size:14px;color:var(--ink2)}
+.big3row i{position:absolute;right:14px;top:12px;font-style:normal;font-size:13px;color:var(--ink2)}
+.tile3{position:relative;display:flex;flex-direction:column;align-items:center;gap:2px;border:3px solid var(--ink);border-radius:24px;background:#fff;padding:14px 6px 12px;box-shadow:0 5px 0 var(--ink)}
+.tile3.wide{grid-column:1/-1;flex-direction:row;justify-content:center;gap:10px;padding:10px}
+.tile3 .ic{width:72px;height:72px;border-radius:50%;background:#F1EEE7;display:grid;place-items:center;margin-bottom:4px}
+.tile3.wide .ic{width:52px;height:52px;margin:0}
+.tile3 b{font-weight:400;font-size:22px;color:var(--ink);white-space:nowrap}
+.tile3 small{font-size:12px;color:var(--ink2);white-space:nowrap}
+.tile3.wide small{display:none}
+.tile3 i{position:absolute;right:10px;top:8px;font-style:normal;font-size:12px;color:var(--ink2)}
+.big3row.zero,.tile3.zero{opacity:.4}
+/* 地圖模式 */
+#tabRoll[data-view="map"] .mapCard.big{height:calc(100dvh - 300px - env(safe-area-inset-bottom));min-height:320px;margin-top:-30px}
+.mapBar{margin:12px 14px 0;border:2.5px solid var(--ink);border-radius:22px;background:#fff;padding:10px 12px 12px;box-shadow:0 4px 0 var(--ink)}
+.mapBar[hidden]{display:none}
+.mbTop{display:flex;align-items:center;gap:8px}
+.mbBack{border:2px solid var(--ink);border-radius:14px;background:#fff;padding:8px 12px;font-size:16px}
+.mbCount{flex:1;text-align:center;font-size:15px;color:var(--ink2)}
+.mbCount b{font-size:24px;color:var(--pri-d);font-weight:400}
+.mbRand{display:flex;align-items:center;gap:4px;border:2px solid var(--ink);border-radius:14px;background:var(--pri);color:#fff;padding:8px 12px;font-size:16px;box-shadow:0 3px 0 var(--ink)}
+.mbSlide{display:flex;align-items:center;gap:10px;margin-top:10px}
+.mbLab{font-size:14px;color:var(--ink2);white-space:nowrap}
+.mbSlide b{font-weight:400;font-size:16px;white-space:nowrap;min-width:84px;text-align:right}
+#mbReach{flex:1;accent-color:var(--pri);height:32px}
+/* 明信片兩顆大按鈕 */
+.pc .acts .big3{font-size:20px;padding:14px}
+/* 家庭設定 */
+.set3{display:flex;align-items:center;gap:12px;border:2px solid var(--ink);border-radius:18px;background:#fff;padding:12px 14px;text-align:left}
+.set3 span{flex:1}
+.set3 b{display:block;font-weight:400;font-size:18px}
+.set3 small{display:block;font-size:12.5px;color:var(--ink2)}
+.set3 i{font-style:normal;font-size:22px;color:var(--ink2)}
+.sw3{width:48px;height:28px;border-radius:999px;background:#D8D3CA;position:relative;flex:none}
+.sw3::after{content:"";position:absolute;left:3px;top:3px;width:22px;height:22px;border-radius:50%;background:#fff;transition:transform .2s}
+.set3.on .sw3{background:var(--pri)}
+.set3.on .sw3::after{transform:translateX(20px)}
+
+/* ===== Elsewhere：英文主標（文學感的斜體襯線）＋中文副標；不要小車吉祥物 ===== */
+.vanBtn,.bubble{display:none!important}
+.ttl{padding-left:0!important;text-align:left}
+.topbar{align-items:center;padding-left:4px}
+#h1t{font-family:"Fraunces",Georgia,serif;font-style:italic;font-weight:600;font-size:36px;letter-spacing:.01em;text-shadow:none}
+h1{text-shadow:none!important}
+.zhName{font-size:13px;letter-spacing:.45em;color:var(--ink);margin-top:-2px}
+.top{background:linear-gradient(180deg,#F2E4D6 0%,#F6EEE3 70%,#F6F3EE 100%)!important}
+.cloud{display:none}
+
+/* v3：地圖左上角返回鈕（一直看得到） */
+.mapBackF{position:absolute;left:10px;top:10px;z-index:6;height:44px;padding:0 16px;border-radius:22px;border:2.5px solid var(--ink);background:#fff;color:var(--ink);font:700 17px/1 inherit;box-shadow:0 3px 0 var(--ink)}
+.mapBackF:active{transform:translateY(2px);box-shadow:0 1px 0 var(--ink)}
+/* v3：地點詳細介紹 */
+.detail{margin:12px 0 4px;padding:12px 14px;border:2px dashed rgba(0,0,0,.18);border-radius:14px;background:rgba(255,255,255,.6);text-align:left}
+.detail .dRow{margin:0 0 10px}.detail .dRow:last-of-type{margin-bottom:6px}
+.detail .dRow b{display:block;font-size:15px;margin-bottom:3px}
+.detail .dRow p{margin:0;font-size:15px;line-height:1.6}
+.dLinks{display:flex;flex-direction:column;gap:6px}
+.dLink{display:flex;align-items:center;gap:6px;font-size:14px;color:var(--ink);text-decoration:underline;text-underline-offset:3px;line-height:1.4}
+.dLink svg{flex:none;width:14px;height:14px}
+.dNote{font-size:12px;opacity:.6;margin-top:4px}
+#tabRoll[data-view="map"] .mapHint{top:64px}
+
+/* v3.0：首頁更簡潔 —— 標題置中、拿掉中文副標、拿掉底部導覽列、兩扇門盡量大 */
+:root{--nav-h:0px}
+.nav{display:none!important}
+body{padding-bottom:calc(env(safe-area-inset-bottom) + 16px)!important}
+.topbar{position:relative;justify-content:center!important;min-height:56px}
+.ttl{text-align:center!important;flex:0 1 auto!important}
+#h1t{font-size:28px!important}
+.topbar .snd{position:absolute;right:8px;top:50%;transform:translateY(-50%)}
+.topbar .snd button{width:40px;height:40px}
+.zhName,#greet{display:none!important}
+.homeView{padding-top:6px}
+.door{min-height:max(190px,calc((100dvh - 340px - env(safe-area-inset-top) - env(safe-area-inset-bottom)) / 2))}
+.door .dIl svg{width:110px;height:110px}
+.door b{font-size:32px}
+.homeVer{text-align:center;padding:4px 0 8px}
+.homeVer .ver{font-size:12px;line-height:22px;padding:0 10px}
+.pgBack{border:2px solid var(--ink);background:#fff;border-radius:16px;padding:8px 14px;font-size:16px;margin-bottom:8px;color:var(--ink)}
+/* 地圖 ＋／－ */
+.zoomPM{position:absolute;right:10px;top:10px;z-index:6;display:flex;flex-direction:column;border:2.5px solid var(--ink);border-radius:16px;background:#fff;box-shadow:0 3px 0 var(--ink);overflow:hidden}
+.zoomPM[hidden]{display:none}
+.zoomPM button{width:48px;height:48px;border:0;background:#fff;font:700 26px/1 inherit;color:var(--ink)}
+.zoomPM button+button{border-top:2px solid var(--ink)}
+.zoomPM button:active{background:var(--sun)}
+.top{padding-bottom:6px!important}
+#tabRoll[data-view="map"] .mapCard.big{height:calc(100dvh - 250px - env(safe-area-inset-top) - env(safe-area-inset-bottom))!important}
+#tabRoll[data-view="map"] .mapHint{top:120px}
+
+/* 貼紙、標籤擺正（不要歪歪的） */
+.stkr,.stkr:nth-child(2n),.ltag.on,.ltag.on:nth-child(2n){transform:none!important}
+/* 手勢中：隱藏地點名字和陰影，放開再畫回來 */
+#mbReach{touch-action:pan-x}
+
+/* 喇叭按鈕：不用 transform 置中（會跟進場動畫打架，造成先低後跳上去） */
+.topbar .snd{top:0!important;bottom:0;margin:auto 0;height:40px;transform:none!important;display:flex;gap:8px}
+body.enter .snd{animation:none!important}
+.top{padding-top:calc(env(safe-area-inset-top) + 4px)!important;padding-bottom:2px!important}
+.topbar{min-height:48px!important}
+.homeView{gap:12px;padding-top:2px}
+.door{min-height:max(200px,calc((100dvh - 290px - env(safe-area-inset-top) - env(safe-area-inset-bottom)) / 2))}
+.door .dIl svg{width:124px;height:124px}
+.door b{font-size:34px}
+.cNeedle{transform-origin:60px 60px;animation:cSway 3.2s ease-in-out infinite}
+@keyframes cSway{0%,100%{transform:rotate(-14deg)}50%{transform:rotate(16deg)}}
+#editFromRes{display:inline-flex;align-items:center;gap:4px}

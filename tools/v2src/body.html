@@ -4,9 +4,7 @@
 
 <div id="splash" aria-hidden="true">
   <div class="sp-bg"></div>
-  <div class="sp-map" id="spMap"></div>
-  <div class="sp-title" id="spTitle"></div>
-  <div class="sp-tag">今天，要開多遠？</div>
+  <div class="sp-scene" id="spScene"></div>
 </div>
 
 <div class="app">
@@ -16,13 +14,31 @@
       <div class="cloud c1" id="cl1"></div><div class="cloud c2" id="cl2"></div>
       <div class="topbar">
         <button class="vanBtn" id="vanBtn" aria-label="叭叭車"><svg viewBox="0 0 110 80"><g class="carBody" id="van"></g></svg></button>
-        <div class="ttl"><h1><span id="h1t">假日骰骰</span><button class="ver" id="verBtn"></button></h1><div class="sub" id="greet"></div></div>
+        <div class="ttl"><h1><span id="h1t">Elsewhere</span></h1><div class="sub" id="greet" hidden></div></div>
         <div class="snd"><button id="bgmBtn" aria-label="背景音樂"></button><button id="sfxBtn" aria-label="音效"></button></div>
       </div>
     </div>
     <div class="bubble" id="bubble"></div>
 
+    <!-- v3：首頁兩扇大門 -->
+    <div class="homeView" id="homeView">
+      <button class="door dMap" id="doorMap"><span class="dIl" id="dMapIl"></span><b>看地圖自己挑</b><small>放大地圖，點想去的地方</small></button>
+      <button class="door dDice" id="doorDice"><span class="dIl" id="dDiceIl"></span><b>幫我決定</b><small>回答三個問題，馬上抽一個</small></button>
+      <button class="again3" id="doorLast" hidden></button>
+      <div class="homeFoot"><button id="hOrigin"></button><button id="hSet"></button></div>
+      <div class="homeFoot"><button id="hList"></button><button id="hTrail"></button></div>
+      <div class="homeVer"><button class="ver" id="verBtn"></button></div>
+    </div>
+    <!-- v3：幫我決定（一頁一題） -->
+    <div class="askView" id="askView" hidden>
+      <div class="askHead"><button class="askBack" id="askBack"></button><div class="askDots" id="askDots"></div></div>
+      <h2 class="askQ" id="askQ"></h2>
+      <div class="askGrid" id="askGrid"></div>
+    </div>
+
     <div class="mapCard" id="mapCard">
+      <button class="mapBackF" id="mapBackF" hidden aria-label="回首頁">‹ 返回</button>
+      <div class="zoomPM" id="zoomPM" hidden><button id="zIn" aria-label="放大">＋</button><button id="zOut" aria-label="縮小">－</button></div>
       <svg id="map" xmlns="http://www.w3.org/2000/svg">
         <defs>
           <clipPath id="landClip"><path id="landClipPath"/></clipPath>
@@ -51,10 +67,17 @@
       <div class="tag reachTag" id="reachTag"></div>
       <button class="zoomBtn" id="zoomBtn" aria-label="放大地圖"></button>
       <button class="dotInfo" id="dotInfo" hidden></button>
-      <div class="mapHint" id="mapHint" hidden>兩指放大看名字・點地點可以自己選</div>
+      <div class="mapHint" id="mapHint" hidden>兩指放大・點地點看介紹・點縣市拉近</div>
     </div>
 
 
+    <!-- v3：地圖模式下面的控制列 -->
+    <div class="mapBar" id="mapBar" hidden>
+      <div class="mbTop"><button class="mbBack" id="mbBack"></button><span class="mbCount" id="mbCount"></span><button class="mbRand" id="mbRand"></button></div>
+      <div class="mbSlide"><span class="mbLab">開多遠</span><input type="range" id="mbReach" min="15" max="255" step="5"><b id="mbReachTxt"></b></div>
+    </div>
+
+    <div id="legacy" hidden>
     <div class="panel">
       <div class="sec">
         <h3 id="hReach"></h3>
@@ -78,6 +101,7 @@
       <button class="pool" id="poolInfo"></button>
       <button class="goBtn" id="goBtn"></button>
     </div>
+    </div>
 
     <footer class="pad">車程是依出發點估計的大約時間，出發前看一下導航<br>地圖資料：內政部國土測繪中心（政府資料開放授權）<br>Copyright © 2026 大樹 · <span class="footVer"></span></footer>
   </section>
@@ -85,6 +109,7 @@
   <!-- ===== 名單頁 ===== -->
   <section id="tabList" hidden>
     <div class="pageHead">
+      <button class="pgBack">‹ 回首頁</button>
       <h2 id="listTitle"></h2>
       <label class="search"><span id="searchIc"></span><input id="q" type="search" placeholder="找地點、地區…" autocomplete="off"></label>
     </div>
@@ -95,7 +120,7 @@
 
   <!-- ===== 足跡頁 ===== -->
   <section id="tabTrail" hidden>
-    <div class="pageHead"><h2 id="trailTitle"></h2></div>
+    <div class="pageHead"><button class="pgBack">‹ 回首頁</button><h2 id="trailTitle"></h2></div>
     <div class="stats" id="stats"></div>
     <div class="trail" id="trail"></div>
     <div class="settings" id="settings"></div>

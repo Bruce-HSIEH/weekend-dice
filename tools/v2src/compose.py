@@ -6,6 +6,10 @@ L=src.split("\n")
 def seg(a,b):
     i=src.index(a); j=src.index(b,i+len(a)); return src[i:j]
 head="\n".join(L[:52])+"\n"
+head=(head.replace('content="假日骰骰"','content="Elsewhere"').replace("<title>假日骰骰</title>","<title>Elsewhere・週末的方向</title>")
+      .replace('href="icons/v1-','href="icons/v2-').replace('href="splash/v1-','href="splash/v2-')
+      .replace('family=Huninn&display=swap','family=Huninn&family=Fraunces:ital,opsz,wght@1,9..144,400;1,9..144,600&display=swap')
+      .replace('<meta name="theme-color" content="#8FD0F5">','<meta name="theme-color" content="#F6EEE3">'))
 css_keep=src[src.index("/* ---------- 行前檢查（條件） ---------- */"):src.index("/* ---------- 開機畫面")]
 UI=seg("/* ===== 自畫 SVG 圖示 ===== */","/* ===== 實心手繪骰子")
 UI=UI.replace("    trash:`",'''    grass:`<path d="M1.5 21.5 Q12 10.5 22.5 21.5Z" fill="#8FCF6B" stroke="${c}" stroke-width="2" stroke-linejoin="round"/><path d="M6.5 18.5l.8-1.8.8 1.8M11 16.2l.8-1.8.8 1.8M15.5 18.2l.8-1.8.8 1.8" fill="none" stroke="${c}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M17.5 1.8l3.4 3.4-3.4 3.4-3.4-3.4z" fill="#FF7A59" stroke="${c}" stroke-width="1.7" stroke-linejoin="round"/><path d="M17.5 8.6c-1.5 2-3.5 3-5 5.5" fill="none" stroke="${c}" stroke-width="1.3" stroke-linecap="round" stroke-dasharray="1.6 1.6"/>`,
@@ -55,10 +59,12 @@ EXP=EXP.replace(old_mode,'''  if(d.wd_reach!==undefined){ reachIdx=Math.max(0,Ma
 ''')
 EXP=EXP.replace('flt=Object.assign({rain:false,easy:false,free:false,food:false,avoid:false},d.wd_flt)','flt=Object.assign({avoid:false,noresv:false},d.wd_flt)')
 VER=seg("/* ===== 版本 & 改版紀錄 ===== */","/* ===== 自動檢查更新")
-VER=VER.replace('const APP_VERSION="1.1.0";','const APP_VERSION="2.1.0";').replace('const CHANGELOG=[\n','const CHANGELOG=[\n  ["2.1.0","11/15","可以自己在地圖上挑！",["地圖可以用手指放大縮小、拖曳，放大後會標出地點名字","點地圖上的地點，按「選這個」就能自己決定去哪","可以直接指定想去的縣市（可多選）","挑中後只留那個點，小車開過去時鏡頭會拉近，動畫更順","地圖上的點變小、不再疊成一團，下方按鈕列更清爽"]],\n  ["2.0.0","11/11","台灣地圖大改版！",["首頁變成台灣地圖：從你現在的位置（或自己點、或存好的家）往外擴散，看得到今天開得到哪裡","選「今天想怎麼玩」：放電跑跳、摸摸動物、玩水玩沙、火車飛機、動手做、下雨也OK","「講究一下」可以再加停車、哺乳室、樹蔭、溫泉、不要預約等條件","按「幫我挑一個」：地圖放大，縣市跑馬燈一個一個亮，停在挑中的地方","地點擴充到全台 341 個，新配色、新的活力背景音樂"]],\n',1)
+VER=VER.replace("假日骰骰更新到","Elsewhere 更新到")
+EXP=EXP.replace("不是假日骰骰的資料","不是這個 App 的資料").replace('"假日骰骰資料"','"Elsewhere 資料"') if "EXP" in dir() else None
+VER=VER.replace('const APP_VERSION="1.1.0";','const APP_VERSION="3.0.0";').replace('const CHANGELOG=[\n','const CHANGELOG=[\n  ["3.0.0","11/23","大改版：Elsewhere",["改名叫 Elsewhere，換上新的開機畫面和圖示","首頁只剩兩個大按鈕：看地圖自己挑、幫我決定","「幫我決定」一頁一題，回答三個問題就幫你抽","地圖加上返回鈕和＋／－，手指縮放變得很順","「開多遠」可以一路滑，不再只有幾格","地點有詳細介紹：去那裡做什麼、出發前要知道的、網路分享連結（目前補了 117 個，陸續增加）","名單點下去直接看介紹，底部導覽列拿掉，畫面更清爽"]],\n  ["2.1.0","11/15","可以自己在地圖上挑！",["地圖可以用手指放大縮小、拖曳，放大後會標出地點名字","點地圖上的地點，按「選這個」就能自己決定去哪","可以直接指定想去的縣市（可多選）","挑中後只留那個點，小車開過去時鏡頭會拉近，動畫更順","地圖上的點變小、不再疊成一團，下方按鈕列更清爽"]],\n  ["2.0.0","11/11","台灣地圖大改版！",["首頁變成台灣地圖：從你現在的位置（或自己點、或存好的家）往外擴散，看得到今天開得到哪裡","選「今天想怎麼玩」：放電跑跳、摸摸動物、玩水玩沙、火車飛機、動手做、下雨也OK","「講究一下」可以再加停車、哺乳室、樹蔭、溫泉、不要預約等條件","按「幫我挑一個」：地圖放大，縣市跑馬燈一個一個亮，停在挑中的地方","地點擴充到全台 341 個，新配色、新的活力背景音樂"]],\n',1)
 UPD=seg("/* ===== 自動檢查更新","/* ===== 首次繪製")
 js=open("main.js").read()
-spots=open("spots_v3.js").read()
+spots=open("spots_v3.js").read()+"\n"+open("details_v3.js").read()
 mp=json.load(open("map.json"))
 for k,v in {"/*__SPOTS__*/":spots,"/*__MAP__*/":json.dumps(mp,ensure_ascii=False,separators=(",",":")),"/*__UI__*/":UI,"/*__DIE__*/":DIE,"/*__SCENERY__*/":SCEN,
             "/*__SND__*/":SND,"/*__CARSVG__*/":CAR,"/*__SHEET__*/":SHEET,"/*__POSTMARK__*/":PM,"/*__CONFETTI__*/":CONF,"/*__EXPORT__*/":EXP,

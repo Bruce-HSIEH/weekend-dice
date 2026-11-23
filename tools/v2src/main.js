@@ -24,7 +24,10 @@ let cnty     = store.get("wd_cnty",[]);             // 指定縣市（可多選�
 if(!Array.isArray(cnty)) cnty=[];
 const REGIONS=[["北部",["基隆市","台北市","新北市","桃園市","新竹市","新竹縣","宜蘭縣"]],["中部",["苗栗縣","台中市","彰化縣","南投縣","雲林縣"]],
   ["南部",["嘉義市","嘉義縣","台南市","高雄市","屏東縣"]],["東部",["花蓮縣","台東縣"]]];
-let cntyOpen = false;            // 今天想怎麼玩（情境，單選）
+let cntyOpen = false;
+let view3 = "home";              // v3 首頁狀態：home（兩扇門）/ ask（幫我決定問答）/ map（地圖模式）
+let mapMode = false;             // 地圖模式：只看距離＋排除條件，不看玩法和講究
+let nameLimit = 90;              // 畫面裡的點少於這個數才標名字（地圖模式放寬）            // 今天想怎麼玩（情境，單選）
 // 情境：一次代表一種玩法，只要有其中一項就算（OR）；細的條件才是「全部都要」（AND）
 const SCENES={
   run:   {name:"放電跑跳", sub:"草地・溜滑梯・沙坑", ic:"grass",   any:["草","滑","沙"]},
@@ -83,6 +86,15 @@ const REACHES=[
   {m:180,big:"3",   sm:"小時", name:"3 小時內",  km:170},
   {m:0,  big:"不限",sm:"全台", name:"全台都可以",km:0},
 ];
+/* 開多遠改成連續的分鐘數（reachM，0＝全台都可以）；舊的 REACHES 只當成「幾個常用刻度」 */
+let reachM = store.get("wd_reachM", null); if(reachM==null) reachM = (RC()||REACHES[1]).m;
+function fmtReach(m){ if(!m) return "全台都可以"; if(m<60) return `${m} 分鐘內`; const h=Math.floor(m/60), r=m%60; return r?`${h} 小時 ${r} 分內`:`${h} 小時內`; }
+function RC(){
+  if(!reachM) return {m:0,name:"全台都可以",km:0,big:"不限",sm:"全台"};
+  const pts=[[0,0],[30,24],[60,52],[90,82],[120,112],[180,170],[300,290]];
+  let km=290; for(let i=1;i<pts.length;i++){ if(reachM<=pts[i][0]){ const [a,b]=[pts[i-1],pts[i]]; km=a[1]+(b[1]-a[1])*(reachM-a[0])/(b[0]-a[0]); break; } }
+  return {m:reachM,name:fmtReach(reachM),km,big:String(reachM),sm:"分鐘"};
+}
 /* 各縣市大約幾分鐘開得到（決定地圖哪些縣市亮起來） */
 
 /* 方向：從家裡看出去的方位角（0°=正北，順時針） */
@@ -149,13 +161,14 @@ function dirOf(s){
 }
 const dirName=d=>d==="near"?"附近":DIRS[d].name;
 function reachRange(){
-  const R=REACHES[reachIdx], max=R.m||9999;
+  const R=RC(), max=R.m||9999;
   const last=REACHES.length-1;
-  const min = far ? (reachIdx===0?15 : reachIdx===last?REACHES[last-1].m : REACHES[reachIdx-1].m) : 0;
+  const min = far ? (reachM ? Math.max(15,reachM-30) : 180) : 0;
   return {min,max};
 }
 function passesTags(s){
   if(s.off) return false;
+  if(mapMode) return !(flt.noresv && s.tags.includes("約")) && !(flt.avoid && visitedRecently(s.id));
   for(const t of TAGS) if(t.g!=="ex" && flt[t.key] && !s.tags.includes(t.ch)) return false;
   if(flt.noresv && s.tags.includes("約")) return false;
   if(scene && SCENES[scene] && !SCENES[scene].any.some(ch=>s.tags.includes(ch))) return false;
@@ -242,7 +255,7 @@ const Map2=(()=>{
     if(chosen){
       // 挑中之後只剩一個點：只更新那一個，鏡頭拉近時才不會卡
       const d=DG.find(d=>d.classList.contains("pick")); if(d) tf(d,d.dataset.x,d.dataset.y,inv*ds);
-      const n=NM.find(n=>n.classList.contains("pick")); if(n) tf(n,n.dataset.x,n.dataset.y,inv, +n.dataset.y<HP[1]?" translate(0,-62)":"");   // 小車從下面來，名字放到圖釘上方
+      const n=NM.find(n=>n.classList.contains("pick")); if(n) tf(n,n.dataset.x,n.dataset.y,inv, false?"":"");   // 小車從下面來，名字放到圖釘上方
     } else {
       DG.forEach(d=>tf(d,d.dataset.x,d.dataset.y,inv*ds));
       // 名字標籤：放大地圖、畫面裡的點不太多時才標；彼此會撞到的就跳過（先到先放，像簡單的碰撞檢查）
@@ -250,7 +263,7 @@ const Map2=(()=>{
       if(big && !picking){
         const scr=n=>[(+n.dataset.x-x)*k+cw/2, (+n.dataset.y-y)*k+ch/2];
         let vis=0; NM.forEach(n=>{ const [sx,sy]=scr(n); if(sx>-20&&sx<cw+20&&sy>-20&&sy<ch+20) vis++; });
-        show=vis>0 && vis<=90;
+        show=vis>0 && vis<=nameLimit;
         if(show){ const placed=[]; NM.forEach(n=>{
           const [sx,sy]=scr(n), w=(n.textContent.length*11+6), r=[sx-w/2, sy+5, sx+w/2, sy+19];
           const ok = r[0]>2 && r[2]<cw-2 && sy>0 && sy<ch-12 && !placed.some(p=>r[0]<p[2]&&r[2]>p[0]&&r[1]<p[3]&&r[3]>p[1]);
@@ -276,7 +289,7 @@ const Map2=(()=>{
       $$("#counties .county").forEach(p=>{ if(!cnty.includes(p.dataset.n)) return; const b=p.getBBox(); x0=Math.min(x0,b.x); y0=Math.min(y0,b.y); x1=Math.max(x1,b.x+b.width); y1=Math.max(y1,b.y+b.height); });
       if(x1>x0){ const pad=26, k=Math.min(cw/(x1-x0+pad*2), ch/(y1-y0+pad*2), 6); return {x:(x0+x1)/2,y:(y0+y1)/2,k,r:0}; }
     }
-    const R=REACHES[reachIdx];
+    const R=RC();
     if(!R.km || !origin){ const k=Math.min(cw/400,ch/720)*0.98; return {x:200,y:360,k,r:0}; }
     const r=R.km*KM; let x=HP[0], y=HP[1];
     if(dir!=="all"){ const d=DIRS[dir], mid=(d.from<d.to? (d.from+d.to)/2 : ((d.from+d.to+360)/2)%360)*D2R; x+=Math.sin(mid)*r*.42; y-=Math.cos(mid)*r*.42; }
@@ -299,7 +312,7 @@ const Map2=(()=>{
   // 擴散範圍以外蓋一層淡白；選了方向，只有那個扇形是亮的
   function paintCounties(){
     $$("#counties .county").forEach(p=>p.classList.toggle("off",!!cnty.length && !cnty.includes(p.dataset.n)));
-    const all=!REACHES[reachIdx].km || !origin || !!cnty.length;
+    const all=!RC().km || !origin || !!cnty.length;
     $("#dimmer").style.display=$("#rippleRing").style.display = all?"none":"";
   }
   function paintWedge(){
@@ -337,27 +350,32 @@ const Map2=(()=>{
     inn.removeAttribute("transform");
   }
   // 小車開過去：鏡頭同時跟著小車拉近，最後停在目的地附近（約 12 公里見方）
+  // 挑中之後：鏡頭直接拉近到目的地（不再有小車）
   async function drive(s){
-    const [x,y]=proj(s.lat,s.lng), v=$("#mapVan");
-    v.dataset.flip = x<HP[0] ? -1 : 1; v.style.display="";
-    const [, y2]=proj(s.lat+0.06,s.lng), unit=Math.abs(y-y2)||1;      // 約 6.7 公里在地圖上的長度
+    const [x,y]=proj(s.lat,s.lng);
+    const [, y2]=proj(s.lat+0.06,s.lng), unit=Math.abs(y-y2)||1;
     const a={...view}, kEnd=Math.max(a.k, Math.min(40, Math.min(cw,ch)/(unit*7)));
-    // 小車停在目的地前一點點（螢幕上約 30px），讓橘色的點和圖釘露出來
-    const L=Math.hypot(x-HP[0],y-HP[1])||1, back=Math.min(.5, 48/kEnd/L), ex=x-(x-HP[0])*back, ey=y-(y-HP[1])*back;
-    await tween(1400,t=>{ const e=ease(t);
-      const cx=HP[0]+(ex-HP[0])*e, cy=HP[1]+(ey-HP[1])*e;
-      v.dataset.x=cx; v.dataset.y=cy - Math.sin(t*Math.PI)*8/view.k;
-      // 鏡頭：中心一路往小車靠，縮放用等比（log）插值，最後停在目的地上
-      const c=ease(Math.min(1,t*1.05)), tx=cx+(x-cx)*c, ty=cy+(y-cy)*c;
-      view={ x:a.x+(tx-a.x)*c, y:a.y+(ty-a.y)*c, k:Math.exp(Math.log(a.k)+(Math.log(kEnd)-Math.log(a.k))*c) };
+    await tween(1100,t=>{ const c=ease(t);
+      view={ x:a.x+(x-a.x)*c, y:a.y+(y-a.y)*c, k:Math.exp(Math.log(a.k)+(Math.log(kEnd)-Math.log(a.k))*c) };
       applyView(); });
   }
+
   function refresh(anim=true){ userCam=false; size(); placeOrigin(); paintCounties(); paintWedge(); paintDots(); anim?animateTo():(()=>{ const b=targetView(); view={x:b.x,y:b.y,k:b.k}; ringR=b.r; applyView(); })(); }
   window.addEventListener("resize",()=>{ size(); const b=targetView(); view={x:b.x,y:b.y,k:b.k}; ringR=b.r; applyView(); });
   /* ===== 手指縮放、拖曳地圖；點一下地點看名字 =====
      兩指：以兩指中點為中心縮放；一指：拖曳。像處理觸控 IC 的多點座標，自己算位移和距離變化 */
   const pts=new Map(); let g0=null, moved=false, userCam=false;
-  const local=e=>{ const r=svg.getBoundingClientRect(); return [e.clientX-r.left, e.clientY-r.top]; };
+  const local=e=>{ const r=card.getBoundingClientRect(); return [e.clientX-r.left, e.clientY-r.top]; };
+  // 手勢期間：不重算上百個點和名字，只把「手勢開始那一刻的畫面」當成一張圖用 GPU 平移縮放（像 LCD 硬體捲動，不重畫 framebuffer）
+  // 放開手指才把新位置真正畫一次。這樣越放大也不會越鈍。
+  let base=null, gRaf=0;
+  function gpuView(){
+    gRaf=0; if(!base) return;
+    const s=view.k/base.k, tx=(base.x-view.x)*view.k, ty=(base.y-view.y)*view.k;
+    svg.style.transform=`translate3d(${tx}px,${ty}px,0) scale(${s})`;
+  }
+  function gpuBegin(){ if(base) return; base={...view}; svg.style.transformOrigin=`${cw/2}px ${ch/2}px`; svg.style.willChange="transform"; card.classList.add("gesturing"); }
+  function gpuCommit(){ if(!base) return; cancelAnimationFrame(gRaf); gRaf=0; base=null; svg.style.transform=""; svg.style.willChange=""; card.classList.remove("gesturing"); applyView(); }
   const toMap=([sx,sy])=>[(sx-(cw/2-view.k*view.x))/view.k, (sy-(ch/2-view.k*view.y))/view.k];
   const clampK=k=>Math.max(.35, Math.min(40, k));
   function gestureStart(){
@@ -370,6 +388,7 @@ const Map2=(()=>{
     pts.set(e.pointerId,local(e)); moved=false;
     if(pts.size===2 && !card.classList.contains("big")){ setBig(true); showHint(); }   // 小地圖上兩指一張開 → 直接變大地圖
     if(pts.size<=2){ cancelAnimationFrame(raf); gestureStart(); }
+    if(card.classList.contains("big")) gpuBegin();
     if(card.classList.contains("big") || pts.size===2) try{ svg.setPointerCapture(e.pointerId); }catch(_){}
   });
   svg.addEventListener("pointermove",e=>{
@@ -386,20 +405,28 @@ const Map2=(()=>{
       const k=clampK(g0.v.k*d/g0.d); moved=true;
       view={k, x:g0.anchor[0]-(mid[0]-cw/2)/k, y:g0.anchor[1]-(mid[1]-ch/2)/k};
     }
-    userCam=true; applyView(); e.preventDefault();
+    userCam=true; if(base){ if(!gRaf) gRaf=requestAnimationFrame(gpuView); } else applyView(); e.preventDefault();
   });
   const end=e=>{
     if(!pts.has(e.pointerId)) return;
     const wasPinch=g0&&g0.mode==="pinch";
     pts.delete(e.pointerId);
     if(pts.size>0){ gestureStart(); return; }
-    g0=null;
+    g0=null; gpuCommit();
     if(e.type==="pointerup" && !moved && !wasPinch && !rolling) onTap(local(e));
   };
   svg.addEventListener("pointerup",end); svg.addEventListener("pointercancel",end);
   svg.addEventListener("wheel",e=>{ if(rolling) return; e.preventDefault(); cancelAnimationFrame(raf);
     const p=local(e), an=toMap(p), k=clampK(view.k*Math.pow(1.0018,-e.deltaY));
-    view={k, x:an[0]-(p[0]-cw/2)/k, y:an[1]-(p[1]-ch/2)/k}; userCam=true; applyView(); },{passive:false});
+    view={k, x:an[0]-(p[0]-cw/2)/k, y:an[1]-(p[1]-ch/2)/k}; userCam=true; gpuBegin(); if(!gRaf) gRaf=requestAnimationFrame(gpuView); clearTimeout(wT); wT=setTimeout(gpuCommit,160); },{passive:false});
+  let wT=0;
+  // ＋／－ 按鈕：以畫面中心為基準放大縮小（不用兩指也能縮放）
+  function zoomBy(f){
+    if(rolling) return; cancelAnimationFrame(raf); gpuCommit();
+    const a={...view}, k1=clampK(a.k*f); if(Math.abs(k1-a.k)<1e-6) return;
+    userCam=true; Snd.play("tick");
+    tween(280,t=>{ const e=ease(t); view={x:a.x,y:a.y,k:a.k*Math.pow(k1/a.k,e)}; applyView(); });
+  }
   // 第一次放大地圖時提示：可以自己點地點來選（前 3 次）
   function showHint(){
     const n=store.get("wd_hint",0); if(n>=3) return; store.set("wd_hint",n+1);
@@ -412,7 +439,7 @@ const Map2=(()=>{
     if(!card.classList.contains("big")){ Snd.play("pop"); setBig(true); showHint(); return; }
     let best=null, bd=28*28;
     $$("#dots .dg").forEach(d=>{ const sx=(+d.dataset.x-view.x)*view.k+cw/2, sy=(+d.dataset.y-view.y)*view.k+ch/2, dd=(sx-p[0])**2+(sy-p[1])**2; if(dd<bd){ bd=dd; best=d.dataset.id; } });
-    if(best) showInfo(best); else hideInfo();
+    if(best) showInfo(best); else { hideInfo(); zoomCounty(p); }
   }
   function showInfo(id){
     const s=spots().find(x=>x.id===id); if(!s) return;
@@ -421,6 +448,17 @@ const Map2=(()=>{
     $("#dotInfo").innerHTML=`<span class="m" style="background:${b.c}">${s.min}<small>分</small></span><span class="tx"><b>${esc(s.name)}</b><small>${esc(s.area)}・${esc(s.note||"")}</small></span><span class="go">${ui("flag",16)}選這個</span>`;
     $("#dotInfo").hidden=false; $("#dotInfo").onclick=()=>{ pickManual(s); };
     Snd.play("tick");
+  }
+  // 點地圖空白處：拉近到那個縣市（已經夠近就不動）
+  function zoomCounty(p){
+    const [mx,my]=toMap(p); let hit=null;
+    for(const c of $$("#counties .county")){ try{ if(c.isPointInFill(new DOMPoint(mx,my))){ hit=c; break; } }catch(e){} }
+    if(!hit) return;
+    const b=hit.getBBox(), k=Math.min(40, Math.min(cw/(b.width+30), ch/(b.height+30)));
+    if(view.k>=k*.85) return;
+    cancelAnimationFrame(raf); Snd.play("pop");
+    const a={...view}, tx=b.x+b.width/2, ty=b.y+b.height/2;
+    tween(600,t=>{ const e=ease(t); view={x:a.x+(tx-a.x)*e, y:a.y+(ty-a.y)*e, k:a.k*Math.pow(k/a.k,e)}; applyView(); });
   }
   function hideInfo(){ $("#dotInfo").hidden=true; $$("#dots .dg.sel").forEach(d=>d.classList.remove("sel")); }
   let tapCb=null;
@@ -441,15 +479,15 @@ const Map2=(()=>{
     $("#zoomBtn").setAttribute("aria-label",on?"縮小地圖":"放大地圖");
     return new Promise(res=>{ const t0=performance.now(); const f=now=>{ if(pts.size){ size(); applyView(); } else snap(); if(now-t0<520) requestAnimationFrame(f); else res(); }; requestAnimationFrame(f); });
   }
-  return {choose,refresh,animateTo,paintDots,hidePick,flash,dropPin,drive,size,waitTap,cancelTap,setBig,snap,litCounty,countyCenter,hideInfo};
+  return {zoomBy,showHint,choose,refresh,animateTo,paintDots,hidePick,flash,dropPin,drive,size,waitTap,cancelTap,setBig,snap,litCounty,countyCenter,hideInfo};
 })();
 
 /* ===== 控制面板 ===== */
 function renderReach(){
   $("#reachSeg").style.gridTemplateColumns=`repeat(${REACHES.length},1fr)`;
   $("#reachSeg").innerHTML=REACHES.map((r,i)=>`<button data-i="${i}" class="${reachIdx===i?"on":""}">${r.big}<small>${r.sm}</small></button>`).join("");
-  $$("#reachSeg button").forEach(b=>b.onclick=()=>{ if(rolling) return; reachIdx=+b.dataset.i; store.set("wd_reach",reachIdx); leaveCnty(); Snd.play("pop"); Map2.hidePick(); renderHome(); });
-  $("#reachTag").innerHTML= cnty.length ? `指定：<b>${cnty.length>2?cnty.slice(0,2).join("、")+` 等 ${cnty.length} 個`:cnty.join("、")}</b>` : `可以開到：<b>${REACHES[reachIdx].name}</b>`;
+  $$("#reachSeg button").forEach(b=>b.onclick=()=>{ if(rolling) return; reachIdx=+b.dataset.i; reachM=REACHES[reachIdx].m; store.set("wd_reach",reachIdx); leaveCnty(); Snd.play("pop"); Map2.hidePick(); renderHome(); });
+  $("#reachTag").innerHTML= cnty.length ? `指定：<b>${cnty.length>2?cnty.slice(0,2).join("、")+` 等 ${cnty.length} 個`:cnty.join("、")}</b>` : `可以開到：<b>${RC().name}</b>`;
   $(".panel").classList.toggle("cntyMode",!!cnty.length);
 }
 function renderDir(){
@@ -528,7 +566,7 @@ function renderPool(){
   $$("#poolList .pl").forEach(r=>r.onclick=()=>{ const s=spots().find(x=>x.id===r.dataset.id); if(s){ Snd.play("pop"); showResult(s); } });
 }
 $("#poolInfo").onclick=()=>{ poolOpen=!poolOpen; Snd.play("pop"); renderPool(); if(poolOpen) setTimeout(()=>$("#poolList").scrollIntoView({behavior:"smooth",block:"end"}),60); };
-function renderHome(moveCam=true){ renderReach(); renderDir(); renderCnty(); renderScenes(); renderChips(); renderPool(); moveCam?Map2.refresh(true):Map2.paintDots(); }
+function renderHome(moveCam=true){ if(view3==="map" && typeof renderMapBar==="function") renderMapBar(); renderReach(); renderDir(); renderCnty(); renderScenes(); renderChips(); renderPool(); moveCam?Map2.refresh(true):Map2.paintDots(); }
 function renderAll(){ renderHome(false); if(curTab==="list") renderList(); if(curTab==="trail") renderTrail(); }
 
 
@@ -537,7 +575,7 @@ function setOrigin(o,msg){
   origin=o; store.set("wd_origin",o); setHP(); Map2.hidePick(); renderHome(); renderOriginTag();
   if(msg){ toast(msg); Snd.play("tada"); }
 }
-function renderOriginTag(){ $("#fromTag").innerHTML=ui("pin",16)+originName()+`<span class="chg">${origin?"更改":"點我設定"}</span>`; $("#mapCard").classList.toggle("noOrigin",!origin); }
+function renderOriginTag(){ if(typeof renderHome3==="function" && view3==="home") renderHome3(); $("#fromTag").innerHTML=ui("pin",16)+originName()+`<span class="chg">${origin?"更改":"點我設定"}</span>`; $("#mapCard").classList.toggle("noOrigin",!origin); }
 function locate(){
   if(!navigator.geolocation){ toast("這支手機不能定位，改用地圖點選吧"); return; }
   toast("定位中…");
@@ -560,9 +598,9 @@ function showOrigin(){
     </div>
   </div>`);
   $("#oGps").onclick=()=>{ closeSheet(); locate(); };
-  $("#oMap").onclick=()=>{ closeSheet(); setTab("roll"); Map2.setBig(true); window.scrollTo({top:0,behavior:"smooth"}); reachIdx=4; Map2.refresh(true); renderReach();
+  $("#oMap").onclick=()=>{ closeSheet(); setTab("roll"); Map2.setBig(true); window.scrollTo({top:0,behavior:"smooth"}); reachIdx=4; reachM=REACHES[reachIdx].m; Map2.refresh(true); renderReach();
     toast("在地圖上點一下你要出發的地方"); Van.say("點地圖選出發點～",2500);
-    Map2.waitTap((lat,lng)=>{ if(lat<21.8||lat>25.4||lng<119.9||lng>122.1){ toast("請點台灣本島上的地方"); return; } reachIdx=store.get("wd_reach",1); setOrigin({lat,lng,kind:"map",label:nearestCity(lat,lng)+"附近"},`出發點：${nearestCity(lat,lng)}附近`); }); };
+    Map2.waitTap((lat,lng)=>{ if(lat<21.8||lat>25.4||lng<119.9||lng>122.1){ toast("請點台灣本島上的地方"); return; } reachIdx=store.get("wd_reach",1); reachM=REACHES[reachIdx].m; setOrigin({lat,lng,kind:"map",label:nearestCity(lat,lng)+"附近"},`出發點：${nearestCity(lat,lng)}附近`); }); };
   if($("#oHome")) $("#oHome").onclick=()=>{ closeSheet(); setOrigin({...homeSpot,kind:"home"},"從家出發！"); };
   if($("#oSave")) $("#oSave").onclick=()=>{ homeSpot={lat:origin.lat,lng:origin.lng}; store.set("wd_home",homeSpot); origin={...origin,kind:"home"}; store.set("wd_origin",origin); renderOriginTag(); closeSheet(); toast("存好了，之後可以直接「從家出發」"); Snd.play("tada"); };
 }
@@ -577,12 +615,12 @@ async function randomReach(){
   const steps=7+Math.floor(Math.random()*3);
   for(let k=0;k<steps;k++){
     i = k===steps-1 ? final : (i+1+Math.floor(Math.random()*(REACHES.length-1)))%REACHES.length;
-    reachIdx=i; renderReach(); Map2.refresh(false); Snd.play("blip",k%6);
+    reachIdx=i; reachM=REACHES[reachIdx].m; renderReach(); Map2.refresh(false); Snd.play("blip",k%6);
     $("#rndDie").innerHTML=dieSvg(1+Math.floor(Math.random()*6));
     await sleep(60+k*k*4);
   }
   store.set("wd_reach",reachIdx); $("#rndBtn").classList.remove("spin"); $("#rndDie").innerHTML=dieSvg(Math.min(6,reachIdx+1));
-  renderHome(); Snd.play("tada"); Van.say(`這次：${REACHES[reachIdx].name}！`,1600);
+  renderHome(); Snd.play("tada"); Van.say(`這次：${RC().name}！`,1600);
   rolling=false;
 }
 $("#rndBtn").onclick=randomReach;
@@ -594,7 +632,10 @@ async function pick(){
   const pool=candidates();
   if(!pool.length){ Snd.play("oops"); toast("沒有符合條件的地點，開遠一點或拿掉一些條件試試"); $("#goBtn").animate([{transform:"translateX(0)"},{transform:"translateX(-9px)"},{transform:"translateX(9px)"},{transform:"none"}],{duration:300}); return; }
   let p2=pool.length>1?pool.filter(s=>s.id!==lastId):pool;
-  const spot=p2[Math.floor(Math.random()*p2.length)]; lastId=spot.id;
+  // 加權抽：符合「誰去」偏好的地點，每符合一項多一份機會
+  const wts=p2.map(s=>1+2*whoPref.filter(ch=>s.tags.includes(ch)).length), tot=wts.reduce((a,b)=>a+b,0);
+  let r=Math.random()*tot, wi=0; while(wi<p2.length-1 && (r-=wts[wi])>0) wi++;
+  const spot=p2[wi]; lastId=spot.id;
   rolling=true; $("#goBtn").disabled=true; Map2.hidePick();
   window.scrollTo({top:0,behavior:"smooth"});
   Map2.hideInfo(); await Map2.setBig(true); Map2.animateTo(400);
@@ -674,7 +715,22 @@ function viewSvg(s,b){
     <g transform="translate(${x} ${y}) scale(${u})"><path d="M0 0 C-3 -8 -12 -14 -12 -24 A12 12 0 0 1 12 -24 C12 -14 3 -8 0 0Z" fill="#FF7A59" stroke="${INK}" stroke-width="2.6"/><circle cy="-24" r="4.5" fill="#fff" stroke="${INK}" stroke-width="2"/></g></svg>`;
 }
 /*__POSTMARK__*/
-function showResult(s){
+function detailHtml(s){
+  const d=(typeof DETAIL!=="undefined"&&DETAIL[s.name])||null, q=encodeURIComponent;
+  const lk=(u,t)=>`<a class="dLink" href="${esc(u)}" target="_blank" rel="noopener">${ui("nav",14)}${esc(t)}</a>`;
+  let h=`<div class="detail">`;
+  if(d){
+    h+=`<div class="dRow"><b>去那裡做什麼</b><p>${esc(d.do)}</p></div>`;
+    if(d.tip) h+=`<div class="dRow"><b>出發前知道</b><p>${esc(d.tip)}</p></div>`;
+  } else h+=`<div class="dRow"><b>去那裡做什麼</b><p>這個地點的詳細介紹還沒補上（會一區一區陸續補齊），可以先看下面 Google 找到的近三年網路分享。</p></div>`;
+  h+=`<div class="dRow"><b>看更多</b><div class="dLinks">`;
+  if(d&&d.site) h+=lk(d.site,"官網");
+  if(d&&d.posts) d.posts.forEach(p=>h+=lk(p[1],p[0]));
+  h+=lk("https://www.google.com/search?q="+q(s.name+" 親子")+"&tbs=qdr:y3","Google：近三年的網路分享");
+  h+=`</div></div><div class="dNote">資料整理自網路文章，價格和時間可能變動，出發前請看官方公告</div></div>`;
+  return h;
+}
+function showResult(s,opt={}){
   const b=bucketOf(s.min), lv=lastVisit(s.id), d=dirOf(s);
   openSheet(`<div class="pc">
     <div class="view">${viewSvg(s,b)}
@@ -685,24 +741,25 @@ function showResult(s){
       <div class="to">TO：</div>
       <h2>${esc(s.name)}</h2>
       <div class="addr">${ui("pin",18)}${esc(s.area||"—")}・${s.min<=20?"出發點附近":dirName(d)}</div>
-      <div class="addr">${ui("car",18)}從出發點開車約 ${s.min} 分鐘${s.baseMin?"（估計）":""}</div>
+      <div class="addr">${ui("clock",18)}從出發點開車約 ${s.min} 分鐘${s.baseMin?"（估計）":""}</div>
       <div class="stk">${stickers(s)||`<span class="stkr">${ui("spark",18)}出發就對了</span>`}</div>
       ${s.note?`<div class="msg">${esc(s.note)}</div>`:""}
+      ${detailHtml(s)}
       ${lv?`<div class="last">${ui("clock",14)} 上次去：${fmtDate(lv)}</div>`:""}
       <div class="acts">
-        <a class="btn navy wide" href="${mapUrl(s)}" target="_blank" rel="noopener">${ui("nav",22)}Google 地圖導航</a>
-        <button class="btn yellow" id="goHere">${ui("flag",20)}就去這！</button>
-        <button class="btn" id="againBtn">${ui("again",20)}再挑一個</button>
+        <a class="btn yellow wide big3" id="goNav" href="${mapUrl(s)}" target="_blank" rel="noopener">${ui("nav",26)}導航出發</a>
+        ${opt.fromList?"":`<button class="btn wide big3" id="againBtn">${ui("again",24)}換一個</button>`}
       </div>
-      <button class="linkBtn" id="editFromRes">編輯這個地點</button>
+      <button class="linkBtn" id="editFromRes">${ui("note",16)}編輯這個地點（改名字、車程、標記）</button>
       <div class="est">車程是估計值，出發前看一下導航喔</div>
     </div></div>`);
-  $("#goHere").onclick=()=>{
+  // 按「導航出發」＝決定去了：自動記到足跡，同時打開 Google 地圖
+  $("#goNav").onclick=()=>{
     hist.push({id:s.id,t:Date.now(),name:s.name,min:s.min}); if(hist.length>500) hist=hist.slice(-500); store.set("wd_hist",hist);
     Snd.play("cheer"); confetti(); toast("出發囉！足跡記下來了");
-    setTimeout(()=>{ closeSheet(); renderAll(); },700);
+    setTimeout(()=>{ closeSheet(); renderAll(); },900);
   };
-  $("#againBtn").onclick=()=>{ closeSheet(); setTimeout(pick,250); };
+  if($("#againBtn")) $("#againBtn").onclick=()=>{ closeSheet(); setTimeout(pick,250); };
   $("#editFromRes").onclick=()=>{ Snd.play("pop"); editSpot(s.id); };
 }
 
@@ -733,7 +790,7 @@ function renderList(){
         <span class="tg">${tagIcons(s,17)}</span></button>`).join("");
   }
   $("#list").innerHTML = h || `<div class="empty">找不到地點<br>按右下角的 ＋ 加一個吧！</div>`;
-  $$("#list .tk").forEach(r=>r.onclick=()=>{ Snd.play("pop"); editSpot(r.dataset.id); });
+  $$("#list .tk").forEach(r=>r.onclick=()=>{ Snd.play("pop"); const s=spots().find(x=>x.id===r.dataset.id); if(s) showResult(s,{fromList:true}); });
 }
 $("#q").addEventListener("input",()=>renderList());
 
@@ -833,10 +890,139 @@ function setTab(t){
   if(t==="list") renderList(); if(t==="trail") renderTrail(); if(t==="roll") Map2.refresh(false);
   window.scrollTo(0,0);
 }
+$("#hList").onclick=()=>{ Snd.play("pop"); setTab("list"); };
+$("#hTrail").onclick=()=>{ Snd.play("pop"); setTab("trail"); };
+$$(".pgBack").forEach(b=>b.onclick=()=>{ Snd.play("pop"); setTab("roll"); setView("home"); });
 $$("#nav button").forEach(b=>b.onclick=()=>{ if(curTab===b.dataset.tab) return; Snd.play("pop"); setTab(b.dataset.tab); });
 
 /*__VERSION__*/
 /*__UPDATE__*/
+
+/* ===== v3 大按鈕介面：首頁兩扇門 → 地圖模式／幫我決定（一頁一題） ===== */
+const WHO={
+  fam:  {name:"我們一家",  sub:"小家庭出門",               ic:"home",     pref:[]},
+  elder:{name:"帶阿公阿嬤",sub:"優先挑長輩好走的",         ic:"stroller", pref:["走"]},
+  all:  {name:"全家出動",  sub:"優先挑好走、好停車、有得吃", ic:"foot",     pref:["走","停","吃"]},
+};
+const DIST=[{i:0,name:"近近的",sub:"30 分鐘內"},{i:1,name:"中間",sub:"1 小時內"},{i:3,name:"遠一點",sub:"2 小時內"},{i:5,name:"多遠都可以",sub:"全台"}];
+let ask={step:0, who:"fam", scene:"", reach:1};
+let last3=store.get("wd_last3",null);
+
+function setView(v){
+  view3=v;
+  $("#tabRoll").dataset.view=v;
+  $("#homeView").hidden=v!=="home"; $("#askView").hidden=v!=="ask"; $("#mapBar").hidden=v!=="map";
+  $("#mapCard").hidden=v!=="map"; $("#mapBackF").hidden=v!=="map"; $("#zoomPM").hidden=v!=="map";
+  nameLimit = v==="map" ? 400 : 90;
+  window.scrollTo(0,0);
+  if(v==="home") renderHome3();
+  if(v==="map"){ Map2.hidePick(); Map2.setBig(true); requestAnimationFrame(()=>{ renderHome(true); renderMapBar(); }); }
+}
+// 「誰去」不刪地點，只是讓符合的地點比較容易被抽中（加權），選項才不會一下子變很少
+let whoPref=[];
+function whoFlt(w){ return {avoid:!!flt.avoid, noresv:!!flt.noresv}; }
+function lastLabel(l){ return `${(WHO[l.who]||WHO.fam).name}・${l.scene&&SCENES[l.scene]?SCENES[l.scene].name:"都可以"}・${REACHES[l.reach].name}`; }
+// 「幫我決定」的插圖：一顆會輕輕擺動的指南針（取代骰子）
+function compassDoorSvg(){
+  const t=[0,45,90,135,180,225,270,315].map(a=>`<line x1="60" y1="${a%90?17:13}" x2="60" y2="${a%90?22:22}" stroke="${INK}" stroke-width="${a%90?2:3}" stroke-linecap="round" transform="rotate(${a} 60 60)"/>`).join("");
+  return `<svg viewBox="0 0 120 120" width="120" height="120"><circle cx="60" cy="63" r="50" fill="${INK}" opacity=".15"/><circle cx="60" cy="60" r="50" fill="#FFF9F0" stroke="${INK}" stroke-width="3.5"/><circle cx="60" cy="60" r="40" fill="none" stroke="#F4A582" stroke-width="2" stroke-dasharray="2 5"/>${t}
+  <text x="60" y="36" text-anchor="middle" font-family="Fraunces,Georgia,serif" font-weight="600" font-size="12" fill="${INK}">N</text>
+  <g class="cNeedle"><path d="M60 40 L68 60 L60 64 L52 60 Z" fill="#F2735A" stroke="${INK}" stroke-width="2.5" stroke-linejoin="round"/><path d="M60 86 L68 60 L60 56 L52 60 Z" fill="#fff" stroke="${INK}" stroke-width="2.5" stroke-linejoin="round"/></g>
+  <circle cx="60" cy="60" r="5" fill="#FFD54A" stroke="${INK}" stroke-width="2.5"/></svg>`;
+}
+function renderHome3(){
+  $("#dMapIl").innerHTML=mapDoorSvg(); $("#dDiceIl").innerHTML=compassDoorSvg();
+  $("#doorLast").hidden=!last3;
+  if(last3) $("#doorLast").innerHTML=`${ui("again",22)}<span><b>照上次再抽一個</b><small>${esc(lastLabel(last3))}</small></span><i>›</i>`;
+  $("#hOrigin").innerHTML=`${ui("pin",20)}${esc(originName())}<span>更改</span>`;
+  $("#hSet").innerHTML=`${ui("check",20)}家庭設定`;
+  $("#hList").innerHTML=`${ui("ticketL",20)}地點名單`; $("#hTrail").innerHTML=`${ui("foot",20)}去過的足跡`;
+}
+function mapDoorSvg(){
+  return `<svg width="96" height="96" viewBox="0 0 96 96"><circle cx="48" cy="48" r="44" fill="#fff" stroke="${INK}" stroke-width="3"/>
+    <path d="M44 14c6 2 12 10 14 20 3 12 2 26-4 38-3 6-8 10-11 10-2-6-6-10-10-14-4-6-5-14-3-22 2-10 6-22 14-32z" fill="#BFE6D6" stroke="${INK}" stroke-width="3" stroke-linejoin="round"/>
+    <circle cx="40" cy="36" r="5" fill="#FF7A59" stroke="#fff" stroke-width="2"/><circle cx="50" cy="52" r="5" fill="#FF7A59" stroke="#fff" stroke-width="2"/><circle cx="38" cy="62" r="5" fill="#FF7A59" stroke="#fff" stroke-width="2"/>
+    <circle cx="66" cy="66" r="12" fill="none" stroke="${INK}" stroke-width="4"/><path d="M75 75l9 9" stroke="${INK}" stroke-width="5" stroke-linecap="round"/></svg>`;
+}
+
+/* 地圖模式 */
+function renderMapBar(){
+  const n=candidates().length;
+  $("#mbCount").innerHTML=`<b>${n}</b> 個地點`;
+  $("#mbReach").value=reachM||255; $("#mbReachTxt").textContent=RC().name;
+  $("#mbBack").innerHTML=`‹ 回首頁`;
+  $("#mbRand").innerHTML=`${ui("again",18)}抽一個`;
+}
+$("#doorMap").onclick=()=>{ Snd.play("pop"); mapMode=true; whoPref=[]; scene=""; dir="all"; cnty=[]; far=false; setView("map"); Map2.showHint&&Map2.showHint(); };
+$("#zIn").onclick=e=>{ e.stopPropagation(); Map2.zoomBy(1.8); };
+$("#zOut").onclick=e=>{ e.stopPropagation(); Map2.zoomBy(1/1.8); };
+$("#mapBackF").onclick=()=>$("#mbBack").onclick();
+$("#mbBack").onclick=()=>{ if(rolling) return; Snd.play("pop"); closeSheet&&sheetOpen()&&closeSheet(); setView("home"); };
+const REACH_MAX=255;   // 拉到最右邊＝全台都可以
+let reachSndAt=0, reachDraw=0;
+$("#mbReach").oninput=e=>{ if(rolling) return;
+  const v=+e.target.value; reachM = v>=REACH_MAX ? 0 : v; store.set("wd_reachM",reachM);
+  $("#mbReachTxt").textContent=RC().name;
+  const now=performance.now(); if(now-reachSndAt>90){ reachSndAt=now; Snd.play("blip",Math.min(5,Math.floor(v/50))); }
+  // 拉桿一直動時，地圖每一格最多更新一次
+  if(!reachDraw) reachDraw=requestAnimationFrame(()=>{ reachDraw=0; Map2.hidePick(); renderHome(true); });
+};
+$("#mbRand").onclick=()=>{ if(rolling) return; pick(); };
+
+/* 幫我決定：今天誰去 → 怎麼玩 → 開多遠 */
+function askCount(o){ const s0={scene,flt,reachIdx,reachM,dir,cnty,far,mapMode}; scene=o.scene??ask.scene; flt=whoFlt(o.who??ask.who); reachIdx=o.reach??5; reachM=REACHES[reachIdx].m; dir="all"; cnty=[]; far=false; mapMode=false;
+  const n=candidates().length; ({scene,flt,reachIdx,reachM,dir,cnty,far,mapMode}=s0); return n; }
+function renderAsk(){
+  const st=ask.step;
+  $("#askBack").innerHTML="‹ 上一步";
+  $("#askDots").innerHTML=[0,1,2].map(i=>`<i class="${i<=st?"on":""}"></i>`).join("");
+  let h="";
+  if(st===0){
+    $("#askQ").textContent="今天誰去？";
+    h=Object.entries(WHO).map(([k,w])=>`<button class="big3row" data-v="${k}"><span class="ic">${ui(w.ic,44)}</span><span class="tx"><b>${w.name}</b><small>${w.sub}</small></span></button>`).join("");
+  } else if(st===1){
+    $("#askQ").textContent="今天想怎麼玩？";
+    h=Object.entries(SCENES).map(([k,s])=>{ const n=askCount({scene:k}); return `<button class="tile3 ${n?"":"zero"}" data-v="${k}"><span class="ic">${ui(s.ic,52)}</span><b>${s.name}</b><small>${s.sub}</small><i>${n}</i></button>`; }).join("")
+      +`<button class="tile3 wide" data-v=""><span class="ic">${ui("spark",40)}</span><b>都可以</b><small>不挑玩法</small><i>${askCount({scene:""})}</i></button>`;
+  } else {
+    $("#askQ").textContent="開多遠？";
+    h=DIST.map(d=>{ const n=askCount({reach:d.i}); return `<button class="big3row ${n?"":"zero"}" data-v="${d.i}"><span class="ic">${ui("compass",44)}</span><span class="tx"><b>${d.name}</b><small>${d.sub}</small></span><i>${n} 個</i></button>`; }).join("");
+  }
+  $("#askGrid").className="askGrid s"+st;
+  $("#askGrid").innerHTML=h;
+  $$("#askGrid button").forEach(b=>b.onclick=()=>{
+    if(b.classList.contains("zero")){ Snd.play("oops"); toast("這個選項沒有地點，換一個試試"); return; }
+    Snd.play("toggle",true);
+    const v=b.dataset.v;
+    if(st===0){ ask.who=v; ask.step=1; renderAsk(); }
+    else if(st===1){ ask.scene=v; ask.step=2; renderAsk(); }
+    else { ask.reach=+v; runDecide(ask); }
+  });
+}
+$("#doorDice").onclick=()=>{ Snd.play("pop"); ask={step:0,who:"fam",scene:"",reach:1}; setView("ask"); renderAsk(); };
+$("#askBack").onclick=()=>{ Snd.play("pop"); if(ask.step===0) setView("home"); else { ask.step--; renderAsk(); } };
+async function runDecide(a){
+  mapMode=false; scene=a.scene; flt=whoFlt(a.who); whoPref=(WHO[a.who]||WHO.fam).pref; reachIdx=a.reach; reachM=REACHES[reachIdx].m; dir="all"; cnty=[]; far=false;
+  store.set("wd_scene",scene); store.set("wd_flt",flt); store.set("wd_reach",reachIdx); store.set("wd_reachM",reachM);
+  last3={who:a.who,scene:a.scene,reach:a.reach}; store.set("wd_last3",last3);
+  setView("map");
+  await sleep(450);
+  pick();
+}
+$("#doorLast").onclick=()=>{ if(!last3) return; Snd.play("pop"); runDecide(last3); };
+$("#hOrigin").onclick=()=>{ Snd.play("pop"); showOrigin(); };
+$("#hSet").onclick=()=>{ Snd.play("pop"); showSettings3(); };
+function showSettings3(){
+  const row=(k,ic,l,sub)=>`<button class="set3 ${flt[k]?"on":""}" data-k="${k}">${ui(ic,26)}<span><b>${l}</b><small>${sub}</small></span><i class="sw3"></i></button>`;
+  openSheet(`<div class="sheetBody form"><h2>家庭設定</h2><div class="note2">設定一次，之後每次挑都會套用</div>
+    <div style="display:grid;gap:10px;margin-top:12px">
+      ${row("noresv","calendar","不要需預約的","臨時起意，進得去最重要")}
+      ${row("avoid","clock","避開 30 天內去過的","每次都去新地方")}
+      <button class="set3" id="s3Origin">${ui("pin",26)}<span><b>出發點</b><small>${esc(originName())}</small></span><i>›</i></button>
+    </div></div>`);
+  $$(".set3[data-k]").forEach(b=>b.onclick=()=>{ const k=b.dataset.k; flt[k]=!flt[k]; store.set("wd_flt",flt); b.classList.toggle("on",flt[k]); Snd.play("toggle",flt[k]); });
+  $("#s3Origin").onclick=()=>{ closeSheet(); setTimeout(showOrigin,250); };
+}
 
 /* ===== 首次繪製 ===== */
 (function(){
@@ -855,43 +1041,32 @@ $("#addBtn").innerHTML=ui("plus",28);
 const NAV=[["roll","map","挑地點"],["list","ticketL","名單"],["trail","foot","足跡"]];
 $$("#nav button").forEach((b,i)=>b.innerHTML=ui(NAV[i][1],24)+NAV[i][2]);
 paintSndBtns(); renderReach(); renderDir(); renderCnty(); renderScenes(); renderChips(); renderPool(); Map2.refresh(false);
+setView("home");
 $("#footCount").textContent=`口袋名單 ${spots().length} 個地點`;
 
 /* ===== 開機畫面：天空 → 台灣浮出來 → 從家裡一圈圈擴散 → 字一個個跳出 → 標題飛到首頁（FLIP） ===== */
 (function(){
   const sp=$("#splash"); if(!sp){ splashDoneR(); return; }
-  const o=`transform-box:view-box;transform-origin:${HP[0]}px ${HP[1]}px`;   // 從出發點（沒設定就從北台灣）擴散
-  $("#spMap").innerHTML=`<svg viewBox="0 0 400 720"><use href="#twBase"/>
-    <circle class="sp-ring" stroke-width="7" cx="${HP[0]}" cy="${HP[1]}" r="260" style="${o}"/><circle class="sp-ring r2" stroke-width="7" cx="${HP[0]}" cy="${HP[1]}" r="260" style="${o}"/><circle class="sp-ring r3" stroke-width="7" cx="${HP[0]}" cy="${HP[1]}" r="260" style="${o}"/>
-    <circle cx="${HP[0]}" cy="${HP[1]}" r="9" fill="#FFD54A" stroke="${INK}" stroke-width="3"/></svg>`;
-  const tt=$("#spTitle");
-  tt.innerHTML=[..."假日骰骰"].map((c,i)=>`<span style="--i:${i}">${c}</span>`).join("");
-  const centerTitle=()=>{ tt.style.left=Math.round((window.innerWidth-tt.getBoundingClientRect().width)/2)+"px"; };
-  centerTitle();
-  setTimeout(()=>sp.classList.add("sp-live"),150);   // 前 0.15 秒跟 iPhone 啟動圖一樣：只有天空底色
+  // 開機插畫：暖色太陽從山後升起、一條小路延伸到遠方、兩隻小鳥
+  $("#spScene").innerHTML=`<svg viewBox="-40 -40 380 380"><defs><path id="spArc" d="M-6 150 A156 156 0 0 1 306 150"/><clipPath id="spClip"><circle cx="150" cy="150" r="140"/></clipPath></defs><circle cx="150" cy="150" r="140" fill="#FBF1E4"/><g clip-path="url(#spClip)">
+    <g class="sp-sun"><circle cx="150" cy="150" r="58" fill="#F4A582"/><circle cx="150" cy="150" r="78" fill="none" stroke="#F4A582" stroke-width="2" stroke-dasharray="3 9" opacity=".7"/></g>
+    <path class="sp-hill h1" d="M-10 196 C40 160 90 168 130 186 C170 204 210 170 310 176 V310 H-10Z" fill="#CFE4D6" stroke="${INK}" stroke-width="3" stroke-linejoin="round"/>
+    <path class="sp-hill h2" d="M-10 232 C60 206 120 214 170 228 C220 242 260 222 310 214 V310 H-10Z" fill="#A9D3C0" stroke="${INK}" stroke-width="3" stroke-linejoin="round"/>
+    <path class="sp-road" d="M150 300 C130 270 190 256 160 236 C140 222 172 210 156 194" fill="none" stroke="${INK}" stroke-width="3.5" stroke-linecap="round"/>
+    <g class="sp-bird" fill="none" stroke="${INK}" stroke-width="2.5" stroke-linecap="round"><path d="M196 92 q7 -7 14 0 q7 -7 14 0"/><path d="M218 116 q5 -5 10 0 q5 -5 10 0"/></g></g><circle cx="150" cy="150" r="140" fill="none" stroke="${INK}" stroke-width="3"/><g class="sp-arc"><text font-family="Fraunces,Georgia,serif" font-weight="500" font-size="16" letter-spacing="9" fill="${INK}"><textPath href="#spArc" startOffset="50%" text-anchor="middle">ELSEWHERE</textPath></text><circle cx="${150-161*Math.sin(.68)}" cy="${150-161*Math.cos(.68)}" r="2.6" fill="#F4A582"/><circle cx="${150+161*Math.sin(.68)}" cy="${150-161*Math.cos(.68)}" r="2.6" fill="#F4A582"/></g></svg>`;
+  setTimeout(()=>sp.classList.add("sp-live"),150);   // 前 0.15 秒跟 iPhone 啟動圖一樣：只有底色
   let out=false;
   function exit(){
     if(out) return; out=true;
-    const reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const finish=()=>{ sp.remove(); document.body.classList.remove("sp-flying"); setTimeout(()=>document.body.classList.remove("enter"),1100); splashDoneR(); };
+    const finish=()=>{ sp.remove(); setTimeout(()=>document.body.classList.remove("enter"),1100); splashDoneR(); };
     document.body.classList.remove("booting");
-    if(reduce){ document.body.classList.add("enter"); sp.classList.add("sp-fade"); setTimeout(finish,520); return; }
     window.scrollTo(0,0);
-    document.body.classList.add("sp-flying","enter");
-    Map2.refresh(false);
-    centerTitle();
-    tt.querySelectorAll("span").forEach(s=>{ s.style.animation="none"; s.style.opacity="1"; });
-    requestAnimationFrame(()=>{
-      const a=tt.getBoundingClientRect(), b=$("#h1t").getBoundingClientRect();
-      tt.style.transition="transform .75s cubic-bezier(.6,0,.15,1)";
-      tt.style.transform=`translate(${b.left-a.left}px,${b.top-a.top}px) scale(${b.width/a.width})`;
-      sp.classList.add("sp-exit");
-      setTimeout(finish,800);
-    });
+    document.body.classList.add("enter"); Map2.refresh(false);
+    sp.classList.add("sp-fade"); setTimeout(finish,560);
   }
   const t0=performance.now();
   const fontsOk=Promise.race([document.fonts?document.fonts.ready:Promise.resolve(), new Promise(r=>setTimeout(r,1200))]);
-  fontsOk.then(()=>{ centerTitle(); const wait=Math.max(0,2400-(performance.now()-t0)); setTimeout(exit,wait); });
-  setTimeout(exit,4000);   // 保險：最多 4 秒
+  fontsOk.then(()=>{ const wait=Math.max(0,3800-(performance.now()-t0)); setTimeout(exit,wait); });
+  setTimeout(exit,5500);   // 保險：最多 5.5 秒
 })();
-splashDone.then(()=>setTimeout(()=>{ if(!origin){ Van.say("先告訴我從哪裡出發～",2400); } else Van.say("今天想開多遠？",1800); },900));
+splashDone.then(()=>setTimeout(()=>{ if(!origin){ Van.say("我先找找你在哪～",2400); locate(); } else Van.say("今天想開多遠？",1800); },900));
