@@ -51,7 +51,7 @@ def _km(a,b):
 for k,(la,lo) in CENTER2.items():
     if k not in CENTER: CENTER[k]=(la,lo,_min(_km((24.893,120.993),(la,lo))))
 CENTER.update(CENTER_EAST)
-TAGSET = set('草動水車沙滑手機雨走蔭停奶泉免吃約')
+TAGSET = set('草動水車沙滑手機工雨走蔭停奶泉免吃約')
 
 new = json.load(open(sys.argv[1]))
 details = json.load(open('details_data.json'))

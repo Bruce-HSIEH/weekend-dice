@@ -339,7 +339,7 @@ footer{text-align:center;font-size:12px;color:var(--ink2);margin-top:22px;line-h
 #splash .sp-scene{position:absolute;left:50%;top:50%;width:340px;height:340px;margin:-170px 0 0 -170px}
 #splash .sp-scene svg{width:340px;height:340px;display:block;overflow:visible}
 #splash .sp-arc{opacity:0}
-#splash.sp-live .sp-arc{animation:spArcIn 1.1s ease .9s both}
+#splash.sp-live .sp-arc{animation:spArcIn .7s ease .45s both}
 @keyframes spArcIn{0%{opacity:0}100%{opacity:1}}
 #splash .sp-sun{transform:translateY(70px);opacity:0}
 #splash.sp-live .sp-sun{animation:spSun 1.3s cubic-bezier(.25,.8,.3,1) .05s both}
@@ -692,6 +692,68 @@ body.enter .snd{animation:none!important}
 .dAge{flex:none;font-size:11px;padding:1px 6px;border-radius:8px;background:#EEE;color:#666;text-decoration:none;margin-left:2px}
 .dAge.old{background:#FDE7DF;color:#B4532F}
 
+/* v3.2：首頁 —— 兩扇門更大、平面卡片（不要底下那條立體邊），下面兩個小圖示 */
+.homeView{gap:14px!important}
+.door{min-height:max(220px,calc((100dvh - 250px - env(safe-area-inset-top) - env(safe-area-inset-bottom)) / 2))!important;
+  border:none!important;border-radius:32px!important;box-shadow:0 10px 28px rgba(43,58,85,.10),0 1px 0 rgba(255,255,255,.8) inset!important;
+  transition:transform .15s ease,box-shadow .15s ease!important}
+.door.dMap{background:linear-gradient(160deg,#E4F3EC,#CFEADF)!important}
+.door.dDice{background:linear-gradient(160deg,#FFF1DA,#FBE2C4)!important}
+.door:active{transform:scale(.97)!important;box-shadow:0 4px 12px rgba(43,58,85,.10)!important}
+.door .dIl svg{width:132px!important;height:132px!important}
+.door b{font-size:36px!important}
+.door small{font-size:16px!important}
+.homeQuick{display:flex;justify-content:center;gap:48px;padding:6px 0 2px}
+.qBtn{display:flex;flex-direction:column;align-items:center;gap:3px;background:none;border:none;padding:4px;min-width:96px;color:var(--ink)}
+.qBtn .qIc{width:56px;height:56px;border-radius:50%;background:#fff;display:grid;place-items:center;box-shadow:0 4px 14px rgba(43,58,85,.10);transition:transform .15s}
+.qBtn:active .qIc{transform:scale(.92)}
+.qBtn b{font-weight:400;font-size:16px;white-space:nowrap;max-width:140px;overflow:hidden;text-overflow:ellipsis}
+.qBtn small{font-size:12px;color:var(--ink2)}
+
+/* v3.2：地圖自己挑 = 全螢幕的新頁面，地圖越大越好；控制都做成輕巧的浮動元件 */
+body.mapFull{overflow:hidden}
+body.mapFull .top,body.mapFull .homeVer,body.mapFull footer,body.mapFull .foot{display:none!important}
+body.mapFull #mapCard{position:fixed!important;inset:0!important;height:100dvh!important;min-height:0!important;margin:0!important;
+  border:none!important;border-radius:0!important;box-shadow:none!important;z-index:25}
+body.mapFull #fromTag,body.mapFull #reachTag,body.mapFull #zoomBtn{display:none!important}
+body.mapFull .mapBackF{top:calc(env(safe-area-inset-top) + 12px);left:12px;border:none;box-shadow:0 4px 16px rgba(43,58,85,.18);background:rgba(255,255,255,.95);height:44px;font-size:17px}
+body.mapFull .mapBackF:active{transform:scale(.95);box-shadow:0 2px 8px rgba(43,58,85,.18)}
+body.mapFull .zoomPM{top:calc(env(safe-area-inset-top) + 12px);right:12px;border:none;box-shadow:0 4px 16px rgba(43,58,85,.18);border-radius:14px}
+body.mapFull .zoomPM button{width:44px;height:44px;font-size:24px}
+body.mapFull .zoomPM button+button{border-top:1px solid #E6E2DA}
+body.mapFull #tabRoll[data-view="map"] .mapHint{top:calc(env(safe-area-inset-top) + 66px)}
+body.mapFull #mapBar{position:fixed!important;left:12px;right:12px;bottom:calc(env(safe-area-inset-bottom) + 12px);z-index:26;margin:0!important;
+  background:rgba(255,255,255,.94);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  border:none!important;border-radius:22px!important;box-shadow:0 6px 24px rgba(43,58,85,.18)!important;padding:12px 16px 10px!important}
+body.mapFull #mbBack{display:none!important}
+body.mapFull .mbTop{display:flex;align-items:center;justify-content:space-between;gap:10px}
+body.mapFull .mbCount{font-size:15px;color:var(--ink2)}
+body.mapFull .mbCount b,body.mapFull .mbCount strong{font-size:26px;color:var(--pri-d);font-weight:400}
+body.mapFull .mbRand{border:none!important;box-shadow:none!important;border-radius:999px!important;background:var(--pri,#2CA39A)!important;color:#fff!important;padding:10px 20px!important;font-size:18px!important}
+body.mapFull .mbRand:active{transform:scale(.95)}
+body.mapFull .mbSlide{display:flex;align-items:center;gap:10px;margin-top:8px}
+body.mapFull .mbLab{font-size:13px;color:var(--ink2);white-space:nowrap}
+body.mapFull #mbReachTxt{font-size:15px;font-weight:400;white-space:nowrap;min-width:84px;text-align:right}
+body.mapFull #tabRoll #mapCard.mapCard.big{height:100dvh!important;min-height:0!important;margin:0!important}
+
+/* v3.2：抽籤時紅點閃一下會變大變亮 */
+#dots circle.dot{transform-box:fill-box;transform-origin:center;transition:transform .08s}
+#dots circle.dot.flash{fill:#FFD54A!important;transform:scale(1.9)}
+/* 選出發點時：下面控制列先藏起來 */
+body.tapOrigin #mapBar{display:none!important}
+/* v3.2：幫我決定 —— 返回鈕跟地圖頁一樣；所有選項改成平面卡片（不要底下灰灰的立體邊） */
+.askBack{border:none!important;background:#fff!important;box-shadow:0 4px 16px rgba(43,58,85,.15)!important;border-radius:22px!important;height:44px;padding:0 18px!important;font-size:17px!important}
+.askBack:active{transform:scale(.95)}
+.askDots i{cursor:pointer}
+.big3row,.tile3,.pick3,.distRow{border:none!important;box-shadow:0 6px 18px rgba(43,58,85,.09)!important;background:#fff!important;transition:transform .12s ease!important}
+.big3row:active,.tile3:active,.pick3:active,.distRow:active{transform:scale(.97)!important;box-shadow:0 3px 10px rgba(43,58,85,.09)!important}
+.big3row.sug{background:#FFF4DC!important}
+.pick3.on{background:#DDF1EC!important;transform:none!important;box-shadow:0 0 0 2.5px var(--pri,#2CA39A) inset,0 6px 18px rgba(43,58,85,.09)!important}
+.big3row em{border:none!important;background:var(--sun)!important}
+.nextBtn{border:none!important;box-shadow:0 6px 18px rgba(44,163,154,.30)!important;border-radius:999px!important}
+.nextBtn:active{transform:scale(.97)!important}
+.tile3 .ic,.big3row .ic{background:#F4F1EA!important;border:none!important}
+
 </style>
 <body class="booting">
 <!-- 台灣地圖底圖（給開機畫面、明信片重複使用） -->
@@ -718,10 +780,10 @@ body.enter .snd{animation:none!important}
     <!-- v3：首頁兩扇大門 -->
     <div class="homeView" id="homeView">
       <button class="door dMap" id="doorMap"><span class="dIl" id="dMapIl"></span><b>看地圖自己挑</b><small>放大地圖，點想去的地方</small></button>
-      <button class="door dDice" id="doorDice"><span class="dIl" id="dDiceIl"></span><b>幫我決定</b><small>回答三個問題，馬上抽一個</small></button>
+      <button class="door dDice" id="doorDice"><span class="dIl" id="dDiceIl"></span><b>幫我決定</b><small>回答幾個問題，馬上抽一個</small></button>
       <button class="again3" id="doorLast" hidden></button>
-      <div class="homeFoot"><button id="hOrigin"></button><button id="hSet"></button></div>
-      <div class="homeFoot"><button id="hList"></button><button id="hTrail"></button></div>
+      <div class="homeQuick"><button class="qBtn" id="hOrigin"></button><button class="qBtn" id="hList"></button></div>
+      <div hidden><button id="hSet"></button><button id="hTrail"></button></div>
       <div class="homeVer"><button class="ver" id="verBtn"></button></div>
     </div>
     <!-- v3：幫我決定（一頁一題） -->
@@ -916,7 +978,7 @@ const BASE_RAW = [
   ["新北大都會公園","新北三重",60,"草走免停沙滑","超大草皮、共融遊戲場",25.065,121.481],
   ["板橋林家花園","新北板橋",60,"免","古典園林，有一些階梯",25.012,121.455],
   ["飛牛牧場","通霄",65,"草吃動停","餵小牛、大草原，坡比較多",24.475,120.735],
-  ["通霄精鹽廠","通霄",65,"雨免吃停","鹽的觀光工廠，吃鹹冰棒",24.484,120.682],
+  ["通霄精鹽廠","通霄",65,"雨免吃停工","鹽的觀光工廠，吃鹹冰棒",24.484,120.682],
   ["三義木雕街＋木雕博物館","三義",65,"雨吃","看木雕，博物館室內好逛",24.411,120.77],
   ["南庄老街","南庄",65,"免吃","桂花巷、老街小吃，有坡",24.597,121.0],
   ["八里左岸＋十三行博物館","新北八里",65,"雨走吃","河岸騎車散步，博物館室內",25.157,121.401],
@@ -926,7 +988,7 @@ const BASE_RAW = [
   ["勝興車站","三義",70,"免吃車","舊山線老車站，有坡",24.388,120.785],
   ["舊山線鐵道自行車","三義",70,"吃車約","騎鐵道車過山洞，要先預約",24.392,120.778],
   ["大湖草莓園（冬春）","大湖",70,"吃手","大約 12–4 月採草莓",24.42,120.865],
-  ["大湖酒莊","大湖",70,"雨免吃","草莓酒、草莓冰淇淋",24.418,120.868],
+  ["大湖酒莊","大湖",70,"雨免吃工","草莓酒、草莓冰淇淋",24.418,120.868],
   ["苑裡藺草文化館","苑裡",70,"雨免手","藺草編織 DIY",24.43,120.66],
   ["台北兒童新樂園","台北士林",70,"走吃奶","小小孩的遊樂園，推車友善",25.097,121.515],
   ["國立臺灣科學教育館","台北士林",70,"雨走吃奶","互動科學展，室內玩一整天",25.096,121.516],
@@ -953,13 +1015,13 @@ const BASE_RAW = [
   ["審計新村","台中西區",85,"免吃","文創小店、市集",24.144,120.662],
   ["礁溪溫泉公園","宜蘭礁溪",90,"免吃泉","免費泡腳，吃溫泉美食",24.827,121.766],
   ["蘭陽博物館","宜蘭頭城",95,"雨走奶","單面山造型建築，展覽好逛",24.869,121.832],
-  ["幾米廣場＋宜蘭酒廠","宜蘭市",95,"雨走免吃","繪本場景拍照、逛酒廠",24.754,121.758],
+  ["幾米廣場＋宜蘭酒廠","宜蘭市",95,"雨走免吃工","繪本場景拍照、逛酒廠",24.754,121.758],
   ["基隆正濱漁港","基隆",95,"免吃","彩色屋拍照、吃海鮮",25.149,121.774],
   ["國立傳統藝術中心","宜蘭五結",100,"雨走吃停奶手","老街、表演、DIY",24.686,121.823],
   ["冬山河親水公園","宜蘭五結",100,"草走免水停","河岸大草地，夏天玩水",24.676,121.81],
   ["羅東運動公園","宜蘭羅東",100,"草走免停","超大公園，平坦好推車",24.692,121.761],
   ["羅東林業文化園區","宜蘭羅東",100,"走免車","老火車、貯木池散步",24.679,121.775],
-  ["金車噶瑪蘭威士忌酒廠","宜蘭員山",100,"雨免吃停","參觀酒廠、吃冰淇淋",24.762,121.676],
+  ["金車噶瑪蘭威士忌酒廠","宜蘭員山",100,"雨免吃停工","參觀酒廠、吃冰淇淋",24.762,121.676],
   ["張美阿嬤農場","宜蘭員山",100,"草吃動停約","餵動物，要先預約",24.742,121.716],
   ["野柳地質公園","新北萬里",100,"吃","女王頭，步道有些高低",25.207,121.69],
   ["金山老街","新北金山",100,"免吃","鴨肉、地瓜",25.222,121.638],
@@ -968,7 +1030,7 @@ const BASE_RAW = [
   ["十分老街","新北平溪",100,"吃車","放天燈、看瀑布",25.041,121.775],
   ["梅花湖","宜蘭冬山",105,"草走免停","環湖步道很平",24.645,121.735],
   ["鹿港老街","彰化鹿港",110,"免吃","老街、天后宮、蚵仔煎",24.056,120.432],
-  ["台灣玻璃館","彰化鹿港",110,"雨免停","玻璃觀光工廠，玻璃廟很好拍",24.04,120.43],
+  ["台灣玻璃館","彰化鹿港",110,"雨免停工","玻璃觀光工廠，玻璃廟很好拍",24.04,120.43],
   ["埔里紙教堂","南投埔里",120,"草免吃","紙做的教堂，生態池散步",23.946,120.968],
   ["台一生態教育休閒農場","南投埔里",120,"草吃","花園、蝴蝶館",23.986,120.98],
   ["福隆海水浴場","新北貢寮",120,"吃水沙","沙灘、吃福隆便當",25.021,121.946],
@@ -1012,7 +1074,7 @@ const BASE_RAW = [
   ["斗六膨鼠森林公園","雲林斗六",140,"草走免滑","大草地、遊戲場",23.703,120.547],
   ["西螺大橋＋延平老街","雲林西螺",125,"免吃","紅色大橋、醬油老街",23.802,120.461],
   ["雲林布袋戲館","雲林虎尾",140,"雨走","看布袋戲偶、展覽",23.708,120.432],
-  ["興隆毛巾觀光工廠","雲林虎尾",140,"雨吃停手","毛巾蛋糕 DIY",23.709,120.4],
+  ["興隆毛巾觀光工廠","雲林虎尾",140,"雨吃停手工","毛巾蛋糕 DIY",23.709,120.4],
   ["北港朝天宮","雲林北港",160,"免吃","媽祖大廟、老街小吃",23.567,120.304],
   ["故宮南院","嘉義太保",150,"草雨走吃停奶","博物館＋湖邊大草地",23.473,120.29],
   ["檜意森活村","嘉義市",145,"走免吃蔭","日式宿舍群散步",23.484,120.453],
@@ -1063,7 +1125,7 @@ const BASE_RAW = [
   ["鯉魚潭","花蓮壽豐",215,"走免吃","環湖步道、踩天鵝船",23.93,121.51],
   ["遠雄海洋公園","花蓮壽豐",220,"吃停奶","海洋主題樂園",23.901,121.6],
   ["林田山林業文化園區","花蓮鳳林",235,"走免","日式林業村落",23.729,121.432],
-  ["光復糖廠","花蓮光復",240,"吃停","老糖廠吃冰",23.65,121.418],
+  ["光復糖廠","花蓮光復",240,"吃停工雨","老糖廠吃冰",23.65,121.418],
   ["瑞穗牧場","花蓮瑞穗",260,"草吃動停","餵小牛、喝鮮奶",23.491,121.381],
   ["太魯閣國家公園","花蓮秀林",225,"","峽谷風景，出發前確認步道開放",24.158,121.621],
   ["池上伯朗大道","台東池上",300,"走免吃","稻田大道騎單車",23.11,121.22],
@@ -1084,7 +1146,7 @@ const BASE_RAW = [
   ["新店親情河濱公園", "新北新店", 70, "草免走蔭滑", "河濱大草地＋遊戲場，推車好推", 24.963, 121.533],
   ["板橋浮洲恐龍遊戲場", "新北板橋", 60, "草免滑", "恐龍主題遊戲場，旁邊就是大草原", 24.996, 121.443],
   ["新北市客家文化園區", "新北三峽", 60, "雨免走", "室內展館＋戶外草坪，免門票", 24.937, 121.374],
-  ["吳福洋襪子故事館", "新北林口", 55, "雨免停手", "襪子觀光工廠，免門票可 DIY", 25.073, 121.385],
+  ["吳福洋襪子故事館", "新北林口", 55, "雨免停手工", "襪子觀光工廠，免門票可 DIY", 25.073, 121.385],
   ["台電北部展示館", "新北萬里", 90, "雨免走", "免費室內能源互動館，海邊順遊", 25.204, 121.663],
   ["潮境公園＋潮境智能海洋館", "基隆八斗子", 95, "草走", "看海大草坡，旁邊有小海洋館", 25.143, 121.802],
   ["風禾公園", "桃園桃園", 55, "草免走停滑", "萬坪草地＋特色遊具，全台首座防災公園", 25.013, 121.3],
@@ -1101,14 +1163,14 @@ const BASE_RAW = [
   ["頂魚寮公園", "台中梧棲", 95, "草免滑", "花園迷宮遊戲區，全台十大特色公園", 24.25, 120.54],
   ["馬卡龍公園", "台中太平", 100, "草免滑", "水塔造型大溜滑梯＋共融遊具", 24.13, 120.73],
   ["新社百菇莊", "台中新社", 95, "雨吃停手", "採香菇、做菇菇茶碗蒸", 24.21, 120.8],
-  ["伊莎貝爾烘焙觀光工廠", "台中大雅", 90, "雨免停", "薑餅屋城堡外觀，室內好逛", 24.23, 120.65],
+  ["伊莎貝爾烘焙觀光工廠", "台中大雅", 90, "雨免停工", "薑餅屋城堡外觀，室內好逛", 24.23, 120.65],
   ["台灣民俗文物館", "台中北屯", 95, "走", "小江南園區，繞一圈半小時", 24.17, 120.69],
   ["八仙山國家森林遊樂區", "台中和平", 95, "走水蔭", "森林步道＋夏天戲水池", 24.18, 121.03],
   ["八卦山親子探索園區", "彰化市", 110, "草免蔭滑", "27 公尺水管溜滑梯，樹蔭不曬", 24.077, 120.55],
   ["芊動公園", "彰化市", 115, "免走", "2025 開幕，巨型爬牆大貓、三隻小豬", 24.08, 120.54],
   ["成美文化園", "彰化市", 110, "走", "日式庭園，好走好拍", 24.1, 120.55],
   ["埔茂花市", "彰化芬園", 115, "免停沙滑", "花市附沙坑溜滑梯", 24.02, 120.63],
-  ["溪湖糖廠", "彰化溪湖", 130, "免吃車停", "糖廠冰品，假日小火車", 23.96, 120.48],
+  ["溪湖糖廠", "彰化溪湖", 130, "免吃車停工雨", "糖廠冰品，假日小火車", 23.96, 120.48],
   ["九九峰動物樂園", "南投草屯", 115, "草動停", "鳥類大網籠，可餵動物", 23.98, 120.73],
   ["鳳凰谷鳥園生態園區", "南投鹿谷", 135, "走蔭", "賞鳥步道，空氣好", 23.73, 120.73],
   ["鹿芝谷生態景觀園區", "南投鹿谷", 140, "動手沙吃停走", "水豚、梅花鹿、羊駝，可以自己餵", 23.737, 120.752],
@@ -1119,7 +1181,7 @@ const BASE_RAW = [
   ["三隻小豬觀光農場", "嘉義民雄", 160, "草動水停", "巨無霸粉紅豬，玩水看小動物", 23.55, 120.43],
   ["金桔農莊", "嘉義民雄", 160, "免蔭停滑", "樹屋溜滑梯＋繩索步道", 23.57, 120.42],
   ["旺來山文化園", "嘉義民雄", 160, "雨免停", "鳳梨酥觀光工廠，好停車", 23.57, 120.425],
-  ["佐登妮絲城堡", "嘉義大林", 150, "雨走停", "歐風城堡，全室內冷氣，推車好推", 23.63, 120.47],
+  ["佐登妮絲城堡", "嘉義大林", 150, "雨走停工", "歐風城堡，全室內冷氣，推車好推", 23.63, 120.47],
   ["向禾漁場", "嘉義東石", 165, "草吃手", "漁塭體驗＋海鮮", 23.45, 120.15],
   ["南瀛親子館", "台南新營", 170, "雨免滑奶", "透明溜滑梯室內樂園", 23.31, 120.32],
   ["黑橋牌香腸博物館", "台南安平", 200, "雨免", "老台南街景重現，免門票", 22.98, 120.16],
@@ -1132,7 +1194,7 @@ const BASE_RAW = [
   ["野森動物學校", "高雄內門", 195, "草動約", "2026 新園區，預約制，狐狸樹懶水獺", 22.94, 120.47],
   ["淨園農場", "高雄大寮", 235, "草動車停滑機", "長頸鹿溜滑梯、小火車、看飛機", 22.57, 120.35],
   ["凹子底森林公園", "高雄鼓山", 225, "草免走滑", "都會大草地＋遊戲場", 22.66, 120.3],
-  ["橋頭糖廠", "高雄橋頭", 215, "免走車蔭停", "糖廠老樹、冰品", 22.76, 120.31],
+  ["橋頭糖廠", "高雄橋頭", 215, "免走車蔭停工雨", "糖廠老樹、冰品", 22.76, 120.31],
   ["航空教育展示館", "高雄岡山", 215, "雨免機", "看真飛機，免費", 22.79, 120.27],
   ["澄清湖風景區", "高雄鳥松", 225, "走蔭", "湖畔步道好推", 22.66, 120.36],
   ["林邊蓮霧公園", "屏東林邊", 245, "免滑", "30 米飛天小火車溜滑梯", 22.43, 120.51],
@@ -1144,7 +1206,7 @@ const BASE_RAW = [
   ["墾丁金享主題樂園", "屏東恆春", 280, "雨吃", "2024 開幕室內樂園，雨天備案", 21.99, 120.75],
   ["宜蘭免睡殿", "宜蘭蘇澳", 105, "雨", "床墊跳跳館，枕頭大戰", 24.6, 121.84],
   ["歪歪球", "宜蘭蘇澳", 105, "雨", "12 種丟球關卡（週三休）", 24.59, 121.845],
-  ["安永心食館", "宜蘭蘇澳", 100, "雨吃停手", "海洋生態＋美食觀光工廠", 24.62, 121.83],
+  ["安永心食館", "宜蘭蘇澳", 100, "雨吃停手工", "海洋生態＋美食觀光工廠", 24.62, 121.83],
   ["宜蘭頭等倉", "宜蘭員山", 90, "雨", "室內遊樂 15 關，長輩愛心票（週三休）", 24.74, 121.71],
   ["清水地熱公園", "宜蘭三星", 85, "免吃泉手", "地熱煮蛋煮玉米", 24.62, 121.64],
   ["宜蘭運動公園", "宜蘭市", 90, "草免", "大草地好跑", 24.74, 121.74],
@@ -1173,11 +1235,11 @@ const BASE_RAW = [
   ["鴨寮故事館", "宜蘭五結", 95, "草動手", "撿鴨蛋、餵鴨，100cm 以下免門票（週四休）", 24.68, 121.79],
   ["農夫青蔥農場", "宜蘭三星", 85, "草吃動手", "拔蔥做蔥油餅、餵梅花鹿（週二休）", 24.67, 121.65],
   ["三星稻莊休閒農場", "宜蘭三星", 85, "草雨動", "水豚、狐獴，室內積木區", 24.66, 121.66],
-  ["潭酵天地觀光工廠", "宜蘭礁溪", 95, "雨免停滑", "免門票，雙層膠囊溜滑梯免費玩", 24.84, 121.77],
-  ["橘之鄉蜜餞形象館", "宜蘭市", 90, "雨免", "愛麗絲巨大桌椅、玻璃屋咖啡", 24.75, 121.74],
-  ["溪和水產觀光工廠", "宜蘭五結", 95, "雨吃停手", "水產 DIY，彩繪貝殼", 24.69, 121.8],
+  ["潭酵天地觀光工廠", "宜蘭礁溪", 95, "雨免停滑工", "免門票，雙層膠囊溜滑梯免費玩", 24.84, 121.77],
+  ["橘之鄉蜜餞形象館", "宜蘭市", 90, "雨免工", "愛麗絲巨大桌椅、玻璃屋咖啡", 24.75, 121.74],
+  ["溪和水產觀光工廠", "宜蘭五結", 95, "雨吃停手工", "水產 DIY，彩繪貝殼", 24.69, 121.8],
   ["中興文化創意園區", "宜蘭五結", 95, "免走手", "老紙廠改建，親子 DIY", 24.69, 121.79],
-  ["奇麗灣珍奶文化館", "宜蘭冬山", 95, "雨手", "手搖珍奶 DIY", 24.64, 121.77],
+  ["奇麗灣珍奶文化館", "宜蘭冬山", 95, "雨手工", "手搖珍奶 DIY", 24.64, 121.77],
   // ---- 餵動物新增 ----
   ["鹿羽松牧場", "新北金山", 85, "草動", "餵梅花鹿、綿羊豬、小羊", 25.205, 121.6],
   ["麗寶美樂地親子農場", "台中后里", 85, "草動停", "樂園旁新農場，水豚、狐獴，門票送飼料", 24.32, 120.7],
@@ -1203,7 +1265,7 @@ const BASE_RAW = [
   ["台北關渡恐龍探險樂園", "台北北投", 85, "", "2026年開幕的戶外動態恐龍展", 25.127, 121.500],
   ["中和公園（四號公園）", "新北中和", 70, "滑", "書本溜滑梯與森林樹屋遊戲場", 24.992, 121.492],
   ["希望之丘", "基隆信義", 95, "停", "基隆市區的親子遊戲場和森林公園", 25.124, 121.768],
-  ["虎牌米粉觀光工廠", "宜蘭五結", 95, "手停吃", "米粉DIY加免費吃米粉的觀光工廠", 24.684, 121.804],
+  ["虎牌米粉觀光工廠", "宜蘭五結", 95, "手停吃工雨", "米粉DIY加免費吃米粉的觀光工廠", 24.684, 121.804],
   ["大碗公溜滑梯", "宜蘭冬山", 95, "滑免", "免費的大溜滑梯和天然湧泉", 24.631, 121.762],
   ["羅東九號公園", "宜蘭羅東", 90, "水滑免", "全齡遊戲場，有玩水和海盜船關卡", 24.680, 121.773],
   ["森學苑", "宜蘭蘇澳", 100, "免", "免門票的木材觀光工廠", 24.597, 121.849],
@@ -1214,11 +1276,11 @@ const BASE_RAW = [
   ["鰲峰山運動公園（谷溜遊戲場）", "台中清水", 65, "滑", "新設 34 條滑道的大型遊戲場", 24.270, 120.555],
   ["達拉樂樂屋", "彰化市", 80, "雨沙滑", "冷氣開放的室內遊戲室", 24.081, 120.536],
   ["正實親子農場", "彰化北斗", 95, "動水沙滑", "小小孩可以玩很久的動物農場", 23.865, 120.520],
-  ["水銡利觀光工廠", "彰化秀水", 85, "水", "世界最大水龍頭與戶外戲水池", 24.029, 120.504],
+  ["水銡利觀光工廠", "彰化秀水", 85, "水工雨", "世界最大水龍頭與戶外戲水池", 24.029, 120.504],
   ["泳霖牧場", "彰化秀水", 85, "動免", "免門票的餵乳牛牧場", 24.030, 120.500],
   ["赤腳丫生態農莊", "台中大雅", 65, "動沙水滑", "樹屋溜滑梯加沙坑戲水池", 24.228, 120.652],
   ["威爾森的農場", "台中豐原", 65, "動", "可餵小動物的週末小農場", 24.247, 120.716],
-  ["月眉觀光糖廠", "台中后里", 60, "車免", "百年糖廠，可搭遊園小火車", 24.311, 120.717],
+  ["月眉觀光糖廠", "台中后里", 60, "車免工雨", "百年糖廠，可搭遊園小火車", 24.311, 120.717],
   ["水與松萌萌園", "南投埔里", 110, "動停", "落羽松林裡餵羊駝和水豚", 23.966, 120.966],
   ["草屯兒童樂園", "南投草屯", 90, "滑沙蔭免", "植物公園旁的免費沙坑遊戲場", 23.981, 120.675],
   ["豐年靈芝菇類生態農場", "南投埔里", 110, "手停免", "免費導覽、採香菇現烤現吃", 23.969, 120.964],
@@ -1236,7 +1298,7 @@ const BASE_RAW = [
   ["象山公園樹蛙遊戲場", "台北信義", 70, "滑免", "樹蛙主題地景丘遊戲場", 25.039, 121.562],
   ["新生公園地球旅行遊戲場", "台北中山", 70, "滑免機", "塔台溜滑梯，可看飛機", 25.073, 121.530],
   ["山水綠生態公園", "台北南港", 75, "滑草免停", "滑索彈跳床的生態公園，入園停車免費", 25.051, 121.602],
-  ["瓶蓋工廠台北製造所", "台北南港", 75, "手雨", "舊工廠改建的市集與手作空間", 25.053, 121.611],
+  ["瓶蓋工廠台北製造所", "台北南港", 75, "手雨工", "舊工廠改建的市集與手作空間", 25.053, 121.611],
   ["信義親子館（四四南村）", "台北信義", 70, "雨免約", "6 歲以下免費親子館，要預約", 25.029, 121.568],
   ["暖暖運動公園＆暖東苗圃", "基隆暖暖", 90, "草滑免", "三層樓超長溜滑梯和大草地", 25.102, 121.738],
   ["暖暖親水公園", "基隆暖暖", 90, "水免", "水舞噴水池和親水吊橋", 25.101, 121.735],
@@ -1274,15 +1336,15 @@ const BASE_RAW = [
   ["十分瀑布", "新北平溪", 75, "走", "步道平坦的台灣小尼加拉瓜", 25.025, 121.743],
   ["紅毛城", "新北淡水", 85, "雨", "淡水紅磚古城堡，可拍照", 25.164, 121.440],
   ["河灣渡假村", "新北平溪", 75, "草", "滑草、空中腳踏車的戶外渡假村", 25.028, 121.744],
-  ["卡滋爆米花觀光工廠樂園", "新北八里", 55, "手雨", "爆米花工廠導覽與DIY", 25.147, 121.397],
-  ["王子創意文具國", "新北林口", 60, "手雨", "巨型橡皮擦的文具觀光工廠", 25.083, 121.381],
+  ["卡滋爆米花觀光工廠樂園", "新北八里", 55, "手雨工", "爆米花工廠導覽與DIY", 25.147, 121.397],
+  ["王子創意文具國", "新北林口", 60, "手雨工", "巨型橡皮擦的文具觀光工廠", 25.083, 121.381],
   ["大鵬足湯公園", "新北萬里", 75, "泉免停", "免費天然溫泉足湯", 25.181, 121.686],
   ["新莊塭仔底濕地公園", "新北新莊", 65, "水免", "濕地公園有戲水池和兒童遊樂區", 25.032, 121.427],
   ["Time奶奶樹屋咖啡樂園", "新北萬里", 75, "吃", "可餵動物的樹屋咖啡園", 25.175, 121.693],
   ["汐止星際遊戲場", "新北汐止", 70, "水沙免", "八大行星主題遊戲場有戲水區", 25.063, 121.662],
   ["錦和運動公園", "新北中和", 70, "滑免", "超長滾輪溜滑梯的全齡公園", 25.000, 121.491],
   ["舊草嶺隧道", "新北貢寮", 90, "走", "鐵道改建的海景自行車道", 25.023, 121.904],
-  ["台灣玩具博物館", "新北板橋", 70, "手雨", "可體驗復古益智玩具", 25.007, 121.458],
+  ["台灣玩具博物館", "新北板橋", 70, "手雨工", "可體驗復古益智玩具", 25.007, 121.458],
   ["金山中山溫泉公園", "新北金山", 75, "泉免", "免費露天泡腳池，近金山老街", 25.224, 121.636],
   /* ===== 新增景點（carpet_F.json）===== */
   ["虎頭埤風景區", "台南新化", 195, "滑", "湖畔步道、吊橋與山丘溜滑梯", 23.036, 120.307],
@@ -1291,8 +1353,8 @@ const BASE_RAW = [
   ["隆田文化園區（ChaCha）", "台南官田", 180, "沙雨手", "嘉南大圳主題劇場與彈跳山丘", 23.189, 120.314],
   ["台南市立圖書館新總館", "台南永康", 195, "雨草免走吃", "免費親子遊戲空間、恐龍裝置", 23.020, 120.256],
   ["臺南山上花園水道博物館", "台南山上", 185, "水手", "百年淨水場，夏季有戲水池", 23.098, 120.347],
-  ["白人牙膏觀光工廠", "嘉義水上", 160, "雨免停吃", "免費參觀、室內親子遊戲區", 23.427, 120.401],
-  ["丸聚星球觀光工廠", "嘉義大林", 145, "雨免沙停手", "免費參觀生產線與遮陽沙坑", 23.599, 120.468],
+  ["白人牙膏觀光工廠", "嘉義水上", 160, "雨免停吃工", "免費參觀、室內親子遊戲區", 23.427, 120.401],
+  ["丸聚星球觀光工廠", "嘉義大林", 145, "雨免沙停手工", "免費參觀生產線與遮陽沙坑", 23.599, 120.468],
   ["番仔溝公園", "嘉義市", 155, "沙滑雨免", "橋下遊戲場，晴雨皆可玩", 23.482, 120.454],
   ["新港香藝文化園區", "嘉義新港", 150, "動草免停", "香腳造景草皮，可看羊和梅花鹿", 23.558, 120.346],
   ["臺南市兒童福利服務中心（安平兒童館）", "台南安平", 200, "雨手奶", "15個主題區的室內角色扮演親子館", 23.006, 120.161],
@@ -1303,19 +1365,19 @@ const BASE_RAW = [
   ["咩咩上樹萌寵樂園", "嘉義太保", 160, "動", "動物互動與森林冒險設施", 23.461, 120.331],
   ["KHTOY絨毛玩偶旗艦館", "嘉義民雄", 150, "雨免停", "三層樓玩偶館，有免費親子遊戲區", 23.553, 120.423],
   ["烏樹林五分車", "台南後壁", 165, "車", "搭五分車並可加看地震館", 23.361, 120.357],
-  ["老楊方塊酥觀光工廠", "嘉義大林", 145, "雨手停", "室內球池溜滑梯星球樂園", 23.606, 120.470],
-  ["萬國通路創意觀光工廠", "台南歸仁", 200, "雨手免", "行李箱工廠，歐風佈景與DIY", 22.965, 120.294],
+  ["老楊方塊酥觀光工廠", "嘉義大林", 145, "雨手停工", "室內球池溜滑梯星球樂園", 23.606, 120.470],
+  ["萬國通路創意觀光工廠", "台南歸仁", 200, "雨手免工", "行李箱工廠，歐風佈景與DIY", 22.965, 120.294],
   /* ===== 新增景點（carpet_G.json）===== */
   ["潮州鐵道園區", "屏東潮州", 230, "車手吃", "退役火車頭與鐵道文物館", 22.549, 120.538],
   ["哈瑪星台灣鐵道館", "高雄鼓山", 225, "車", "鐵道模型加館外環狀小火車", 22.639, 120.274],
   ["台電南部展示館", "屏東恆春", 270, "滑雨免停手", "免費的旋轉溜滑梯展示館", 22.002, 120.743],
   ["高雄市立歷史博物館", "高雄鹽埕", 225, "雨免停走", "有親子遊戲室的老建築博物館", 22.619, 120.285],
-  ["芙玉寶香皂文創主題館", "屏東南州", 235, "沙滑水手免停", "免費沙坑溜滑梯與香皂 DIY", 22.484, 120.511],
+  ["芙玉寶香皂文創主題館", "屏東南州", 235, "沙滑水手免停工雨", "免費沙坑溜滑梯與香皂 DIY", 22.484, 120.511],
   ["時代公園", "高雄前鎮", 230, "水滑免走", "高雄熊、戲水設施與高塔滑梯", 22.591, 120.311],
   ["後勁公園兒童遊戲場", "高雄楠梓", 220, "滑沙蔭走", "森林熊主題的新特色遊戲場", 22.726, 120.330],
   ["華一農場", "高雄大樹", 220, "動草吃", "餵羊、落羽松、現擠羊乳", 22.688, 120.430],
   ["水流莊牧場", "高雄橋頭", 215, "動沙滑蔭", "假日限定的小羊牧場", 22.760, 120.311],
-  ["旗山糖廠（旗糖農創園區）", "高雄旗山", 200, "車吃停", "小火車、糖廠冰與老建築", 22.889, 120.483],
+  ["旗山糖廠（旗糖農創園區）", "高雄旗山", 200, "車吃停工雨", "小火車、糖廠冰與老建築", 22.889, 120.483],
   ["大鮪魚航海樂園", "屏東東港", 235, "滑水草蔭免", "樹林間的 11 公尺高塔溜滑梯", 22.472, 120.444],
   ["屏菸文化基地", "屏東市", 220, "走停吃", "舊菸廠改造的文創園區", 22.670, 120.491],
   ["福爾摩莎可可農場", "屏東內埔", 225, "免停手吃", "清水模建築與巧克力霜淇淋", 22.608, 120.562],
@@ -1325,63 +1387,63 @@ const BASE_RAW = [
   ["金獅湖蝴蝶園", "高雄三民", 225, "免走", "免費賞蝶與親子遊戲室", 22.649, 120.295],
   ["禾光牧場", "高雄路竹", 210, "動草沙免", "自己割草餵羊的免費牧場", 22.852, 120.258],
   ["林後四林平地森林園區", "屏東潮州", 230, "草水蔭免停", "龍貓隧道與大草地", 22.553, 120.541],
-  ["鮮饌道海洋食品文化館", "屏東林邊", 240, "免停手吃", "鱈魚香絲主題的免費文化館", 22.432, 120.516],
+  ["鮮饌道海洋食品文化館", "屏東林邊", 240, "免停手吃工雨", "鱈魚香絲主題的免費文化館", 22.432, 120.516],
   /* ===== 新增景點（carpet_C.json）===== */
-  ["77巧克力共和國", "桃園八德", 40, "手雨約", "巧克力主題室內館，可做 DIY", 24.930, 121.282],
+  ["77巧克力共和國", "桃園八德", 40, "手雨約工", "巧克力主題室內館，可做 DIY", 24.930, 121.282],
   ["巧虎夢想樂園", "桃園中壢", 35, "雨", "青埔室內親子遊戲樂園", 24.967, 121.220],
   ["小叮噹科學主題樂園", "新竹新豐", 10, "水", "科學主題樂園，有水上滑道", 24.912, 121.010],
-  ["卡司蒂菈樂園（金格觀光工廠）", "桃園蘆竹", 40, "手雨", "蛋糕餅乾觀光工廠，可做 DIY", 25.041, 121.292],
+  ["卡司蒂菈樂園（金格觀光工廠）", "桃園蘆竹", 40, "手雨工", "蛋糕餅乾觀光工廠，可做 DIY", 25.041, 121.292],
   ["水之丘公園", "桃園觀音", 25, "滑", "三層樓高滑道的遊戲公園", 25.027, 121.081],
-  ["大補內彈珠汽水觀光工廠", "苗栗銅鑼", 55, "手雨約", "自己調配彈珠汽水", 24.484, 120.782],
+  ["大補內彈珠汽水觀光工廠", "苗栗銅鑼", 55, "手雨約工", "自己調配彈珠汽水", 24.484, 120.782],
   ["山腳水鹿之家", "桃園蘆竹", 40, "動", "近距離看水鹿、餵水鹿", 25.045, 121.296],
-  ["郭元益糕餅博物館（楊梅綠標生活館）", "桃園楊梅", 25, "手雨", "糕餅 DIY 和試吃", 24.902, 121.143],
+  ["郭元益糕餅博物館（楊梅綠標生活館）", "桃園楊梅", 25, "手雨工", "糕餅 DIY 和試吃", 24.902, 121.143],
   ["鑊篤陂塘生態公園", "桃園平鎮", 30, "沙滑", "10 米透明管狀溜滑梯", 24.947, 121.223],
   ["同安親子公園", "桃園桃園區", 40, "沙滑", "巨型攀爬網加超大沙坑", 24.996, 121.309],
   ["老貝殼休閒農場", "桃園龍潭", 30, "動水", "動物、遊戲區和季節戲水", 24.870, 121.211],
-  ["國巨洋傘文創園區", "桃園大園", 35, "手雨", "雨傘展示與彩繪雨傘 DIY", 25.068, 121.193],
+  ["國巨洋傘文創園區", "桃園大園", 35, "手雨工", "雨傘展示與彩繪雨傘 DIY", 25.068, 121.193],
   ["臺灣客家茶文化館", "桃園龍潭", 30, "雨免", "免費品茶，有親子遊戲室", 24.860, 121.211],
-  ["金良興觀光磚廠", "苗栗苑裡", 65, "手", "隧道窯加紅磚積木 DIY", 24.439, 120.656],
+  ["金良興觀光磚廠", "苗栗苑裡", 65, "手工雨", "隧道窯加紅磚積木 DIY", 24.439, 120.656],
   ["台灣油礦陳列館", "苗栗公館", 50, "免雨", "免門票的油礦歷史展館", 24.495, 120.824],
-  ["雄獅文具想像力製造所", "桃園龍潭", 30, "手雨", "文具主題的塗鴉彩繪空間", 24.866, 121.214],
+  ["雄獅文具想像力製造所", "桃園龍潭", 30, "手雨工", "文具主題的塗鴉彩繪空間", 24.866, 121.214],
   ["台茂公園兒童遊戲場", "桃園蘆竹", 40, "滑", "三層樓攀爬隧道溜滑梯", 25.047, 121.287],
   ["大溪河濱公園", "桃園大溪", 35, "草滑", "海盜船遊具加河岸草皮", 24.876, 121.283],
   ["華陶窯", "苗栗苑裡", 65, "手", "玩陶、生態植物園", 24.443, 120.651],
   ["大有梯田生態公園", "桃園桃園區", 40, "沙", "全齡森林遊戲場", 24.993, 121.311],
   /* ===== 新增景點（carpet_E.json）===== */
   ["古生物奇幻樂園", "彰化芬園", 90, "滑雨停", "恐龍主題樂園，有室內遊戲區", 24.012, 120.625],
-  ["樹德半山夢工廠", "南投市", 95, "手雨約", "生命樹觀光工廠，可攀岩攀樹", 23.912, 120.680],
+  ["樹德半山夢工廠", "南投市", 95, "手雨約工", "生命樹觀光工廠，可攀岩攀樹", 23.912, 120.680],
   ["好田森林", "彰化田尾", 95, "沙滑草", "恐龍造景、滑草與玩沙", 23.890, 120.522],
   ["百果山探索樂園", "彰化員林", 90, "滑草", "約8000坪恐龍主題樂園", 23.954, 120.574],
   ["兔馬鹿公園", "彰化員林", 90, "滑沙免", "球型高塔溜滑梯的免費公園", 23.953, 120.573],
-  ["妮娜巧克力夢想城堡", "南投埔里", 110, "手雨", "歐式古堡巧克力觀光工廠", 23.960, 120.962],
-  ["台灣鯛生態創意園區", "雲林口湖", 155, "滑雨吃", "室內球池溜滑梯與魚湯試吃", 23.582, 120.189],
+  ["妮娜巧克力夢想城堡", "南投埔里", 110, "手雨工", "歐式古堡巧克力觀光工廠", 23.960, 120.962],
+  ["台灣鯛生態創意園區", "雲林口湖", 155, "滑雨吃工", "室內球池溜滑梯與魚湯試吃", 23.582, 120.189],
   ["五年千歲公園", "雲林褒忠", 145, "免走", "寺廟主題公園，有恐龍造景", 23.689, 120.307],
-  ["水里蛇窯陶藝文化園區", "南投水里", 120, "手", "現存最古老柴燒蛇窯", 23.814, 120.858],
-  ["HOHOCHA喝喝茶", "南投魚池", 115, "手停", "紅茶觀光工廠，奉茶奉蛋", 23.881, 120.919],
-  ["台灣優格餅乾學院", "彰化線西", 105, "手免雨", "城堡造型的餅乾觀光工廠", 24.136, 120.461],
-  ["卷木森活館", "彰化鹿港", 85, "手雨", "木製童話風場景與木作 DIY", 24.061, 120.431],
-  ["雅聞峇里海岸觀光工廠", "雲林斗六", 135, "沙雨免", "南洋風造景，有室內親子遊戲區", 23.704, 120.538],
+  ["水里蛇窯陶藝文化園區", "南投水里", 120, "手工雨", "現存最古老柴燒蛇窯", 23.814, 120.858],
+  ["HOHOCHA喝喝茶", "南投魚池", 115, "手停工雨", "紅茶觀光工廠，奉茶奉蛋", 23.881, 120.919],
+  ["台灣優格餅乾學院", "彰化線西", 105, "手免雨工", "城堡造型的餅乾觀光工廠", 24.136, 120.461],
+  ["卷木森活館", "彰化鹿港", 85, "手雨工", "木製童話風場景與木作 DIY", 24.061, 120.431],
+  ["雅聞峇里海岸觀光工廠", "雲林斗六", 135, "沙雨免工", "南洋風造景，有室內親子遊戲區", 23.704, 120.538],
   ["蝴蝶小鎮生態休閒園區", "南投埔里", 110, "動草", "大昆蟲、蝴蝶溫室與親子遊戲區", 23.963, 120.971],
   ["大山休閒牧場", "彰化花壇", 85, "動免", "免門票餵乳牛，有放電遊戲區", 24.021, 120.539],
   ["日月山景休閒農場", "彰化市", 80, "動草吃", "餵乳牛小羊、投幣小火車", 24.083, 120.536],
-  ["台塑生醫健康悠活館", "彰化市", 80, "手雨免", "室內免費觀光工廠，有兒童遊樂區", 24.082, 120.533],
+  ["台塑生醫健康悠活館", "彰化市", 80, "手雨免工", "室內免費觀光工廠，有兒童遊樂區", 24.082, 120.533],
   ["琉璃仙境休閒農場", "彰化員林", 90, "動沙", "彩繪牆、童話屋、玩沙與小動物", 23.954, 120.570],
-  ["珍粉紅城堡", "雲林古坑", 140, "沙約", "粉紅教堂、彩虹步道、沙坑", 23.649, 120.561],
+  ["珍粉紅城堡", "雲林古坑", 140, "沙約工雨", "粉紅教堂、彩虹步道、沙坑", 23.649, 120.561],
   ["賴爺爺蜜蜂小森林", "南投埔里", 110, "免手停", "免費蜜蜂生態導覽", 23.963, 120.968],
   /* ===== 新增景點（carpet_H.json）===== */
   ["花蓮鐵道文化園區", "花蓮市", 210, "免", "日式木造建築與鐵道遺址", 23.975, 121.600],
   ["米國學校", "台東關山", 255, "滑雨免停吃", "米主題工廠，有室內溜滑梯", 23.049, 121.158],
   ["鹿野梅花鹿公園", "台東鹿野", 265, "動", "可餵梅花鹿的親子園區", 22.913, 121.135],
   ["宜蘭忍者村", "宜蘭礁溪", 85, "雨", "室內忍術闖關體驗", 24.822, 121.773],
-  ["蠟筆觀光工廠", "宜蘭蘇澳", 100, "雨滑手", "蠟筆城堡與八層樓溜滑梯", 24.590, 121.849],
+  ["蠟筆觀光工廠", "宜蘭蘇澳", 100, "雨滑手工", "蠟筆城堡與八層樓溜滑梯", 24.590, 121.849],
   ["小野柳", "台東市", 275, "", "海蝕奇岩地形", 22.751, 121.139],
   ["計程車博物館", "宜蘭蘇澳", 100, "雨", "古董計程車與碰碰車", 24.595, 121.854],
-  ["新元昌紅茶產業文化館", "台東鹿野", 265, "雨免吃", "免費品紅烏龍茶、吃紅豆餅", 22.908, 121.134],
+  ["新元昌紅茶產業文化館", "台東鹿野", 265, "雨免吃工", "免費品紅烏龍茶、吃紅豆餅", 22.908, 121.134],
   ["洄瀾灣休閒農場", "花蓮秀林", 200, "動", "笑笑羊、水豚、羊駝農場", 24.122, 121.625],
-  ["悟饕池上飯包文化故事館", "台東池上", 250, "車停吃", "復古火車車廂吃便當", 23.101, 121.219],
-  ["玩味蕃樂園", "花蓮新城", 200, "雨手免吃", "復古街景觀光工廠，可試吃", 24.045, 121.599],
-  ["七星柴魚博物館", "花蓮新城", 200, "雨手免停", "柴魚故事館，可刨柴魚花", 24.043, 121.601],
-  ["暴龍觀光工廠", "宜蘭蘇澳", 100, "雨手", "暴龍化石展與恐龍 DIY", 24.592, 121.845],
+  ["悟饕池上飯包文化故事館", "台東池上", 250, "車停吃工雨", "復古火車車廂吃便當", 23.101, 121.219],
+  ["玩味蕃樂園", "花蓮新城", 200, "雨手免吃工", "復古街景觀光工廠，可試吃", 24.045, 121.599],
+  ["七星柴魚博物館", "花蓮新城", 200, "雨手免停工", "柴魚故事館，可刨柴魚花", 24.043, 121.601],
+  ["暴龍觀光工廠", "宜蘭蘇澳", 100, "雨手工", "暴龍化石展與恐龍 DIY", 24.592, 121.845],
   ["宜蘭斑比山丘", "宜蘭冬山", 95, "動吃", "餵小鹿、咖啡與布丁", 24.634, 121.769],
   ["宜蘭甲鳥園", "宜蘭礁溪", 85, "動水吃", "餵鴨、戲水池、小鴨電動車", 24.823, 121.774],
   ["樂色山 Le Soul Hill", "宜蘭市", 90, "雨手", "積木博物館，十四大展區", 24.759, 121.751],
@@ -7194,6 +7256,7 @@ if(!Array.isArray(cnty)) cnty=[];
 const REGIONS=[["北部",["基隆市","台北市","新北市","桃園市","新竹市","新竹縣","宜蘭縣"]],["中部",["苗栗縣","台中市","彰化縣","南投縣","雲林縣"]],
   ["南部",["嘉義市","嘉義縣","台南市","高雄市","屏東縣"]],["東部",["花蓮縣","台東縣"]]];
 let cntyOpen = false;
+let pickingOrigin = false;
 let wxAny = [];   // 天氣題：地點至少要有其中一個標記（空的＝不限）
 let view3 = "home";              // v3 首頁狀態：home（兩扇門）/ ask（幫我決定問答）/ map（地圖模式）
 let mapMode = false;             // 地圖模式：只看距離＋排除條件，不看玩法和講究
@@ -7207,6 +7270,7 @@ const SCENES={
   sand:  {name:"玩沙",     sub:"沙坑・沙灘",     rsub:"室內沙坑",     ic:"sand",   any:["沙"]},
   train: {name:"看火車",   sub:"火車・小火車",   rsub:"室內也能看",   ic:"train",  any:["車"]},
   plane: {name:"看飛機",   sub:"機場・觀景台",   rsub:"室內也能看",   ic:"plane",  any:["機"]},
+  factory:{name:"觀光工廠", sub:"看怎麼做・DIY",  rsub:"室內參觀",     ic:"factory",any:["工"]},
   hands: {name:"動手做",   sub:"採果・DIY",      rsub:"室內 DIY",     ic:"hands",  any:["手"]},
   spring:{name:"泡腳溫泉", sub:"長輩最愛",       rsub:"有屋頂的",     ic:"spring", any:["泉"]},
 };
@@ -7227,6 +7291,9 @@ const REF={lat:24.893,lng:120.993};               // 內建名單的車程是從
 let origin = store.get("wd_origin",null);           // {lat,lng,kind:"gps"|"home"|"map",label}
 let homeSpot = store.get("wd_home",null);           // 存起來的「家」
 let HP=[0,0];
+/* km ↔ 分鐘（跟 RC() 同一張表反過來查） */
+const KM_PTS=[[0,0],[30,24],[60,52],[90,82],[120,112],[180,170],[300,290]];
+function kmToMin(km){ for(let i=1;i<KM_PTS.length;i++){ const [a,b]=[KM_PTS[i-1],KM_PTS[i]]; if(km<=b[1]) return a[0]+(b[0]-a[0])*(km-a[1])/(b[1]-a[1]); } return 300; }
 const setHP=()=>{ const o=origin||{lat:24.85,lng:121.0}; HP=proj(o.lat,o.lng); };
 setHP();
 const KM=MAP.scale/6371/Math.cos(24*D2R);         // 地圖上 1 公里 = 幾個單位（台灣範圍內差不多）
@@ -7296,6 +7363,7 @@ const TAGS=[
   {ch:"滑",key:"slide",label:"特色溜滑梯",ic:"slide",g:"kid"},
   {ch:"手",key:"hands",label:"動手體驗",ic:"hands",g:"kid"},
   {ch:"機",key:"plane",label:"看飛機",ic:"plane",g:"kid"},
+  {ch:"工",key:"factory",label:"觀光工廠",ic:"factory",g:"kid"},
   {ch:"雨",key:"rain",label:"雨天可去",ic:"umbrella",g:"adult"},
   {ch:"走",key:"easy",label:"推車長輩好走",ic:"stroller",g:"adult"},
   {ch:"蔭",key:"shade",label:"有樹蔭不怕曬",ic:"tree",g:"adult"},
@@ -7342,6 +7410,7 @@ function ui(n,s=20,c=INK){
     train:`<rect x="5" y="3.5" width="14" height="14" rx="4" fill="#FF8FA3" stroke="${c}" stroke-width="2"/><rect x="7.5" y="6" width="9" height="5" rx="1.5" fill="#CDEBFF" stroke="${c}" stroke-width="1.6"/><circle cx="9" cy="14.2" r="1.2" fill="#FFD54A" stroke="${c}" stroke-width="1.2"/><circle cx="15" cy="14.2" r="1.2" fill="#FFD54A" stroke="${c}" stroke-width="1.2"/><path d="M8 17.5l-2 3.5M16 17.5l2 3.5M5.5 20.5h13" fill="none" stroke="${c}" stroke-width="1.9" stroke-linecap="round"/>`,
     sand:`<path d="M5.5 9.5h13l-1.6 10.5a1.6 1.6 0 0 1-1.6 1.3H8.7a1.6 1.6 0 0 1-1.6-1.3z" fill="#FFD54A" stroke="${c}" stroke-width="2" stroke-linejoin="round"/><path d="M6.5 9.5c0-4 2.5-6.3 5.5-6.3s5.5 2.3 5.5 6.3" fill="none" stroke="${c}" stroke-width="1.8" stroke-linecap="round"/><path d="M5.5 13h13" stroke="${c}" stroke-width="1.6"/><circle cx="12" cy="16.8" r="1.4" fill="#FF7A59"/>`,
     slide:`<path d="M4.5 20.5V6.5M8.5 20.5V6.5M4.5 10h4M4.5 14h4" fill="none" stroke="${c}" stroke-width="1.9" stroke-linecap="round"/><path d="M8.5 6.5c4 0 5 5 7.5 9.5 1 1.8 2.5 2.6 4.5 2.6v2.4c-3 0-5-1.2-6.5-3.8C12 13 11 9.5 8.5 9.5z" fill="#FF7A59" stroke="${c}" stroke-width="1.8" stroke-linejoin="round"/>`,
+    factory:`<path d="M3.5 20.5V11l5 3V11l5 3V11l5 3V6.5h2.5v14Z" fill="#B8E0F5" stroke="${c}" stroke-width="1.8" stroke-linejoin="round"/><path d="M19 6.5V4" stroke="${c}" stroke-width="1.8" stroke-linecap="round"/><circle cx="20" cy="2.6" r="1.1" fill="#ddd" stroke="${c}" stroke-width="1"/><rect x="6" y="16" width="2.4" height="2.4" rx=".4" fill="#FFD54A" stroke="${c}" stroke-width="1.2"/><rect x="11" y="16" width="2.4" height="2.4" rx=".4" fill="#FFD54A" stroke="${c}" stroke-width="1.2"/><rect x="16" y="16" width="2.4" height="2.4" rx=".4" fill="#FFD54A" stroke="${c}" stroke-width="1.2"/>`,
     hands:`<path d="M7.5 12V6.2a1.4 1.4 0 0 1 2.8 0V11M10.3 10.5V4.6a1.4 1.4 0 0 1 2.8 0v5.9M13.1 10.5V5.6a1.4 1.4 0 0 1 2.8 0v6.4M15.9 12V8.5a1.4 1.4 0 0 1 2.8 0v5.3c0 4.3-2.6 7.2-6.6 7.2-2.6 0-4.3-1.3-5.6-3.4L4 13.6a1.4 1.4 0 0 1 2.3-1.5l1.2 1.6" fill="#FFE3C7" stroke="${c}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>`,
     plane:`<path d="M21 4.2c-.8-.8-2.3-.6-3.4.5l-3.1 3.1-8.3-2.5-1.8 1.8 6.6 4-3 3.1-2.7-.4-1.5 1.5 3.3 1.8 1.8 3.3 1.5-1.5-.4-2.7 3.1-3 4 6.6 1.8-1.8-2.5-8.3 3.1-3.1c1.1-1.1 1.3-2.6.5-3.4z" fill="#CDEBFF" stroke="${c}" stroke-width="1.8" stroke-linejoin="round"/>`,
     tree:`<circle cx="12" cy="9.5" r="6.5" fill="#8FCF6B" stroke="${c}" stroke-width="2"/><path d="M12 13.5v7.5M12 16.5l-2.5-2M12 15l2.5-2" fill="none" stroke="${c}" stroke-width="2" stroke-linecap="round"/><path d="M5 21h14" stroke="${c}" stroke-width="1.8" stroke-linecap="round"/>`,
@@ -7688,6 +7757,11 @@ const Map2=(()=>{
   $("#home").innerHTML=`<g transform="translate(-13,-24)"><path d="M3 12 L13 3 L23 12" fill="#FF8FA3" stroke="${INK}" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/><path d="M6 11v12h14V11" fill="#FFF6E2" stroke="${INK}" stroke-width="2.4" stroke-linejoin="round"/><rect x="11" y="16" width="5" height="7" rx="1.5" fill="#FFD54A" stroke="${INK}" stroke-width="2"/></g><circle r="4" fill="${INK}"/>`;
   $("#pin").innerHTML=`<g class="pinIn"><path d="M0 0 C-3 -8 -12 -14 -12 -24 A12 12 0 0 1 12 -24 C12 -14 3 -8 0 0Z" fill="#FF7A59" stroke="${INK}" stroke-width="2.6" stroke-linejoin="round"/><circle cy="-24" r="4.5" fill="#fff" stroke="${INK}" stroke-width="2"/></g>`;
   $("#mapVan").innerHTML=`<g transform="translate(-27,-38) scale(.5)">${carSvg("happy")}</g>`;
+  // 地圖模式的「圈圈把手」：中心可以拖（模擬人在別的地方），圈上的圓點可以拖大拖小
+  const $rh=document.createElementNS("http://www.w3.org/2000/svg","g"); $rh.id="rHandle"; $rh.style.display="none";
+  $rh.innerHTML=`<circle r="15" fill="#fff" stroke="#FF7A59" stroke-width="3"/><path d="M-6 0h12M-6 0l3-3M-6 0l3 3M6 0l-3-3M6 0l-3 3" stroke="#FF7A59" stroke-width="2.2" fill="none" stroke-linecap="round"/>`;
+  $home.after($rh);
+  const handlesOn=()=>view3==="map" && origin && RC().km>0;
   function placeOrigin(){ ["#maskCirc","#rippleRing"].forEach(q=>{ $(q).setAttribute("cx",HP[0]); $(q).setAttribute("cy",HP[1]); }); $("#home").style.display=origin?"":"none"; }
   placeOrigin();
 
@@ -7722,6 +7796,7 @@ const Map2=(()=>{
       $labels.style.opacity=show?"0":"";
     }
     tf($home,HP[0],HP[1],inv);
+    if(handlesOn()){ $rh.style.display=""; tf($rh,HP[0]+ringR,HP[1],inv); } else $rh.style.display="none";
     if($pin.dataset.x) tf($pin,$pin.dataset.x,$pin.dataset.y,inv);
     if($van.dataset.x) $van.setAttribute("transform",`translate(${$van.dataset.x},${$van.dataset.y}) scale(${inv*(+$van.dataset.flip||1)},${inv})`);
     $ring.setAttribute("stroke-width",2.5*inv); $ring.setAttribute("stroke-dasharray",`${7*inv} ${5*inv}`);
@@ -7835,6 +7910,12 @@ const Map2=(()=>{
   svg.addEventListener("pointerdown",e=>{
     if(rolling || tapCb) return;
     pts.set(e.pointerId,local(e)); moved=false;
+    if(pts.size===1 && handlesOn()){
+      const p=local(e), sx=(HP[0]-view.x)*view.k+cw/2, sy=(HP[1]-view.y)*view.k+ch/2;
+      const hx=(HP[0]+ringR-view.x)*view.k+cw/2;
+      const mode = Math.hypot(p[0]-hx,p[1]-sy)<32 ? "radius" : Math.hypot(p[0]-sx,p[1]-sy)<34 ? "center" : null;
+      if(mode){ cancelAnimationFrame(raf); g0={mode}; moved=true; try{ svg.setPointerCapture(e.pointerId); }catch(_){} Snd.play("tick"); return; }
+    }
     if(pts.size===2 && !card.classList.contains("big")){ setBig(true); showHint(); }   // 小地圖上兩指一張開 → 直接變大地圖
     if(pts.size<=2){ cancelAnimationFrame(raf); gestureStart(); }
     if(card.classList.contains("big")) gpuBegin();
@@ -7844,6 +7925,18 @@ const Map2=(()=>{
     if(!pts.has(e.pointerId) || !g0) return;
     pts.set(e.pointerId,local(e));
     const big=card.classList.contains("big");
+    if(g0.mode==="center"||g0.mode==="radius"){
+      const mp=toMap(pts.get(e.pointerId));
+      if(g0.mode==="center"){
+        const [lat,lng]=unproj(mp[0],mp[1]);
+        origin={lat,lng,kind:"map",label:"拉的圈圈",temp:true}; setHP(); placeOrigin();
+      } else {
+        const km=Math.max(8,Math.hypot(mp[0]-HP[0],mp[1]-HP[1])/KM);
+        reachM=Math.max(15,Math.min(240,Math.round(kmToMin(km)/5)*5)); ringR=RC().km*KM;
+        $("#mbReachTxt").textContent=RC().name; $("#mbReach").value=reachM;
+      }
+      applyView(); e.preventDefault(); return;
+    }
     if(g0.mode==="pan"){
       const p=pts.get(e.pointerId), dx=p[0]-g0.p[0], dy=p[1]-g0.p[1];
       if(Math.hypot(dx,dy)>6) moved=true;
@@ -7861,6 +7954,7 @@ const Map2=(()=>{
     const wasPinch=g0&&g0.mode==="pinch";
     pts.delete(e.pointerId);
     if(pts.size>0){ gestureStart(); return; }
+    if(g0&&(g0.mode==="center"||g0.mode==="radius")){ g0=null; store.set("wd_reachM",reachM); paintDots(); renderMapBar(); Snd.play("pop"); userCam=false; animateTo(); return; }
     g0=null; gpuCommit();
     if(e.type==="pointerup" && !moved && !wasPinch && !rolling) onTap(local(e));
   };
@@ -8047,9 +8141,16 @@ function showOrigin(){
     </div>
   </div>`);
   $("#oGps").onclick=()=>{ closeSheet(); locate(); };
-  $("#oMap").onclick=()=>{ closeSheet(); setTab("roll"); Map2.setBig(true); window.scrollTo({top:0,behavior:"smooth"}); reachIdx=4; reachM=REACHES[reachIdx].m; Map2.refresh(true); renderReach();
-    toast("在地圖上點一下你要出發的地方"); Van.say("點地圖選出發點～",2500);
-    Map2.waitTap((lat,lng)=>{ if(lat<21.8||lat>25.4||lng<119.9||lng>122.1){ toast("請點台灣本島上的地方"); return; } reachIdx=store.get("wd_reach",1); reachM=REACHES[reachIdx].m; setOrigin({lat,lng,kind:"map",label:nearestCity(lat,lng)+"附近"},`出發點：${nearestCity(lat,lng)}附近`); }); };
+  $("#oMap").onclick=()=>{ closeSheet();
+    // 開全螢幕地圖讓你點；點完存成出發點，回首頁
+    mapMode=true; scene=""; dir="all"; cnty=[]; far=false; setView("map"); pickingOrigin=true; document.body.classList.add("tapOrigin");
+    toast("在地圖上點一下你要出發的地方");
+    setTimeout(()=>Map2.waitTap((lat,lng)=>{
+      if(lat<21.8||lat>25.4||lng<119.9||lng>122.1){ toast("請點台灣本島上的地方"); return; }
+      pickingOrigin=false; document.body.classList.remove("tapOrigin");
+      setOrigin({lat,lng,kind:"map",label:nearestCity(lat,lng)+"附近"},`出發點：${nearestCity(lat,lng)}附近`);
+      setTimeout(()=>setView("home"),700);
+    }),350); };
   if($("#oHome")) $("#oHome").onclick=()=>{ closeSheet(); setOrigin({...homeSpot,kind:"home"},"從家出發！"); };
   if($("#oSave")) $("#oSave").onclick=()=>{ homeSpot={lat:origin.lat,lng:origin.lng}; store.set("wd_home",homeSpot); origin={...origin,kind:"home"}; store.set("wd_origin",origin); renderOriginTag(); closeSheet(); toast("存好了，之後可以直接「從家出發」"); Snd.play("tada"); };
 }
@@ -8091,36 +8192,19 @@ async function pick(){
   Van.say("我找找看…",1400);
   const onMap=pool.filter(s=>s.lat!=null);
   $("#mapCard").classList.add("picking");
-  // 跑馬燈：有地點的縣市繞著出發點一個一個亮，越跑越慢，最後停在挑中的那個縣市
-  const byC={}; onMap.forEach(s=>{ const c=countyOf(s); (byC[c]=byC[c]||[]).push(s); });
-  const target=spot.lat!=null?countyOf(spot):null;
-  let cs=Object.keys(byC);
-  const ang=n=>{ const [x,y]=Map2.countyCenter(n); return Math.atan2(x-HP[0],-(y-HP[1])); };
-  cs.sort((a,b)=>ang(a)-ang(b));
-  const lightDots=(n,on)=>(byC[n]||[]).forEach(s=>Map2.flash(s.id,on));
-  if(cs.length>1 && target){
-    const ti=cs.indexOf(target), L=cs.length;
-    let loops=Math.max(1,Math.ceil((14-ti)/L)); while(loops*L+ti>30 && loops>1) loops--;
-    const total=loops*L+ti; let prev=null;
-    for(let k=0;k<=total;k++){
-      const n=cs[k%L];
-      if(prev) lightDots(prev,false);
-      Map2.litCounty(n); lightDots(n,true); prev=n;
+  // 抽籤動畫：以「點」為單位 —— 符合條件的紅點隨機一顆顆閃，一開始很多顆一起閃、越來越慢、越來越少，最後停在抽中的那顆
+  if(onMap.length>1 && spot.lat!=null){
+    const steps=Math.min(28,Math.max(12,onMap.length)); let prev=[];
+    for(let k=0;k<=steps;k++){
+      prev.forEach(id=>Map2.flash(id,false));
+      const last=k===steps, n=last?1:Math.max(1,Math.round(5*(1-k/steps)));
+      const pk=last?[spot]:Array.from({length:n},()=>onMap[Math.floor(Math.random()*onMap.length)]);
+      pk.forEach(s=>Map2.flash(s.id,true)); prev=pk.map(s=>s.id);
       Snd.play("blip",k);
-      const p=k/total; await sleep(45+Math.pow(p,2.4)*260);
+      await sleep(last?260:55+Math.pow(k/steps,2.3)*260);
     }
-    lightDots(prev,false);
-    await sleep(120);
-  } else {
-    // 只有一個縣市：在這個縣市裡的地點之間跳
-    if(target) Map2.litCounty(target);
-    const pool2=target?byC[target]:onMap; let prev=null; const steps=Math.min(14,Math.max(6,pool2.length*2));
-    for(let k=0;k<steps && pool2.length>1;k++){
-      const s=k===steps-1?spot:pool2[Math.floor(Math.random()*pool2.length)];
-      if(prev) Map2.flash(prev,false); Map2.flash(s.id,true); prev=s.id; Snd.play("blip",k);
-      await sleep(60+Math.pow(k/steps,2.2)*240);
-    }
-    if(prev) Map2.flash(prev,false);
+    prev.forEach(id=>Map2.flash(id,false));
+    await sleep(80);
   }
   $("#mapCard").classList.remove("picking");
   await goTo(spot);
@@ -8465,8 +8549,9 @@ $$(".pgBack").forEach(b=>b.onclick=()=>{ Snd.play("pop"); setTab("roll"); setVie
 $$("#nav button").forEach(b=>b.onclick=()=>{ if(curTab===b.dataset.tab) return; Snd.play("pop"); setTab(b.dataset.tab); });
 
 /* ===== 版本 & 改版紀錄 ===== */
-const APP_VERSION="3.1.0";
+const APP_VERSION="3.2.0";
 const CHANGELOG=[
+  ["3.2.0","11/25","地圖全螢幕＋拉圈圈",["「看地圖自己挑」變成全螢幕的獨立頁面，地圖更大","可以拖圓心的小房子換地方、拉圈上的圓點調大小（模擬人在別的地方）","抽籤動畫改成符合條件的紅點閃爍，最後停在抽中的那顆","新增「觀光工廠」玩法（54 個）","首頁精簡：兩張大卡片＋出發點、地點名單兩個小圖示；開機更快","幫我決定的按鈕改成平面卡片，返回鈕跟地圖頁一致","修好「在地圖上點一下」設定出發點"]],
   ["3.1.0","11/24","全台地點大補完",["地點從 341 個增加到 537 個，全台各縣市都補了新景點（含 2024–2026 新開的）","516 個地點有詳細介紹，每個都附文章連結；連結會標年份（較舊／年份不明）","「幫我決定」改成四步：天氣 → 想怎麼玩 → 講究什麼 → 開多遠","天氣題會自動看預報，下雨建議找室內；跟天氣對不上的玩法不會出現","玩法分得更細：溜滑梯、玩沙、看飛機、泡腳溫泉…","新增「講究一下」：推車長輩好走、好停車、免門票、哺乳室…可複選","開多遠分 7 段：30 分到 3 小時"]],
   ["3.0.0","11/23","大改版：Elsewhere",["改名叫 Elsewhere，換上新的開機畫面和圖示","首頁只剩兩個大按鈕：看地圖自己挑、幫我決定","「幫我決定」一頁一題，回答三個問題就幫你抽","地圖加上返回鈕和＋／－，手指縮放變得很順","「開多遠」可以一路滑，不再只有幾格","地點有詳細介紹：去那裡做什麼、出發前要知道的、網路分享連結（目前補了 117 個，陸續增加）","名單點下去直接看介紹，底部導覽列拿掉，畫面更清爽"]],
   ["2.1.0","11/15","可以自己在地圖上挑！",["地圖可以用手指放大縮小、拖曳，放大後會標出地點名字","點地圖上的地點，按「選這個」就能自己決定去哪","可以直接指定想去的縣市（可多選）","挑中後只留那個點，小車開過去時鏡頭會拉近，動畫更順","地圖上的點變小、不再疊成一團，下方按鈕列更清爽"]],
@@ -8550,10 +8635,15 @@ if(last3 && (last3.mins==null || !last3.wx)) last3=null;
 if(last3 && last3.scene && !SCENES[last3.scene]) last3.scene="";   // 舊版（誰去／刻度）紀錄不相容，直接忽略
 
 function setView(v){
+  // 地圖模式可以把圈圈拖到別的地方（暫時的中心，不存）；離開地圖就換回真正的出發點
+  if(v!=="map" && origin && origin.temp){ origin=store.get("wd_origin",null); setHP(); }
+  if(v==="map"){ if(!origin){ origin={lat:REF.lat,lng:REF.lng,kind:"map",label:"拉的圈圈",temp:true}; setHP(); } if(!reachM){ reachM=90; store.set("wd_reachM",reachM); } }
   view3=v;
   $("#tabRoll").dataset.view=v;
   $("#homeView").hidden=v!=="home"; $("#askView").hidden=v!=="ask"; $("#mapBar").hidden=v!=="map";
   $("#mapCard").hidden=v!=="map"; $("#mapBackF").hidden=v!=="map"; $("#zoomPM").hidden=v!=="map";
+  document.body.classList.toggle("mapFull", v==="map");   // 地圖模式：整個畫面都是地圖（另一個頁面，不是彈出視窗）
+  requestAnimationFrame(()=>window.dispatchEvent(new Event("resize")));
   nameLimit = v==="map" ? 400 : 90;
   window.scrollTo(0,0);
   if(v==="home") renderHome3();
@@ -8573,11 +8663,10 @@ function compassDoorSvg(){
 }
 function renderHome3(){
   $("#dMapIl").innerHTML=mapDoorSvg(); $("#dDiceIl").innerHTML=compassDoorSvg();
-  $("#doorLast").hidden=!last3;
-  if(last3) $("#doorLast").innerHTML=`${ui("again",22)}<span><b>照上次再抽一個</b><small>${esc(lastLabel(last3))}</small></span><i>›</i>`;
-  $("#hOrigin").innerHTML=`${ui("pin",20)}${esc(originName())}<span>更改</span>`;
-  $("#hSet").innerHTML=`${ui("check",20)}家庭設定`;
-  $("#hList").innerHTML=`${ui("ticketL",20)}地點名單`; $("#hTrail").innerHTML=`${ui("foot",20)}去過的足跡`;
+  $("#doorLast").hidden=true;
+  const on=!origin?"設定出發點":originName().replace(/出發$/,"").replace(/^從/,"");
+  $("#hOrigin").innerHTML=`<span class="qIc">${ui("pin",26)}</span><b>${esc(on)}</b><small>出發點</small>`;
+  $("#hList").innerHTML=`<span class="qIc">${ui("ticketL",26)}</span><b>地點名單</b><small>${spots().length} 個地方</small>`;
 }
 function mapDoorSvg(){
   return `<svg width="96" height="96" viewBox="0 0 96 96"><circle cx="48" cy="48" r="44" fill="#fff" stroke="${INK}" stroke-width="3"/>
@@ -8589,16 +8678,18 @@ function mapDoorSvg(){
 /* 地圖模式 */
 function renderMapBar(){
   const n=candidates().length;
-  $("#mbCount").innerHTML=`<b>${n}</b> 個地點`;
+  $("#mbCount").innerHTML=`圈內 <b>${n}</b> 個地點`;
   $("#mbReach").value=reachM||255; $("#mbReachTxt").textContent=RC().name;
   $("#mbBack").innerHTML=`‹ 回首頁`;
-  $("#mbRand").innerHTML=`${ui("again",18)}抽一個`;
+  $("#mbRand").innerHTML=`${ui("again",18,"#fff")}抽一個`;
 }
-$("#doorMap").onclick=()=>{ Snd.play("pop"); mapMode=true; whoPref=[]; wxAny=[]; scene=""; dir="all"; cnty=[]; far=false; setView("map"); Map2.showHint&&Map2.showHint(); };
+$("#doorMap").onclick=()=>{ Snd.play("pop"); mapMode=true; whoPref=[]; wxAny=[]; scene=""; dir="all"; cnty=[]; far=false; setView("map");
+  const h=$("#mapHint"); h.textContent="拖圓心的小房子＝換地方・拖圈上的圓點＝調大小"; h.hidden=false; h.classList.remove("out"); clearTimeout(h._t);
+  h._t=setTimeout(()=>{ h.classList.add("out"); setTimeout(()=>h.hidden=true,400); },4500); };
 $("#zIn").onclick=e=>{ e.stopPropagation(); Map2.zoomBy(1.8); };
 $("#zOut").onclick=e=>{ e.stopPropagation(); Map2.zoomBy(1/1.8); };
 $("#mapBackF").onclick=()=>$("#mbBack").onclick();
-$("#mbBack").onclick=()=>{ if(rolling) return; Snd.play("pop"); closeSheet&&sheetOpen()&&closeSheet(); setView("home"); };
+$("#mbBack").onclick=()=>{ if(rolling) return; Snd.play("pop"); closeSheet&&sheetOpen()&&closeSheet(); if(pickingOrigin){ pickingOrigin=false; document.body.classList.remove("tapOrigin"); Map2.cancelTap&&Map2.cancelTap(); } setView("home"); };
 const REACH_MAX=255;   // 拉到最右邊＝全台都可以
 let reachSndAt=0, reachDraw=0;
 $("#mbReach").oninput=e=>{ if(rolling) return;
@@ -8633,8 +8724,9 @@ async function loadWx(){
 const wxSuggest=c=>!c?null: c.rain>=60?"rain": c.tmax>=31?"hot":"sun";
 function renderAsk(){
   const st=ask.step;
-  $("#askBack").innerHTML="‹ 上一步";
-  $("#askDots").innerHTML=[0,1,2,3].map(i=>`<i class="${i<=st?"on":""}"></i>`).join("");
+  $("#askBack").innerHTML="‹ 返回";
+  $("#askDots").innerHTML=[0,1,2,3].map(i=>`<i class="${i<=st?"on":""}" data-s="${i}"></i>`).join("");
+  $$("#askDots i").forEach(d=>d.onclick=()=>{ const s=+d.dataset.s; if(s<ask.step){ Snd.play("pop"); ask.step=s; renderAsk(); } });   // 點前面的小圓點可以回到那一題
   let h="";
   if(st===0){
     $("#askQ").textContent="天氣怎麼樣？";
@@ -8672,7 +8764,7 @@ function renderAsk(){
   });
 }
 $("#doorDice").onclick=()=>{ Snd.play("pop"); ask={step:0,wx:wxSuggest(wxCast)||"sun",scene:"",fl:[],mins:60}; setView("ask"); renderAsk(); };
-$("#askBack").onclick=()=>{ Snd.play("pop"); if(ask.step===0) setView("home"); else { ask.step--; renderAsk(); } };
+$("#askBack").onclick=()=>{ Snd.play("pop"); setView("home"); };
 async function runDecide(a){
   mapMode=false; scene=a.scene; whoPref=[]; wxAny=(WX[a.wx]||WX.sun).any; flt=flOf(a.fl); reachM=a.mins; dir="all"; cnty=[]; far=false;
   store.set("wd_scene",scene); store.set("wd_reachM",reachM);
@@ -8738,8 +8830,8 @@ $("#footCount").textContent=`口袋名單 ${spots().length} 個地點`;
   }
   const t0=performance.now();
   const fontsOk=Promise.race([document.fonts?document.fonts.ready:Promise.resolve(), new Promise(r=>setTimeout(r,1200))]);
-  fontsOk.then(()=>{ const wait=Math.max(0,3800-(performance.now()-t0)); setTimeout(exit,wait); });
-  setTimeout(exit,5500);   // 保險：最多 5.5 秒
+  fontsOk.then(()=>{ const wait=Math.max(0,2200-(performance.now()-t0)); setTimeout(exit,wait); });
+  setTimeout(exit,3500);   // 保險：最多 3.5 秒
 })();
 splashDone.then(()=>setTimeout(()=>{ loadWx(); if(!origin){ Van.say("我先找找你在哪～",2400); locate(); } else Van.say("今天想開多遠？",1800); },900));
 </script>

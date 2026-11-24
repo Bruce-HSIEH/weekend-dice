@@ -326,3 +326,65 @@ body.enter .snd{animation:none!important}
 .nextBtn:active{transform:translateY(3px);box-shadow:0 2px 0 var(--ink)}
 .dAge{flex:none;font-size:11px;padding:1px 6px;border-radius:8px;background:#EEE;color:#666;text-decoration:none;margin-left:2px}
 .dAge.old{background:#FDE7DF;color:#B4532F}
+
+/* v3.2：首頁 —— 兩扇門更大、平面卡片（不要底下那條立體邊），下面兩個小圖示 */
+.homeView{gap:14px!important}
+.door{min-height:max(220px,calc((100dvh - 250px - env(safe-area-inset-top) - env(safe-area-inset-bottom)) / 2))!important;
+  border:none!important;border-radius:32px!important;box-shadow:0 10px 28px rgba(43,58,85,.10),0 1px 0 rgba(255,255,255,.8) inset!important;
+  transition:transform .15s ease,box-shadow .15s ease!important}
+.door.dMap{background:linear-gradient(160deg,#E4F3EC,#CFEADF)!important}
+.door.dDice{background:linear-gradient(160deg,#FFF1DA,#FBE2C4)!important}
+.door:active{transform:scale(.97)!important;box-shadow:0 4px 12px rgba(43,58,85,.10)!important}
+.door .dIl svg{width:132px!important;height:132px!important}
+.door b{font-size:36px!important}
+.door small{font-size:16px!important}
+.homeQuick{display:flex;justify-content:center;gap:48px;padding:6px 0 2px}
+.qBtn{display:flex;flex-direction:column;align-items:center;gap:3px;background:none;border:none;padding:4px;min-width:96px;color:var(--ink)}
+.qBtn .qIc{width:56px;height:56px;border-radius:50%;background:#fff;display:grid;place-items:center;box-shadow:0 4px 14px rgba(43,58,85,.10);transition:transform .15s}
+.qBtn:active .qIc{transform:scale(.92)}
+.qBtn b{font-weight:400;font-size:16px;white-space:nowrap;max-width:140px;overflow:hidden;text-overflow:ellipsis}
+.qBtn small{font-size:12px;color:var(--ink2)}
+
+/* v3.2：地圖自己挑 = 全螢幕的新頁面，地圖越大越好；控制都做成輕巧的浮動元件 */
+body.mapFull{overflow:hidden}
+body.mapFull .top,body.mapFull .homeVer,body.mapFull footer,body.mapFull .foot{display:none!important}
+body.mapFull #mapCard{position:fixed!important;inset:0!important;height:100dvh!important;min-height:0!important;margin:0!important;
+  border:none!important;border-radius:0!important;box-shadow:none!important;z-index:25}
+body.mapFull #fromTag,body.mapFull #reachTag,body.mapFull #zoomBtn{display:none!important}
+body.mapFull .mapBackF{top:calc(env(safe-area-inset-top) + 12px);left:12px;border:none;box-shadow:0 4px 16px rgba(43,58,85,.18);background:rgba(255,255,255,.95);height:44px;font-size:17px}
+body.mapFull .mapBackF:active{transform:scale(.95);box-shadow:0 2px 8px rgba(43,58,85,.18)}
+body.mapFull .zoomPM{top:calc(env(safe-area-inset-top) + 12px);right:12px;border:none;box-shadow:0 4px 16px rgba(43,58,85,.18);border-radius:14px}
+body.mapFull .zoomPM button{width:44px;height:44px;font-size:24px}
+body.mapFull .zoomPM button+button{border-top:1px solid #E6E2DA}
+body.mapFull #tabRoll[data-view="map"] .mapHint{top:calc(env(safe-area-inset-top) + 66px)}
+body.mapFull #mapBar{position:fixed!important;left:12px;right:12px;bottom:calc(env(safe-area-inset-bottom) + 12px);z-index:26;margin:0!important;
+  background:rgba(255,255,255,.94);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  border:none!important;border-radius:22px!important;box-shadow:0 6px 24px rgba(43,58,85,.18)!important;padding:12px 16px 10px!important}
+body.mapFull #mbBack{display:none!important}
+body.mapFull .mbTop{display:flex;align-items:center;justify-content:space-between;gap:10px}
+body.mapFull .mbCount{font-size:15px;color:var(--ink2)}
+body.mapFull .mbCount b,body.mapFull .mbCount strong{font-size:26px;color:var(--pri-d);font-weight:400}
+body.mapFull .mbRand{border:none!important;box-shadow:none!important;border-radius:999px!important;background:var(--pri,#2CA39A)!important;color:#fff!important;padding:10px 20px!important;font-size:18px!important}
+body.mapFull .mbRand:active{transform:scale(.95)}
+body.mapFull .mbSlide{display:flex;align-items:center;gap:10px;margin-top:8px}
+body.mapFull .mbLab{font-size:13px;color:var(--ink2);white-space:nowrap}
+body.mapFull #mbReachTxt{font-size:15px;font-weight:400;white-space:nowrap;min-width:84px;text-align:right}
+body.mapFull #tabRoll #mapCard.mapCard.big{height:100dvh!important;min-height:0!important;margin:0!important}
+
+/* v3.2：抽籤時紅點閃一下會變大變亮 */
+#dots circle.dot{transform-box:fill-box;transform-origin:center;transition:transform .08s}
+#dots circle.dot.flash{fill:#FFD54A!important;transform:scale(1.9)}
+/* 選出發點時：下面控制列先藏起來 */
+body.tapOrigin #mapBar{display:none!important}
+/* v3.2：幫我決定 —— 返回鈕跟地圖頁一樣；所有選項改成平面卡片（不要底下灰灰的立體邊） */
+.askBack{border:none!important;background:#fff!important;box-shadow:0 4px 16px rgba(43,58,85,.15)!important;border-radius:22px!important;height:44px;padding:0 18px!important;font-size:17px!important}
+.askBack:active{transform:scale(.95)}
+.askDots i{cursor:pointer}
+.big3row,.tile3,.pick3,.distRow{border:none!important;box-shadow:0 6px 18px rgba(43,58,85,.09)!important;background:#fff!important;transition:transform .12s ease!important}
+.big3row:active,.tile3:active,.pick3:active,.distRow:active{transform:scale(.97)!important;box-shadow:0 3px 10px rgba(43,58,85,.09)!important}
+.big3row.sug{background:#FFF4DC!important}
+.pick3.on{background:#DDF1EC!important;transform:none!important;box-shadow:0 0 0 2.5px var(--pri,#2CA39A) inset,0 6px 18px rgba(43,58,85,.09)!important}
+.big3row em{border:none!important;background:var(--sun)!important}
+.nextBtn{border:none!important;box-shadow:0 6px 18px rgba(44,163,154,.30)!important;border-radius:999px!important}
+.nextBtn:active{transform:scale(.97)!important}
+.tile3 .ic,.big3row .ic{background:#F4F1EA!important;border:none!important}
