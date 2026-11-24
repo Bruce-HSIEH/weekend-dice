@@ -25,17 +25,21 @@ if(!Array.isArray(cnty)) cnty=[];
 const REGIONS=[["北部",["基隆市","台北市","新北市","桃園市","新竹市","新竹縣","宜蘭縣"]],["中部",["苗栗縣","台中市","彰化縣","南投縣","雲林縣"]],
   ["南部",["嘉義市","嘉義縣","台南市","高雄市","屏東縣"]],["東部",["花蓮縣","台東縣"]]];
 let cntyOpen = false;
+let wxAny = [];   // 天氣題：地點至少要有其中一個標記（空的＝不限）
 let view3 = "home";              // v3 首頁狀態：home（兩扇門）/ ask（幫我決定問答）/ map（地圖模式）
 let mapMode = false;             // 地圖模式：只看距離＋排除條件，不看玩法和講究
 let nameLimit = 90;              // 畫面裡的點少於這個數才標名字（地圖模式放寬）            // 今天想怎麼玩（情境，單選）
 // 情境：一次代表一種玩法，只要有其中一項就算（OR）；細的條件才是「全部都要」（AND）
 const SCENES={
-  run:   {name:"放電跑跳", sub:"草地・溜滑梯・沙坑", ic:"grass",   any:["草","滑","沙"]},
-  animal:{name:"摸摸動物", sub:"餵食・近距離接觸",   ic:"bunny",   any:["動"]},
-  water: {name:"玩水玩沙", sub:"戲水池・海邊",       ic:"water",   any:["水","沙"]},
-  train: {name:"火車飛機", sub:"看火車・坐小火車",   ic:"train",   any:["車","機"]},
-  hands: {name:"動手做",   sub:"採果・DIY・摸蜆",    ic:"hands",   any:["手"]},
-  rain:  {name:"下雨也OK", sub:"室內・有屋頂",       ic:"umbrella",any:["雨"]},
+  run:   {name:"放電跑跳", sub:"草地・遊戲場",   rsub:"室內遊戲場",   ic:"grass",  any:["草","滑","沙"]},
+  slide: {name:"溜滑梯",   sub:"特色溜滑梯",     rsub:"室內溜滑梯",   ic:"slide",  any:["滑"]},
+  animal:{name:"摸摸動物", sub:"餵食・近距離",   rsub:"室內也能看",   ic:"bunny",  any:["動"]},
+  water: {name:"玩水",     sub:"戲水池・海邊",   rsub:"室內玩水",     ic:"water",  any:["水"]},
+  sand:  {name:"玩沙",     sub:"沙坑・沙灘",     rsub:"室內沙坑",     ic:"sand",   any:["沙"]},
+  train: {name:"看火車",   sub:"火車・小火車",   rsub:"室內也能看",   ic:"train",  any:["車"]},
+  plane: {name:"看飛機",   sub:"機場・觀景台",   rsub:"室內也能看",   ic:"plane",  any:["機"]},
+  hands: {name:"動手做",   sub:"採果・DIY",      rsub:"室內 DIY",     ic:"hands",  any:["手"]},
+  spring:{name:"泡腳溫泉", sub:"長輩最愛",       rsub:"有屋頂的",     ic:"spring", any:["泉"]},
 };
 let flt  = Object.assign({avoid:false,noresv:false}, store.get("wd_flt",{}));
 let data = Object.assign({edits:{},added:[],deleted:[]}, store.get("wd_data",{}));
@@ -188,6 +192,7 @@ function countyOf(s){
 }
 function isCandidate(s){
   if(!passesTags(s)) return false;
+  if(!mapMode && wxAny.length && !wxAny.some(c=>s.tags.includes(c))) return false;
   if(cnty.length) return cnty.includes(countyOf(s));   // 指定縣市模式：只看縣市
   const {min,max}=reachRange();
   if(s.min>max || s.min<min) return false;
@@ -725,7 +730,13 @@ function detailHtml(s){
   } else h+=`<div class="dRow"><b>去那裡做什麼</b><p>這個地點的詳細介紹還沒補上（會一區一區陸續補齊），可以先看下面 Google 找到的近三年網路分享。</p></div>`;
   h+=`<div class="dRow"><b>看更多</b><div class="dLinks">`;
   if(d&&d.site) h+=lk(d.site,"官網");
-  if(d&&d.posts) d.posts.forEach(p=>h+=lk(p[1],p[0]));
+  // 文章年份：三年內正常顯示；超過三年標「較舊」；看不出年份標「年份不明」
+  const cut=new Date().getFullYear()-3;
+  if(d&&d.posts) d.posts.forEach(p=>{
+    const ys=(p[0].match(/20\d\d/g)||[]).map(Number), y=ys.length?Math.max(...ys):0;
+    const tag= !y ? `<span class="dAge">年份不明</span>` : y<cut ? `<span class="dAge old">${y} 年較舊</span>` : "";
+    h+=lk(p[1],p[0]).replace("</a>",tag+"</a>");
+  });
   h+=lk("https://www.google.com/search?q="+q(s.name+" 親子")+"&tbs=qdr:y3","Google：近三年的網路分享");
   h+=`</div></div><div class="dNote">資料整理自網路文章，價格和時間可能變動，出發前請看官方公告</div></div>`;
   return h;
@@ -899,14 +910,38 @@ $$("#nav button").forEach(b=>b.onclick=()=>{ if(curTab===b.dataset.tab) return; 
 /*__UPDATE__*/
 
 /* ===== v3 大按鈕介面：首頁兩扇門 → 地圖模式／幫我決定（一頁一題） ===== */
-const WHO={
-  fam:  {name:"我們一家",  sub:"小家庭出門",               ic:"home",     pref:[]},
-  elder:{name:"帶阿公阿嬤",sub:"優先挑長輩好走的",         ic:"stroller", pref:["走"]},
-  all:  {name:"全家出動",  sub:"優先挑好走、好停車、有得吃", ic:"foot",     pref:["走","停","吃"]},
+/* 天氣題：取代原本的「誰去」。選了就照做（硬條件），不是加權 */
+const WX={
+  sun: {name:"天氣好，出去跑", sub:"戶外、室內都可以",       ic:"spark",     any:[]},
+  hot: {name:"很熱，怕曬",     sub:"只挑室內、有樹蔭或能玩水", ic:"tree", any:["雨","蔭","水"]},
+  rain:{name:"下雨，找室內",   sub:"只挑下雨也能去的",         ic:"umbrella", any:["雨"]},
 };
-const DIST=[{i:0,name:"近近的",sub:"30 分鐘內"},{i:1,name:"中間",sub:"1 小時內"},{i:3,name:"遠一點",sub:"2 小時內"},{i:5,name:"多遠都可以",sub:"全台"}];
-let ask={step:0, who:"fam", scene:"", reach:1};
+/* 開多遠：分細一點（分鐘，0＝全台） */
+const DIST=[
+  {m:30, name:"30 分鐘內", sub:"附近走走"},
+  {m:45, name:"45 分鐘內", sub:"小小出門"},
+  {m:60, name:"1 小時內",  sub:"半日遊剛好"},
+  {m:90, name:"1.5 小時內",sub:"一日遊"},
+  {m:120,name:"2 小時內",  sub:"出遠門"},
+  {m:180,name:"3 小時內",  sub:"走很遠"},
+  {m:0,  name:"多遠都可以",sub:"全台"},
+];
+let ask={step:0, wx:"sun", scene:"", fl:[], mins:60};
+/* 第三頁「講究一下」：可複選，選了就是硬條件 */
+const PICKY=[
+  {k:"easy",  name:"推車長輩好走", ic:"stroller"},
+  {k:"park",  name:"好停車",       ic:"parking"},
+  {k:"free",  name:"免門票",       ic:"ticket"},
+  {k:"food",  name:"附近有得吃",   ic:"bowl"},
+  {k:"nurse", name:"哺乳室・尿布台",ic:"bottle"},
+  {k:"shade", name:"有樹蔭",       ic:"tree", noRain:true},
+  {k:"noresv",name:"不用預約",     ic:"calendar"},
+  {k:"avoid", name:"最近沒去過",   ic:"clock"},
+];
+const flOf=fl=>Object.fromEntries((fl||[]).map(k=>[k,true]));
 let last3=store.get("wd_last3",null);
+if(last3 && (last3.mins==null || !last3.wx)) last3=null;
+if(last3 && last3.scene && !SCENES[last3.scene]) last3.scene="";   // 舊版（誰去／刻度）紀錄不相容，直接忽略
 
 function setView(v){
   view3=v;
@@ -921,7 +956,7 @@ function setView(v){
 // 「誰去」不刪地點，只是讓符合的地點比較容易被抽中（加權），選項才不會一下子變很少
 let whoPref=[];
 function whoFlt(w){ return {avoid:!!flt.avoid, noresv:!!flt.noresv}; }
-function lastLabel(l){ return `${(WHO[l.who]||WHO.fam).name}・${l.scene&&SCENES[l.scene]?SCENES[l.scene].name:"都可以"}・${REACHES[l.reach].name}`; }
+function lastLabel(l){ return `${(WX[l.wx]||WX.sun).name.split("，")[0]}・${l.scene&&SCENES[l.scene]?SCENES[l.scene].name:"都可以"}${l.fl&&l.fl.length?`＋${l.fl.length} 個講究`:""}・${fmtReach(l.mins)}`; }
 // 「幫我決定」的插圖：一顆會輕輕擺動的指南針（取代骰子）
 function compassDoorSvg(){
   const t=[0,45,90,135,180,225,270,315].map(a=>`<line x1="60" y1="${a%90?17:13}" x2="60" y2="${a%90?22:22}" stroke="${INK}" stroke-width="${a%90?2:3}" stroke-linecap="round" transform="rotate(${a} 60 60)"/>`).join("");
@@ -953,7 +988,7 @@ function renderMapBar(){
   $("#mbBack").innerHTML=`‹ 回首頁`;
   $("#mbRand").innerHTML=`${ui("again",18)}抽一個`;
 }
-$("#doorMap").onclick=()=>{ Snd.play("pop"); mapMode=true; whoPref=[]; scene=""; dir="all"; cnty=[]; far=false; setView("map"); Map2.showHint&&Map2.showHint(); };
+$("#doorMap").onclick=()=>{ Snd.play("pop"); mapMode=true; whoPref=[]; wxAny=[]; scene=""; dir="all"; cnty=[]; far=false; setView("map"); Map2.showHint&&Map2.showHint(); };
 $("#zIn").onclick=e=>{ e.stopPropagation(); Map2.zoomBy(1.8); };
 $("#zOut").onclick=e=>{ e.stopPropagation(); Map2.zoomBy(1/1.8); };
 $("#mapBackF").onclick=()=>$("#mbBack").onclick();
@@ -970,23 +1005,53 @@ $("#mbReach").oninput=e=>{ if(rolling) return;
 $("#mbRand").onclick=()=>{ if(rolling) return; pick(); };
 
 /* 幫我決定：今天誰去 → 怎麼玩 → 開多遠 */
-function askCount(o){ const s0={scene,flt,reachIdx,reachM,dir,cnty,far,mapMode}; scene=o.scene??ask.scene; flt=whoFlt(o.who??ask.who); reachIdx=o.reach??5; reachM=REACHES[reachIdx].m; dir="all"; cnty=[]; far=false; mapMode=false;
-  const n=candidates().length; ({scene,flt,reachIdx,reachM,dir,cnty,far,mapMode}=s0); return n; }
+function askCount(o){ const s0={scene,flt,reachIdx,reachM,dir,cnty,far,mapMode,wxAny};
+  scene=o.scene??ask.scene; wxAny=(WX[o.wx??ask.wx]||WX.sun).any; flt=flOf(o.fl??(ask.step>=2?ask.fl:[])); reachM=o.mins??0; dir="all"; cnty=[]; far=false; mapMode=false;
+  const n=candidates().length; ({scene,flt,reachIdx,reachM,dir,cnty,far,mapMode,wxAny}=s0); return n; }
+/* 天氣預報（Open-Meteo，免金鑰）：平日看這週六、週末看今天；一天只抓一次 */
+let wxCast=null;
+function wxTarget(){ const d=new Date(), w=d.getDay(); if(w===0||w===6) return {d,label:"今天"}; const s=new Date(d); s.setDate(d.getDate()+(6-w)); return {d:s,label:"這週六"}; }
+const ymd=d=>`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
+async function loadWx(){
+  const t=wxTarget(), key=ymd(new Date())+"@"+ymd(t.d);
+  const c=store.get("wd_wx",null); if(c&&c.key===key){ wxCast=c; return c; }
+  const la=origin?origin.lat:24.88, lo=origin?origin.lng:120.99;
+  try{
+    const ctl=new AbortController(); setTimeout(()=>ctl.abort(),5000);
+    const r=await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${la.toFixed(2)}&longitude=${lo.toFixed(2)}&daily=precipitation_probability_max,temperature_2m_max&timezone=Asia%2FTaipei&forecast_days=7`,{signal:ctl.signal});
+    const j=await r.json(), i=j.daily.time.indexOf(ymd(t.d)); if(i<0) return null;
+    wxCast={key,label:t.label,rain:j.daily.precipitation_probability_max[i],tmax:Math.round(j.daily.temperature_2m_max[i])};
+    store.set("wd_wx",wxCast); return wxCast;
+  }catch(e){ return null; }
+}
+const wxSuggest=c=>!c?null: c.rain>=60?"rain": c.tmax>=31?"hot":"sun";
 function renderAsk(){
   const st=ask.step;
   $("#askBack").innerHTML="‹ 上一步";
-  $("#askDots").innerHTML=[0,1,2].map(i=>`<i class="${i<=st?"on":""}"></i>`).join("");
+  $("#askDots").innerHTML=[0,1,2,3].map(i=>`<i class="${i<=st?"on":""}"></i>`).join("");
   let h="";
   if(st===0){
-    $("#askQ").textContent="今天誰去？";
-    h=Object.entries(WHO).map(([k,w])=>`<button class="big3row" data-v="${k}"><span class="ic">${ui(w.ic,44)}</span><span class="tx"><b>${w.name}</b><small>${w.sub}</small></span></button>`).join("");
+    $("#askQ").textContent="天氣怎麼樣？";
+    const c=wxCast, sg=wxSuggest(c);
+    h=(c?`<div class="wxCast">${c.label}預報：降雨機率 <b>${c.rain}%</b>・最高 <b>${c.tmax}°C</b></div>`:`<div class="wxCast" id="wxLoading">正在看天氣預報…</div>`)
+      +Object.entries(WX).map(([k,w])=>{ const n=askCount({wx:k}); return `<button class="big3row ${n?"":"zero"} ${sg===k?"sug":""}" data-v="${k}"><span class="ic">${ui(w.ic,44)}</span><span class="tx"><b>${w.name}</b><small>${w.sub}</small></span>${sg===k?`<em>建議</em>`:""}<i>${n} 個</i></button>`; }).join("");
+    if(!c) loadWx().then(r=>{ if(ask.step===0 && view3==="ask"){ if(r) renderAsk(); else { const el=$("#wxLoading"); if(el) el.textContent="抓不到天氣預報，自己選一下吧"; } } });
   } else if(st===1){
     $("#askQ").textContent="今天想怎麼玩？";
-    h=Object.entries(SCENES).map(([k,s])=>{ const n=askCount({scene:k}); return `<button class="tile3 ${n?"":"zero"}" data-v="${k}"><span class="ic">${ui(s.ic,52)}</span><b>${s.name}</b><small>${s.sub}</small><i>${n}</i></button>`; }).join("")
+    const rainy=ask.wx==="rain";
+    // 跟天氣對不上的玩法（0 個地點）直接不顯示，不讓上下題打架
+    h=Object.entries(SCENES).map(([k,s])=>{ const n=askCount({scene:k}); if(!n) return ""; return `<button class="tile3" data-v="${k}"><span class="ic">${ui(s.ic,52)}</span><b>${s.name}</b><small>${rainy?s.rsub:s.sub}</small><i>${n}</i></button>`; }).join("")
       +`<button class="tile3 wide" data-v=""><span class="ic">${ui("spark",40)}</span><b>都可以</b><small>不挑玩法</small><i>${askCount({scene:""})}</i></button>`;
+  } else if(st===2){
+    $("#askQ").textContent="還要講究什麼？";
+    const now=askCount({fl:ask.fl});
+    h=`<div class="pickyHint">可以複選，不選也可以直接下一步</div>`+PICKY.filter(p=>!(p.noRain&&ask.wx==="rain")).map(p=>{
+        const on=ask.fl.includes(p.k), n=on?now:askCount({fl:[...ask.fl,p.k]});
+        return `<button class="pick3 ${on?"on":""} ${n?"":"zero"}" data-v="${p.k}"><span class="ic">${ui(p.ic,30)}</span><b>${p.name}</b><i>${on?"✓":n+" 個"}</i></button>`; }).join("")
+      +`<button class="nextBtn" data-v="__next">下一步（還有 ${now} 個地點）›</button>`;
   } else {
     $("#askQ").textContent="開多遠？";
-    h=DIST.map(d=>{ const n=askCount({reach:d.i}); return `<button class="big3row ${n?"":"zero"}" data-v="${d.i}"><span class="ic">${ui("compass",44)}</span><span class="tx"><b>${d.name}</b><small>${d.sub}</small></span><i>${n} 個</i></button>`; }).join("");
+    h=DIST.map(d=>{ const n=askCount({mins:d.m}); return `<button class="distRow ${n?"":"zero"}" data-v="${d.m}"><span class="tx"><b>${d.name}</b><small>${d.sub}</small></span><i>${n} 個</i></button>`; }).join("");
   }
   $("#askGrid").className="askGrid s"+st;
   $("#askGrid").innerHTML=h;
@@ -994,17 +1059,18 @@ function renderAsk(){
     if(b.classList.contains("zero")){ Snd.play("oops"); toast("這個選項沒有地點，換一個試試"); return; }
     Snd.play("toggle",true);
     const v=b.dataset.v;
-    if(st===0){ ask.who=v; ask.step=1; renderAsk(); }
-    else if(st===1){ ask.scene=v; ask.step=2; renderAsk(); }
-    else { ask.reach=+v; runDecide(ask); }
+    if(st===0){ ask.wx=v; ask.step=1; renderAsk(); }
+    else if(st===1){ ask.scene=v; ask.fl=ask.fl.filter(k=>!(k==="shade"&&ask.wx==="rain")); ask.step=2; renderAsk(); }
+    else if(st===2){ if(v==="__next"){ ask.step=3; renderAsk(); return; } ask.fl=ask.fl.includes(v)?ask.fl.filter(x=>x!==v):[...ask.fl,v]; renderAsk(); }
+    else { ask.mins=+v; runDecide(ask); }
   });
 }
-$("#doorDice").onclick=()=>{ Snd.play("pop"); ask={step:0,who:"fam",scene:"",reach:1}; setView("ask"); renderAsk(); };
+$("#doorDice").onclick=()=>{ Snd.play("pop"); ask={step:0,wx:wxSuggest(wxCast)||"sun",scene:"",fl:[],mins:60}; setView("ask"); renderAsk(); };
 $("#askBack").onclick=()=>{ Snd.play("pop"); if(ask.step===0) setView("home"); else { ask.step--; renderAsk(); } };
 async function runDecide(a){
-  mapMode=false; scene=a.scene; flt=whoFlt(a.who); whoPref=(WHO[a.who]||WHO.fam).pref; reachIdx=a.reach; reachM=REACHES[reachIdx].m; dir="all"; cnty=[]; far=false;
-  store.set("wd_scene",scene); store.set("wd_flt",flt); store.set("wd_reach",reachIdx); store.set("wd_reachM",reachM);
-  last3={who:a.who,scene:a.scene,reach:a.reach}; store.set("wd_last3",last3);
+  mapMode=false; scene=a.scene; whoPref=[]; wxAny=(WX[a.wx]||WX.sun).any; flt=flOf(a.fl); reachM=a.mins; dir="all"; cnty=[]; far=false;
+  store.set("wd_scene",scene); store.set("wd_reachM",reachM);
+  last3={wx:a.wx,scene:a.scene,fl:a.fl||[],mins:a.mins}; store.set("wd_last3",last3); store.set("wd_flt",flt);
   setView("map");
   await sleep(450);
   pick();
@@ -1069,4 +1135,4 @@ $("#footCount").textContent=`口袋名單 ${spots().length} 個地點`;
   fontsOk.then(()=>{ const wait=Math.max(0,3800-(performance.now()-t0)); setTimeout(exit,wait); });
   setTimeout(exit,5500);   // 保險：最多 5.5 秒
 })();
-splashDone.then(()=>setTimeout(()=>{ if(!origin){ Van.say("我先找找你在哪～",2400); locate(); } else Van.say("今天想開多遠？",1800); },900));
+splashDone.then(()=>setTimeout(()=>{ loadWx(); if(!origin){ Van.say("我先找找你在哪～",2400); locate(); } else Van.say("今天想開多遠？",1800); },900));
